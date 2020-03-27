@@ -1,5 +1,6 @@
 import {IProject} from "../interfaces/IProject";
 import {Guid} from "guid-typescript";
+import {NullableProjectDto, ProjectDto} from "../dtos/ProjectDto";
 
 export class Project implements IProject {
   constructor(code:string, name:string,description:any){
@@ -12,6 +13,14 @@ export class Project implements IProject {
   code:string;
   name:string;
   description?:string;
+
+  public static LoadFromDto(dto: NullableProjectDto) {
+    if(dto === null)
+      return null;
+    const project =  new Project(dto.name, dto.code, dto.description);
+    project.id = dto.id;
+    return project;
+  }
 }
 
 export type NullableProject = Project | null

@@ -8,6 +8,7 @@ import feathers from '@feathersjs/feathers';
 import configuration from '@feathersjs/configuration';
 import express from '@feathersjs/express';
 import socketio from '@feathersjs/socketio';
+import swagger from 'feathers-swagger';
 
 
 import { Application } from './declarations';
@@ -17,6 +18,7 @@ import services from './services';
 import appHooks from './app.hooks';
 import channels from './channels';
 import {BackEndService} from "./backend/BackEndService";
+
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
@@ -35,6 +37,18 @@ app.use('/', express.static(app.get('public')));
 
 // Set up Plugins and providers
 app.configure(express.rest());
+
+app.configure(swagger({
+  openApiVersion:3,
+  specs:{
+    uiIndex: true,
+    info: {
+      title: 'Hermes POC Service',
+      description: 'The hermes POC service swagger',
+      version:'0.0.1'
+    }
+  }
+}));
 app.configure(socketio());
 
 // Configure other middleware (see `middleware/index.js`)
@@ -49,5 +63,6 @@ app.use(express.notFound());
 app.use(express.errorHandler({ logger } as any));
 
 app.hooks(appHooks);
+
 
 export default app;

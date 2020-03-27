@@ -5,7 +5,7 @@ import {BackEndService} from "./backend/BackEndService";
 export interface ServiceTypes {}
 
 export class HermesApp {
-  backend:BackEndService;
+  backend?:BackEndService;
 }
 
 // The application instance type that will be used everywhere else

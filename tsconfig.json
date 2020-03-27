@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "ES6",
     "module": "commonjs",
     "outDir": "./lib",
     "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true
+    "strict": false,
+    "esModuleInterop": true,
+    "sourceMap": true
   },
   "exclude": [
     "test"

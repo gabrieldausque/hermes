@@ -38,7 +38,7 @@ export class MemoryStorage {
     }
   }
 
-  private delete(project: Project) {
+  delete(project: Project) {
     if(this.exists(project)) {
       this.innerStorage.splice(this.innerStorage.findIndex(value => value.id === project.id), 1);
     }
