@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>A FeathersJS application</title>
+    <title>Hermes API Demo</title>
     <meta name="description" content="A FeathersJS server">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="lib/jquery/jquery-3.4.1.min.js"></script>
@@ -20,7 +20,7 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <nav class="col-md-3 d-none d-md-block bg-secondary left-sidebar">
+        <nav class="col-md-2 d-none d-md-block bg-secondary left-sidebar">
           <div class="sidebar-sticky">
             <h6 class="sidebar-heading d-flex justify-content-center align-items-center px-3 mt-2 mb-1 text-white-50">
               Main
@@ -43,9 +43,62 @@
             </ul>
           </div>
         </nav>
-        <main class="col-md-9 ml-sm-auto px-4 viewport">
+        <main class="col-md-10 ml-sm-auto px-4 viewport">
           <section id="project-add" class="d-flex">
-
+            <h2>Add a Project</h2>
+            <form class="p-4" id="create-project-form" novalidate>
+              <div class="form-group">
+                <div class="form-check">
+                  <label for="project-name">Name</label>
+                  <input type="text"
+                         class="form-control"
+                         id="project-name"
+                         placeholder="Type in the name of the project"
+                         required
+                  >
+                  <div class="valid-feedback">
+                    Looks good.
+                  </div>
+                  <div class="invalid-feedback">
+                    You must provide a valid name.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <label for="project-code">Code</label>
+                  <input type="text"
+                         class="form-control"
+                         id="project-code"
+                         placeholder="Type in the code of the project"
+                         required
+                  >
+                  <div class="valid-feedback">
+                    Looks good.
+                  </div>
+                  <div class="invalid-feedback">
+                    You must provide a valid code.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <label for="project-description">Description</label>
+                  <input type="text"
+                         class="form-control"
+                         id="project-description"
+                         placeholder="Type in the description of the project"
+                  >
+                  <div class="valid-feedback">
+                    Looks good.
+                  </div>
+                </div>
+              </div>
+              <button id="create-project-submit" type="button" class="btn btn-primary float-right d-flex align-content-center justify-content-center" disabled >
+                <span id="create-project-spinner" class="spinner-border spinner-border-sm"></span>
+                <span class="m-xl-1">Create Project</span>
+              </button>
+            </form>
           </section>
           <section id="subscriptions-manage" class="">
 
