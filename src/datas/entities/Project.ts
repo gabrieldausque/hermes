@@ -22,5 +22,4 @@ export class Project implements IProject {
     return project;
   }
 }
-
-export type NullableProject = Project | null
+export type NullableProject = Project | null;

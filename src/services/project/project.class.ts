@@ -98,7 +98,7 @@ export class Project implements ServiceMethods<Data> {
   }
 
   async find (params?: Params): Promise<Data[] | Paginated<Data>> {
-    return [];
+    return this.app.backend.all().map(p => ProjectDto.createFromEntity(p));
   }
 
   async get (id: Id, params?: Params): Promise<Data> {

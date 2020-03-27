@@ -28,4 +28,8 @@ export class BackEndService {
     const projectToDelete = Project.LoadFromDto(data);
     this.store.delete(projectToDelete);
   }
+
+  all():Project[] {
+    return this.store.all();
+  }
 }

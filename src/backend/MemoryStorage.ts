@@ -43,4 +43,8 @@ export class MemoryStorage {
       this.innerStorage.splice(this.innerStorage.findIndex(value => value.id === project.id), 1);
     }
   }
+
+  all():Project[] {
+    return this.innerStorage.slice();
+  }
 }
