@@ -42,6 +42,11 @@ function createProject(event){
   }
 }
 
+const socket = io(window.location.href);
+const app = feathers();
+
+app.configure(feathers.socketio(socket));
+
 jQuery(document).ready((e) => {
   jQuery(".left-sidebar ul > li > a ").click((e) => {
     const sectionToDisplay = jQuery(e.currentTarget).attr("data-section");
@@ -50,4 +55,7 @@ jQuery(document).ready((e) => {
   });
   jQuery('#create-project-submit').click(createProject);
   jQuery('#create-project-form input').change(validateCreateProjectForm);
+
+  app.service('project').on('created', () => console.log("Just created ..."));
+
 });
