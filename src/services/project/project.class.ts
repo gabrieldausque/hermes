@@ -111,6 +111,7 @@ export class Project implements ServiceMethods<Data> {
       return Promise.all(data.map(current => this.create(current, params)));
     }
     const project = this.app.backend.createProject(data);
+    this.app.topicService.publish(project, "plop");
     return ProjectDto.createFromEntity(project);
   }
 

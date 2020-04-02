@@ -57,5 +57,6 @@ jQuery(document).ready((e) => {
   jQuery('#create-project-form input').change(validateCreateProjectForm);
 
   app.service('project').on('created', () => console.log("Just created ..."));
+  socket.on('plop', (arg) => {console.log('ploped'); console.log(arg); })
 
 });

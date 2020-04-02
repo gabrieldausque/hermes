@@ -11,6 +11,7 @@ export class SocketIOTopicServiceClient implements TopicClient {
   constructor(service: TopicService, connection: any) {
     this.topicClientId = uuid();
     this.connection = connection;
+    console.log(connection);
     this.topicService = service;
     this.subscribe('private_' + this.topicClientId, this.sendToSocketIO);
     this.topicHandlers = {}
@@ -22,7 +23,7 @@ export class SocketIOTopicServiceClient implements TopicClient {
   }
 
   async subscribe(topic: string, handler: Function) {
-    await this.topicService.subscribe(this, topic);
+    await this.topicService.subscribe(this);
     this.topicHandlers[topic] = handler
   }
 
@@ -35,5 +36,11 @@ export class SocketIOTopicServiceClient implements TopicClient {
 
   private sendToSocketIO(topicContent:any,topicTriggered:string) {
     //TODO : send message to corresponding channel in socket.IO;
+    this.connection.emit(topicTriggered, topicContent);
   }
+
+  isListeningTo(topic: string): boolean {
+    return true;
+  }
+
 }
