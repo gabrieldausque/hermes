@@ -9,33 +9,52 @@ export class SocketIOTopicServiceClient implements TopicClient {
   private topicHandlers: {};
 
   constructor(service: TopicService, connection: any) {
-    this.topicClientId = uuid();
     this.connection = connection;
-    console.log(connection);
+    this.topicClientId = connection.id;
     this.topicService = service;
-    this.subscribe('private_' + this.topicClientId, this.sendToSocketIO);
-    this.topicHandlers = {}
+    this.topicService.addClient(this);
+    this.topicHandlers = {};
+
+    const currentClient = this;
+    connection.on(this.topicClientId + '_subscribe', (topic) => {
+       currentClient.subscribe(topic, currentClient.sendToSocketIO)
+    });
+
+    console.log(this.topicClientId);
+
+    connection.on(this.topicClientId + '_publish', (publishArgs) => {
+      currentClient.publish(publishArgs.topic, publishArgs.content).then(() => {});
+    })
   }
 
-  async publish(messageContent: any, topic: string): Promise<void> {
-    this.topicService.publish(messageContent,topic);
-    return;
+  async publish(topic: string, messageContent: any): Promise<void> {
+    await this.topicService.publish(messageContent,topic);
   }
 
-  async subscribe(topic: string, handler: Function) {
-    await this.topicService.subscribe(this);
-    this.topicHandlers[topic] = handler
-  }
-
-  async topicRaised(topicContent:any, topicTriggered:string) {
-    if(typeof this.topicHandlers[topicTriggered] !== 'undefined'){
-      this.topicHandlers[topicTriggered].call(this, topicContent, topicTriggered);
+  subscribe(topic: string, handler: Function) {
+    if(!Array.isArray(this.topicHandlers[topic])){
+      this.topicHandlers[topic] = [];
     }
-    return;
+    if(this.topicHandlers[topic].indexOf(handler) < 0){
+      this.topicHandlers[topic].push(handler);
+    }
+  }
+
+  async topicTriggered(topicTriggered:string, topicContent:any) {
+    if(Array.isArray(this.topicHandlers[topicTriggered])){
+      const currentTopicClient = this;
+      this.topicHandlers[topicTriggered].forEach((handler) => {
+        try {
+          handler.call(this, topicContent, topicTriggered)
+        }catch(error) {
+          console.error(error);
+        }
+      });
+    }
   }
 
   private sendToSocketIO(topicContent:any,topicTriggered:string) {
-    //TODO : send message to corresponding channel in socket.IO;
+    //TODO : send message to corresponding channel in socket.IO, also when using wildcard;
     this.connection.emit(topicTriggered, topicContent);
   }
 

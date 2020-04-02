@@ -5,22 +5,21 @@ export class TopicService {
   constructor(){
     this.clients = [];
   }
-  async subscribe(topicClient:TopicClient) {
-    const clientsIndex = this.clients.indexOf(topicClient);
-    if(clientsIndex < 0){
-      this.clients.push(topicClient);
-    }
-    return;
-  }
 
-  async publish(messageContent:any, topic:string){
-    for(var clientIndex in this.clients){
+  async publish(topic:string, messageContent:any){
+    for(let clientIndex in this.clients){
       const client = this.clients[clientIndex];
       if(client.isListeningTo(topic)){
-        client.topicRaised(messageContent,topic);
+        await client.topicTriggered(topic, messageContent);
       }
     }
-    return;
+  }
+
+  addClient(newClient: TopicClient) {
+    const clientsIndex = this.clients.indexOf(newClient);
+    if(clientsIndex < 0){
+      this.clients.push(newClient);
+    }
   }
 }
 

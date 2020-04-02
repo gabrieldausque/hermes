@@ -30,7 +30,6 @@ function createProject(event){
       window.setTimeout(() => {
         jQuery('#create-project-spinner').removeClass('active');
       }, 2000);
-      console.log(data)
     }).fail((jqxhr,textStatus,error) => {
       window.setTimeout(() => {
         jQuery('#create-project-spinner').removeClass('active');
@@ -44,8 +43,8 @@ function createProject(event){
 
 const socket = io(window.location.href);
 const app = feathers();
-
 app.configure(feathers.socketio(socket));
+const topicClient = new TopicClientProxy(socket);
 
 jQuery(document).ready((e) => {
   jQuery(".left-sidebar ul > li > a ").click((e) => {
@@ -56,7 +55,18 @@ jQuery(document).ready((e) => {
   jQuery('#create-project-submit').click(createProject);
   jQuery('#create-project-form input').change(validateCreateProjectForm);
 
-  app.service('project').on('created', () => console.log("Just created ..."));
-  socket.on('plop', (arg) => {console.log('ploped'); console.log(arg); })
+  topicClient.subscribe('global.project_created', (arg) => {
+    jQuery('#notification-header').text("Project Created");
+    jQuery('#notification-content').text("The project with id " + arg.id + " has been created");
+    jQuery('.toast').toast('show');
+    console.log(arg);
+  }).then(() => {
+  });
+
+  jQuery('.toast').toast({
+    animation:true,
+    autohide:true,
+    delay:3000
+  })
 
 });

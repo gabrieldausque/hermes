@@ -19,6 +19,7 @@ import appHooks from './app.hooks';
 import channels from './channels';
 import {BackEndService} from "./backend/BackEndService";
 import {TopicService} from "./topic/TopicService";
+import {SocketIOTopicServiceClient} from "./topic/SocketIOTopicServiceClient";
 
 // Don't remove this comment. It's needed to format import lines nicely.
 
@@ -54,7 +55,11 @@ app.configure(swagger({
     }
   }
 }));
-app.configure(socketio());
+app.configure(socketio((io) => {
+  io.on('connection', (socket) => {
+    const topicClient = new SocketIOTopicServiceClient(app.topicService, socket);
+  })
+}));
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
