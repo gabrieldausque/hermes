@@ -1,6 +1,7 @@
 import '@feathersjs/transport-commons';
 import { HookContext } from '@feathersjs/feathers';
 import { Application } from './declarations';
+import {SocketIOTopicServiceClient} from "./topic/SocketIOTopicServiceClient";
 
 export default function(app: Application) {
   if(typeof app.channel !== 'function') {
@@ -11,6 +12,8 @@ export default function(app: Application) {
   app.on('connection', (connection: any) => {
     // On a new real-time connection, add it to the anonymous channel
     app.channel('anonymous').join(connection);
+
+    const topicClient = new SocketIOTopicServiceClient(app.topicService, connection);
   });
 
   app.on('login', (authResult: any, { connection }: any) => {

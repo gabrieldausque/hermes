@@ -57,6 +57,7 @@
     "swagger-ui-dist": "^3.25.0",
     "swagger-ui-express": "^4.1.4",
     "uuid": "^7.0.2",
+    "uuidv4": "^6.0.7",
     "winston": "^3.2.1"
   },
   "devDependencies": {

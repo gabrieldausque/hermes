@@ -18,11 +18,16 @@ import services from './services';
 import appHooks from './app.hooks';
 import channels from './channels';
 import {BackEndService} from "./backend/BackEndService";
+import {TopicService} from "./topic/TopicService";
 
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
 app.backend = new BackEndService();
+
+//topic management :
+app.topicService = new TopicService();
+
 // Load app configuration
 app.configure(configuration());
 // Enable security, CORS, compression, favicon and body parsing
@@ -63,6 +68,7 @@ app.use(express.notFound());
 app.use(express.errorHandler({ logger } as any));
 
 app.hooks(appHooks);
+
 
 
 export default app;
