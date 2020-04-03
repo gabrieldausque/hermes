@@ -1,8 +1,10 @@
 import { Id, NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
 import {NullableProjectDto, ProjectDto} from "../../datas/dtos/ProjectDto";
+import {ProjectEntity} from '../../datas/entities/ProjectEntity';
 
 type Data = NullableProjectDto | null;
+
 
 interface ServiceOptions {}
 
@@ -16,6 +18,23 @@ export class Project implements ServiceMethods<Data> {
     this.docs = {
       description: 'The project CRUD Service',
       definitions: {
+        molecule:{
+          type:'object',
+          properties:{
+            id: {
+              type:'string',
+              description: 'the id of the molecule: uuidv4'
+            },
+            name: {
+              type:'string',
+              description:'the name of the molecule'
+            },
+            description: {
+              type:'string',
+              description:'the description of the molecule'
+            }
+          }
+        },
         project:{
           type:'object',
           required:[
@@ -38,7 +57,16 @@ export class Project implements ServiceMethods<Data> {
             description:{
               type:'string',
               description:'the description of the project'
+            },
+            molecules:{
+              $ref: '#/components/schemas/molecule_list'
             }
+          }
+        },
+        molecule_list:{
+          type:'array',
+          items:{
+            $ref: '#/components/schemas/molecule'
           }
         },
         project_list:{
@@ -110,7 +138,7 @@ export class Project implements ServiceMethods<Data> {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    const project = this.app.backend.createProject(data);
+    let project = this.app.backend.createProject(ProjectEntity.loadFromDto(data));
     const newProject = ProjectDto.createFromEntity(project);
     try{
       this.app.topicService.publish("global.project_created", project).then(() => {});
@@ -126,19 +154,18 @@ export class Project implements ServiceMethods<Data> {
       this.create(data, params);
     else
     {
-      this.app.backend.updateProject(data);
+      this.app.backend.updateProject(ProjectEntity.loadFromDto(data));
     }
-
     return data;
   }
 
   async patch (id: NullableId, data: Data, params?: Params): Promise<Data>
   {
-    return await this.update(id, data, params);
+    return this.update(id, data, params);
   }
 
   async remove (id: NullableId, params?: Params): Promise<Data> {
-    const projectToDelete = this.app.backend.getProject(id.toString());
+    const projectToDelete:ProjectEntity = this.app.backend.getProject(id.toString());
     if(projectToDelete !== null){
       this.app.backend.deleteProject(projectToDelete);
     }

@@ -1,7 +1,10 @@
 import {TopicClient} from "../topic/TopicClient";
 import {BackEndService} from "../backend/BackEndService";
-import {ProjectDto} from "../../datas/dtos/ProjectDto";
+import {NullableProjectDto, ProjectDto} from "../../datas/dtos/ProjectDto";
 import util from 'util';
+import {ProjectEntity} from "../../datas/entities/ProjectEntity";
+import {MoleculeEntity} from "../../datas/entities/MoleculeEntity";
+import {TopicMessage} from "../topic/TopicMessage";
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class MoleculeLoader {
@@ -11,20 +14,28 @@ export class MoleculeLoader {
     this.topicClient = topicClient;
     this.backendService = backendService;
     this.topicClient.subscribe('global.project_created', this.loadMolecules, this);
+    this.topicClient.subscribe('global.project_addmolecule', this.addMolecule, this);
   }
 
-  private async loadMolecules(topicTriggered:string, topicMessage:any) {
-    const project = topicMessage.content;
-    try{
+  private async loadMolecules(topicTriggered:string, topicMessage:TopicMessage) {
+    const project:ProjectEntity = topicMessage.content as ProjectEntity;
+    const currentService = this;
+    setTimeoutPromise(1000, project).then(this.addRandomMolecule.bind(currentService));
+    setTimeoutPromise(3000, project).then(this.addRandomMolecule.bind(currentService))
+  }
+
+  private addRandomMolecule(project:ProjectEntity){
+      const moleculeIndex = project.molecules.length + 1;
+      project.addMolecule(new MoleculeEntity('molecule-' + moleculeIndex,'molecule ' + moleculeIndex  +  ' of the project'));
       this.backendService.updateProject(project);
-      this.topicClient.publish(project.id + '.molecule_loaded', project.id).then(() => {}).catch((error) => console.log('on error : ' + error));
+      this.topicClient.publish(project.id + '.molecule_loaded', project).then(() => {}).catch((error) => console.log('on error : ' + error));
+  }
+
+  private async addMolecule(topicTriggered:string, topicMessage:TopicMessage) {
+    const projectId = topicMessage.content;
+    const currentProject = this.backendService.getProject(projectId);
+    if(currentProject !== null){
+      this.addRandomMolecule(currentProject);
     }
-    catch(error)
-    {
-      console.error("Error while loading molecule : " + error);
-    }
-    setTimeoutPromise(3000, project).then((p) => {
-      this.topicClient.publish(project.id + '.molecule_loaded', project.id).then(() => {});
-    })
   }
 }

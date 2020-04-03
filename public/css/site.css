@@ -115,3 +115,70 @@ section {
 #subscriptions-manage {
   background:blue;
 }
+
+#notification-zone {
+  position:absolute;
+  top:60px;
+  right:0px;
+  padding:15px;
+  z-index:5;
+}
+
+#created-projects {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.created-project {
+  margin:15px;
+}
+
+.project-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.project-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100px;
+}
+
+.project-actions button {
+  margin-left:5px;
+  margin-right:5px;
+}
+
+.project-actions button.addmolecule {
+  display:none;
+}
+
+.project-actions button.addmolecule.shown {
+  display:block;
+}
+
+.project-molecules header {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.list-molecules {
+  max-height:0;
+  color:transparent;
+  transition: height ease 2s, color ease 2s;
+  overflow:hidden;
+}
+
+.list-molecules.expand {
+  max-height:none;
+  color: #2c3e50;
+}
+
+#created-project-card-template {
+  display:none;
+}

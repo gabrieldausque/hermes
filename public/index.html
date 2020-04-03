@@ -102,15 +102,51 @@
                 <span class="m-xl-1">Create Project</span>
               </button>
             </form>
+
+            <div id="created-projects">
+
+            </div>
+
           </section>
           <section id="subscriptions-manage" class="">
 
           </section>
 
-          <div id="notification" class="toast" style="position:absolute; top:75px; right:15px">
+          <aside id="notification-zone">
+
+          </aside>
+
+          <div id="notification-template" class="toast">
             <div id="notification-header" class="toast-header">
             </div>
             <div id="notification-content" class="toast-body">
+            </div>
+          </div>
+
+          <div id="created-project-card-template" class="card created-project border-primary hidden">
+            <div class="card-header bg-info text-white project-card-header">
+              <h5></h5>
+              <div class="project-actions">
+                <button type="button" class="btn btn-primary addmolecule" title="add a molecule">
+                  <i class="fas fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-primary follow" title="follow the project">
+                  <i class="fas fa-bell"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <p class="card-text"></p>
+              <div class="project-molecules">
+                <header class="display-molecules">
+                  Molecules
+                  <i class="fas fa-chevron-circle-down "></i>
+                </header>
+                <ul class="list-group list-molecules">
+                </ul>
+              </div>
+
             </div>
           </div>
 

@@ -30,7 +30,7 @@ export class SocketIOTopicServiceClient extends BaseTopicClient {
   }
 
   private sendToSocketIO(topicTriggered:string, topicMessage:TopicMessage) {
-    this.socket.emit(topicTriggered, topicMessage.content);
+    this.socket.emit(topicTriggered, topicMessage);
   }
 
 }

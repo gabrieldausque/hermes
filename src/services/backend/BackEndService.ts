@@ -1,6 +1,5 @@
 import {MemoryStorage} from "./MemoryStorage";
-import {NullableProject, Project} from "../../datas/entities/Project";
-import {NullableProjectDto, ProjectDto} from "../../datas/dtos/ProjectDto";
+import {NullableProject, ProjectEntity} from "../../datas/entities/ProjectEntity";
 
 export class BackEndService {
   constructor(){
@@ -13,23 +12,21 @@ export class BackEndService {
     return this.store.get(id);
   }
 
-  createProject(data: ProjectDto):Project {
+  createProject(data: ProjectEntity):ProjectEntity {
     return this.store.create(data.name, data.code, data.description);
   }
 
-  updateProject(data: NullableProjectDto) {
+  updateProject(data: NullableProject) {
     if(data != null) {
-      const updatedProject = Project.LoadFromDto(data);
-      this.store.update(updatedProject);
+      this.store.update(data);
     }
   }
 
-  deleteProject(data: ProjectDto) {
-    const projectToDelete = Project.LoadFromDto(data);
-    this.store.delete(projectToDelete);
+  deleteProject(data: ProjectEntity) {
+    this.store.delete(data);
   }
 
-  all():Project[] {
+  all():ProjectEntity[] {
     return this.store.all();
   }
 }

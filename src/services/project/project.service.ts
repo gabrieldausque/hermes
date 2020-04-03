@@ -1,4 +1,4 @@
-// Initializes the `Project` service on path `/project`
+// Initializes the `ProjectEntity` service on path `/project`
 import { ServiceAddons } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
 import { Project } from './project.class';
