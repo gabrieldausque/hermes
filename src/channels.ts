@@ -1,7 +1,7 @@
 import '@feathersjs/transport-commons';
 import { HookContext } from '@feathersjs/feathers';
 import { Application } from './declarations';
-import {SocketIOTopicServiceClient} from "./topic/SocketIOTopicServiceClient";
+import {SocketIOTopicServiceClient} from "./services/topic/SocketIOTopicServiceClient";
 
 export default function(app: Application) {
   if(typeof app.channel !== 'function') {

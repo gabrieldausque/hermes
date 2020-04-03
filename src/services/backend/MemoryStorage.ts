@@ -1,4 +1,4 @@
-import {NullableProject, Project} from "../datas/entities/Project";
+import {NullableProject, Project} from "../../datas/entities/Project";
 import {exists} from "fs";
 
 export class MemoryStorage {

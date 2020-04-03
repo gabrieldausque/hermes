@@ -17,9 +17,9 @@ import middleware from './middleware';
 import services from './services';
 import appHooks from './app.hooks';
 import channels from './channels';
-import {BackEndService} from "./backend/BackEndService";
-import {TopicService} from "./topic/TopicService";
-import {SocketIOTopicServiceClient} from "./topic/SocketIOTopicServiceClient";
+import {BackEndService} from "./services/backend/BackEndService";
+import {TopicService} from "./services/topic/TopicService";
+import {SocketIOTopicServiceClient} from "./services/topic/SocketIOTopicServiceClient";
 
 // Don't remove this comment. It's needed to format import lines nicely.
 

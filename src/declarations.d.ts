@@ -1,6 +1,6 @@
 import { Application as ExpressFeathers } from '@feathersjs/express';
-import {BackEndService} from "./backend/BackEndService";
-import {TopicService} from "./topic/TopicService";
+import {BackEndService} from "./services/backend/BackEndService";
+import {TopicService} from "./services/topic/TopicService";
 
 // A mapping of service names to types. Will be extended in service files.
 export interface ServiceTypes {}

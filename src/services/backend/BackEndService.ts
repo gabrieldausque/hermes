@@ -1,6 +1,6 @@
 import {MemoryStorage} from "./MemoryStorage";
-import {NullableProject, Project} from "../datas/entities/Project";
-import {NullableProjectDto, ProjectDto} from "../datas/dtos/ProjectDto";
+import {NullableProject, Project} from "../../datas/entities/Project";
+import {NullableProjectDto, ProjectDto} from "../../datas/dtos/ProjectDto";
 
 export class BackEndService {
   constructor(){
