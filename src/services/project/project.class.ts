@@ -111,8 +111,13 @@ export class Project implements ServiceMethods<Data> {
       return Promise.all(data.map(current => this.create(current, params)));
     }
     const project = this.app.backend.createProject(data);
-    this.app.topicService.publish("global.project_created", project).then(() => {});
-    return ProjectDto.createFromEntity(project);
+    const newProject = ProjectDto.createFromEntity(project);
+    try{
+      this.app.topicService.publish("global.project_created", project).then(() => {});
+    } catch(error){
+      console.error("error in create : " + error);
+    }
+    return newProject;
   }
 
   async update (id: NullableId, data: Data, params?: Params): Promise<Data> {

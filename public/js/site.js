@@ -8,8 +8,12 @@ function validateCreateProjectForm() {
   return isValid;
 }
 
+const socket = io(window.location.href);
+const app = feathers();
+app.configure(feathers.socketio(socket));
+const topicClient = new TopicClientProxy(socket);
+
 function createProject(event){
-  //TODO : validate the forms, if ok, submit to api;
   if(validateCreateProjectForm()){
     const data = {
       name:jQuery('#project-name').val(),
@@ -26,7 +30,8 @@ function createProject(event){
       beforeSend:(jqxhr, settings) => {
         jQuery('#create-project-spinner').addClass('active');
       }
-    }).done((data,textStatus,jqxhr)  => {
+    }).done((createdProject,textStatus,jqxhr)  => {
+      subscribeToCreatedProjectMoleculeLoadedEvent(createdProject.id);
       window.setTimeout(() => {
         jQuery('#create-project-spinner').removeClass('active');
       }, 2000);
@@ -41,10 +46,13 @@ function createProject(event){
   }
 }
 
-const socket = io(window.location.href);
-const app = feathers();
-app.configure(feathers.socketio(socket));
-const topicClient = new TopicClientProxy(socket);
+function subscribeToCreatedProjectMoleculeLoadedEvent(createdProjectId) {
+  topicClient.subscribe(createdProjectId + '.molecule_loaded', (arg) => {
+    jQuery('#notification-header').text("Project molecule Loaded");
+    jQuery('#notification-content').text("a metadata has been loaded in a project");
+    jQuery('.toast').toast('show');
+  })
+}
 
 jQuery(document).ready((e) => {
   jQuery(".left-sidebar ul > li > a ").click((e) => {
@@ -55,12 +63,13 @@ jQuery(document).ready((e) => {
   jQuery('#create-project-submit').click(createProject);
   jQuery('#create-project-form input').change(validateCreateProjectForm);
 
-  topicClient.subscribe('global.project_created', (arg) => {
-    jQuery('#notification-header').text("Project Created");
-    jQuery('#notification-content').text("The project with id " + arg.id + " has been created");
-    jQuery('.toast').toast('show');
-    console.log(arg);
-  }).then(() => {
+  topicClient.ready(() => {
+    topicClient.subscribe('global.project_created', (arg) => {
+      console.log(arg);
+      jQuery('#notification-header').text("Project Created");
+      jQuery('#notification-content').text("The project with id " + arg.id + " has been created");
+      jQuery('.toast').toast('show');
+    }).then(() => {});
   });
 
   jQuery('.toast').toast({

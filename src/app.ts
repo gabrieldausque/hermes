@@ -20,6 +20,8 @@ import channels from './channels';
 import {BackEndService} from "./services/backend/BackEndService";
 import {TopicService} from "./services/topic/TopicService";
 import {SocketIOTopicServiceClient} from "./services/topic/SocketIOTopicServiceClient";
+import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
+import {MemoryTopicServiceClient} from "./services/topic/MemoryTopicServiceClient";
 
 // Don't remove this comment. It's needed to format import lines nicely.
 
@@ -28,6 +30,9 @@ app.backend = new BackEndService();
 
 //topic management :
 app.topicService = new TopicService();
+
+//enricher service :
+app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend);
 
 // Load app configuration
 app.configure(configuration());
