@@ -15,6 +15,18 @@ export abstract class BaseTopicClient implements TopicClient{
     this.topicService = topicService;
     this.topicService.addClient(this);
     this.topicHandlers = {};
+    this.subscribe(this.topicClientId+'.subscriptions.get', (topic, topicMessage:TopicMessage) => {
+      const subscriptionsList = [];
+      for(let subscription in this.topicHandlers) {
+        if(Array.isArray(this.topicHandlers[subscription])){
+          subscriptionsList.push(subscription)
+        }
+      }
+      this.publish(this.topicClientId+'.subscriptions.list', subscriptionsList).then(() => {});
+    }, this);
+    this.subscribe(this.topicClientId + '.unsubscribe', (topic, topicMessage:TopicMessage) => {
+      this.unsubscribe(topicMessage.content);
+    }, this);
   }
 
   private getPatternForTopic(topic:string):string {
@@ -76,6 +88,7 @@ export abstract class BaseTopicClient implements TopicClient{
       if(regexp.test(topicTriggered)){
         //console.log(pattern + ' is a right topic to raised');
         this.topicHandlers[topicListenedTo].forEach((handler) => {
+            topicMessage.fromTopic = topicTriggered;
             new Promise(() => {
               handler.call(topicTriggered, topicMessage);
           }).then(() => {}).catch((error) => console.log('Error while executing a handler for topic ' + topicTriggered + ' : ' + error));
@@ -90,4 +103,9 @@ export abstract class BaseTopicClient implements TopicClient{
     this.topicService.removeClient(this);
   }
 
+  unsubscribe(topic: string) {
+    if(Array.isArray(this.topicHandlers[topic])) {
+      this.topicHandlers[topic] = null;
+    }
+  }
 }

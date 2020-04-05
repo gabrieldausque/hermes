@@ -117,7 +117,7 @@ section {
 }
 
 #notification-zone {
-  position:absolute;
+  position:fixed;
   top:60px;
   right:0px;
   padding:15px;

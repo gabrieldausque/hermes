@@ -21,10 +21,10 @@ export class SocketIOTopicServiceClient extends BaseTopicClient {
       console.log('disconnection of client with id ' + currentClient.topicClientId);
       currentClient.disconnect();
     });
-    socket.on(this.topicClientId + '_subscribe', (topic) => {
+    socket.on(this.topicClientId + '.subscribe', (topic) => {
        currentClient.subscribe(topic, currentClient.sendToSocketIO, currentClient);
     });
-    socket.on(this.topicClientId + '_publish', (publishArgs) => {
+    socket.on(this.topicClientId + '.publish', (publishArgs) => {
       currentClient.publish(publishArgs.topic, publishArgs.content).then(() => {});
     })
   }

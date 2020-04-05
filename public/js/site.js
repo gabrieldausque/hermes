@@ -11,7 +11,7 @@ function validateCreateProjectForm() {
 const socket = io(window.location.href);
 const app = feathers();
 app.configure(feathers.socketio(socket));
-const topicClient = new TopicClientProxy(socket);
+const topicClient = new TopicClientSocketIoProxy(socket);
 const ownCreatedProjectIds = [];
 
 function createProject(event){
