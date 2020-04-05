@@ -25,7 +25,9 @@ export abstract class BaseTopicClient implements TopicClient{
         pattern += '\\.';
       }
       if(node === '*') {
-        pattern += '[^*\\.]+'
+        pattern += '[^*#\\.]+'
+      } else if (node === '#') {
+        pattern += '[^*#]+'
       } else {
         pattern += node
       }
@@ -40,12 +42,12 @@ export abstract class BaseTopicClient implements TopicClient{
       const pattern = this.getPatternForTopic(topicListenedTo);
       const regexp = new RegExp(pattern, 'g');
       if(regexp.test(topic) && this.topicHandlers[topicListenedTo].length > 0) {
-        console.log('pattern ' + pattern + ' is ok for ' + topic);
+        //console.log('pattern ' + pattern + ' is ok for ' + topic);
         return true;
-      }
+      }/*
       else {
         console.warn('pattern ' + pattern + ' is not ok for ' + topic)
-      }
+      }*/
     }
 
     return false;
@@ -72,15 +74,15 @@ export abstract class BaseTopicClient implements TopicClient{
       let pattern = this.getPatternForTopic(topicListenedTo);
       let regexp = new RegExp(pattern, 'g');
       if(regexp.test(topicTriggered)){
-        console.log(pattern + ' is a right topic to raised');
+        //console.log(pattern + ' is a right topic to raised');
         this.topicHandlers[topicListenedTo].forEach((handler) => {
             new Promise(() => {
               handler.call(topicTriggered, topicMessage);
           }).then(() => {}).catch((error) => console.log('Error while executing a handler for topic ' + topicTriggered + ' : ' + error));
         });
-      } else {
+      } /*else {
         console.warn(pattern +' is not the right for tested topic : ' + topicTriggered)
-      }
+      }*/
     }
   }
 
