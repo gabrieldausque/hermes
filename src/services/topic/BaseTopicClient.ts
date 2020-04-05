@@ -17,9 +17,38 @@ export abstract class BaseTopicClient implements TopicClient{
     this.topicHandlers = {};
   }
 
+  private getPatternForTopic(topic:string):string {
+    const trees = topic.split('.');
+    let pattern = '';
+    trees.forEach((node) => {
+      if(trees.indexOf(node) > 0){
+        pattern += '\\.';
+      }
+      if(node === '*') {
+        pattern += '[^*\\.]+'
+      } else {
+        pattern += node
+      }
+    });
+    pattern += '$';
+    return pattern;
+  }
+
   isListeningTo(topic: string): boolean {
     //TODO : customize this for use of wildcard
-    return Array.isArray(this.topicHandlers[topic]) && this.topicHandlers[topic].length > 0;
+    for(let topicListenedTo in this.topicHandlers) {
+      const pattern = this.getPatternForTopic(topicListenedTo);
+      const regexp = new RegExp(pattern, 'g');
+      if(regexp.test(topic) && this.topicHandlers[topicListenedTo].length > 0) {
+        console.log('pattern ' + pattern + ' is ok for ' + topic);
+        return true;
+      }
+      else {
+        console.warn('pattern ' + pattern + ' is not ok for ' + topic)
+      }
+    }
+
+    return false;
   }
 
   async publish(topic: string, messageContent: any): Promise<void> {
@@ -39,12 +68,19 @@ export abstract class BaseTopicClient implements TopicClient{
   }
 
   async topicTriggered(topicTriggered: string, topicMessage: TopicMessage): Promise<void> {
-    if(Array.isArray(this.topicHandlers[topicTriggered])){
-      this.topicHandlers[topicTriggered].forEach((handler) => {
-          new Promise(() => {
-            handler.call(topicTriggered, topicMessage);
+    for(let topicListenedTo in this.topicHandlers) {
+      let pattern = this.getPatternForTopic(topicListenedTo);
+      let regexp = new RegExp(pattern, 'g');
+      if(regexp.test(topicTriggered)){
+        console.log(pattern + ' is a right topic to raised');
+        this.topicHandlers[topicListenedTo].forEach((handler) => {
+            new Promise(() => {
+              handler.call(topicTriggered, topicMessage);
           }).then(() => {}).catch((error) => console.log('Error while executing a handler for topic ' + topicTriggered + ' : ' + error));
-      });
+        });
+      } else {
+        console.warn(pattern +' is not the right for tested topic : ' + topicTriggered)
+      }
     }
   }
 
