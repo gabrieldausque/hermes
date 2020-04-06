@@ -28,7 +28,8 @@
     "dev": "ts-node-dev --no-notify src/",
     "start": "npm run compile && node lib/",
     "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit",
-    "compile": "shx rm -rf lib/ && tsc"
+    "compile": "shx rm -rf lib/ && tsc",
+    "docs": "npm run compile && typedoc --out docs src/services/topic"
   },
   "standard": {
     "env": [
@@ -74,6 +75,7 @@
     "ts-mocha": "^7.0.0",
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^6.1.0",
+    "typedoc": "^0.17.4",
     "typescript": "^3.8.3"
   }
 }

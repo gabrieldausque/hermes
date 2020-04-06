@@ -1,10 +1,16 @@
 import {TopicService} from "./TopicService";
 import {BaseTopicClient} from "./BaseTopicClient";
 import {TopicMessage} from "./datas/TopicMessage";
+import Socket = SocketIOClient.Socket;
 
+/**
+ * A client that represents in the server side (node instance of the topic service) a distant client connected using Socket.Io
+ */
 export class SocketIOTopicServiceClient extends BaseTopicClient {
-  private socket: any;
-
+  /**
+   * the socket that allow communication with distant client
+   */
+  private socket: Socket;
   constructor(service: TopicService, socket: any) {
     super(service);
     this.socket = socket;
@@ -27,6 +33,11 @@ export class SocketIOTopicServiceClient extends BaseTopicClient {
     })
   }
 
+  /**
+   * The {@link TopicHandlerFunction} used to transmit topic triggered in the topicService to the distant client
+   * @param topicTriggered the topic listened to on which the message is received
+   * @param topicMessage the message received
+   */
   private sendToSocketIO(topicTriggered:string, topicMessage:TopicMessage) {
     this.socket.emit(topicTriggered, topicMessage);
   }

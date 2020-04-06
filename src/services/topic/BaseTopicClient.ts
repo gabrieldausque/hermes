@@ -4,12 +4,28 @@ import {uuid} from "uuidv4";
 import {TopicHandler} from "./TopicHandler";
 import {TopicMessage} from "./datas/TopicMessage";
 
+/**
+ * Represents basic implementation of all TopicClient.
+ */
 export abstract class BaseTopicClient implements ITopicClient{
 
+  /**
+   * The topicService on which the current is listening on
+   */
   protected topicService: TopicService;
+  /**
+   * The Id of the client, based on uuid v4 specifications
+   */
   public topicClientId: string;
+  /**
+   * The lists of {@link TopicHandlerFunction} by topic listened
+   */
   protected topicHandlers: {};
 
+  /**
+   * Create a new client
+   * @param topicService The service that the client will listen on
+   */
   protected constructor(topicService:TopicService){
     this.topicClientId = uuid();
     this.topicService = topicService;
@@ -29,6 +45,10 @@ export abstract class BaseTopicClient implements ITopicClient{
     }, this);
   }
 
+  /**
+   * Get the regexp pattern to test if the tested topic is listened to
+   * @param topic the topic to test
+   */
   private getPatternForTopic(topic:string):string {
     const trees = topic.split('.');
     let pattern = '';
@@ -48,6 +68,9 @@ export abstract class BaseTopicClient implements ITopicClient{
     return pattern;
   }
 
+  /**
+   * @inheritDoc
+   */
   isListeningTo(topic: string): boolean {
     //TODO : customize this for use of wildcard
     for(let topicListenedTo in this.topicHandlers) {
@@ -65,6 +88,9 @@ export abstract class BaseTopicClient implements ITopicClient{
     return false;
   }
 
+  /**
+   * @inheritDoc
+   */
   async publish(topic: string, messageContent: any): Promise<void> {
     const message = new TopicMessage(messageContent, this.topicClientId);
     try{
@@ -75,6 +101,9 @@ export abstract class BaseTopicClient implements ITopicClient{
     }
   }
 
+  /**
+   * @inheritDoc
+   */
   subscribe(topic: string, handler: TopicHandlerFunction, handlerOwner:any) {
     if(!topic.trim()){
       console.error("Error on subscription from " + this.topicClientId +  ": topic must be one word at least and can't be empty !")
@@ -90,6 +119,9 @@ export abstract class BaseTopicClient implements ITopicClient{
     }
   }
 
+  /**
+   * @inheritDoc
+   */
   async topicTriggered(topicTriggered: string, topicMessage: TopicMessage): Promise<void> {
     for(let topicListenedTo in this.topicHandlers) {
       let pattern = this.getPatternForTopic(topicListenedTo);
@@ -109,10 +141,16 @@ export abstract class BaseTopicClient implements ITopicClient{
     }
   }
 
+  /**
+   * @inheritDoc
+   */
   disconnect(){
     this.topicService.removeClient(this);
   }
 
+  /**
+   * @inheritDoc
+   */
   unsubscribe(topic: string) {
     if(Array.isArray(this.topicHandlers[topic])) {
       delete this.topicHandlers[topic];
