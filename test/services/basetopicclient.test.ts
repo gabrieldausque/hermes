@@ -70,6 +70,6 @@ describe('TopicService Tests', () => {
     }, null);
     memoryClientProducer.publish("level1.level2.level3","this is a content");
     memoryClientProducer.publish("level1.anotherLevel.level3","this is a content");
-  })
+  });
 
 });

@@ -76,13 +76,17 @@ export abstract class BaseTopicClient implements TopicClient{
   }
 
   subscribe(topic: string, handler: Function, handlerOwner:any) {
-    if(!Array.isArray(this.topicHandlers[topic])){
-      this.topicHandlers[topic] = [];
-    }
-    if(this.topicHandlers[topic].findIndex((topicHandler) => {
-      return topicHandler.topicHandlerFunction === handler && topicHandler.callingContext === handlerOwner;
-    }) < 0){
-      this.topicHandlers[topic].push(new TopicHandler(handler, handlerOwner));
+    if(!topic.trim()){
+      console.error("Error on subscription from " + this.topicClientId +  ": topic must be one word at least and can't be empty !")
+    } else {
+      if(!Array.isArray(this.topicHandlers[topic])){
+        this.topicHandlers[topic] = [];
+      }
+      if(this.topicHandlers[topic].findIndex((topicHandler) => {
+        return topicHandler.topicHandlerFunction === handler && topicHandler.callingContext === handlerOwner;
+      }) < 0){
+        this.topicHandlers[topic].push(new TopicHandler(handler, handlerOwner));
+      }
     }
   }
 
@@ -94,8 +98,9 @@ export abstract class BaseTopicClient implements TopicClient{
         //console.log(pattern + ' is a right topic to raised');
         this.topicHandlers[topicListenedTo].forEach((handler) => {
             topicMessage.fromTopic = topicTriggered;
+            topicMessage.listenedTopic = topicListenedTo;
             new Promise(() => {
-              handler.call(topicTriggered, topicMessage);
+              handler.call(topicListenedTo, topicMessage);
           }).then(() => {}).catch((error) => console.log('Error while executing a handler for topic ' + topicTriggered + ' : ' + error));
         });
       } /*else {

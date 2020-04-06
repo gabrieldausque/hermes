@@ -3,6 +3,7 @@ export class TopicMessage{
   public createdAt:Number;
   public senderId:string;
   public fromTopic:string;
+  public listenedTopic:string;
   constructor(content:any, senderId:string){
     this.createdAt = Date.now();
     this.senderId = senderId;
