@@ -50,6 +50,6 @@ class TopicClientSocketIoProxy {
 
   async unSubscribe(topic) {
     this.socket.off(topic);
-    this.publish(this.topicClientId + '.unsubscribe', topic);
+    this.publish(this.topicClientId + '.unsubscribe', topic).then(() => {});
   }
 }
