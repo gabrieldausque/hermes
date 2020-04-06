@@ -58,7 +58,7 @@ function displayMolecules(topicMessage) {
 }
 
 function subscribeToCreatedProjectMoleculeLoadedEvent(createdProjectId) {
-  topicClient.subscribe(createdProjectId + '.molecule_loaded', (topicMessage) => {
+  topicClient.subscribe(createdProjectId + '.molecule_loaded', (topic, topicMessage) => {
     displayNotification("ProjectEntity molecule Loaded", "a molecule has been added to the project " + topicMessage.content.id);
     displayMolecules(topicMessage);
   })
@@ -99,11 +99,11 @@ jQuery(document).ready((e) => {
   jQuery('#create-project-form input').change(validateCreateProjectForm);
 
   topicClient.ready(() => {
-    topicClient.subscribe('global.project_created', (topicMessage) => {
+    topicClient.subscribe('global.project_created', (topic, topicMessage) => {
       displayNotification("ProjectEntity Created", "The project with id " + topicMessage.content.id + " has been created")
     }).then(() => {});
 
-    topicClient.subscribe('global.project_created', (topicMessage) => {
+    topicClient.subscribe('global.project_created', (topic, topicMessage) => {
       displayProjectCard(topicMessage);
     }).then(() => {});
 
