@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "outDir": "./packages/lib/",
+    "rootDir": "./src/services/topic",
+    "strict": false,
+    "esModuleInterop": true,
+    "sourceMap": true
+  },
+  "exclude": [
+    "test"
+  ]
+}

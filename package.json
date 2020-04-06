@@ -29,7 +29,8 @@
     "start": "npm run compile && node lib/",
     "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit",
     "compile": "shx rm -rf lib/ && tsc",
-    "docs": "npm run compile && typedoc --out docs src/services/topic"
+    "docs": "npm run compile && typedoc --out docs src/services/topic",
+    "package": "shx rm -rf lib/ && tsc -p src/services/topic"
   },
   "standard": {
     "env": [
