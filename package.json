@@ -30,7 +30,9 @@
     "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit",
     "compile": "shx rm -rf lib/ && tsc",
     "docs": "npm run compile && typedoc --out docs src/services/topic",
-    "package": "shx rm -rf lib/ && tsc -p src/services/topic"
+    "package": "shx rm -rf lib/ && tsc -p src/services/topic",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json"
   },
   "standard": {
     "env": [
@@ -77,6 +79,7 @@
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^6.1.0",
     "typedoc": "^0.17.4",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "tslint-config-prettier": "^1.18.0"
   }
 }
