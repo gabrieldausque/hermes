@@ -113,7 +113,9 @@ section {
 }
 
 #subscriptions-manage {
-  background:blue;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 #notification-zone {
@@ -181,4 +183,32 @@ section {
 
 #created-project-card-template {
   display:none;
+}
+
+#subscription-template.hidden {
+  display: none;
+}
+
+#subscriptions-list {
+  width:100%;
+}
+
+#subscriptions-list > li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subscriptions-action {
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.subscriptions-action input {
+  min-width:400px;
+  max-width:50%;
+}
+
+.subscriptions-action button{
+  margin-left:15px;
 }

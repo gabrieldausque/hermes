@@ -37,7 +37,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-section="subscriptions-manage">
+                <a class="nav-link" data-section="subscriptions-manage" id="manage-subscription-button">
                   <i class="fas fa-mailbox"></i>
                   Manage subscription
                   <span class="sr-only"></span>
@@ -109,7 +109,15 @@
 
           </section>
           <section id="subscriptions-manage" class="">
-
+            <h2>Manage Subscriptions</h2>
+            <form class="subscriptions-action form-inline">
+              <div class="form-group mb-2">
+                <input id="newsubscription" class="form-control" type="text">
+              </div>
+              <button id="addsubscription" type="button" class="btn btn-primary">Add Subscription</button>
+            </form>
+            <ul id="subscriptions-list" class="list-group">
+            </ul>
           </section>
 
           <aside id="notification-zone">
@@ -149,6 +157,11 @@
 
             </div>
           </div>
+
+          <li id="subscription-template" class="list-group-item hidden">
+            <p class="subscription-text"></p>
+            <button type="button" data-subscription="" title="Remove subscription" class="btn btn-primary"><i class="fas fa-minus"></i></button>
+          </li>
 
         </main>
       </div>

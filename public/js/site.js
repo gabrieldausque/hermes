@@ -95,6 +95,18 @@ jQuery(document).ready((e) => {
     jQuery('main > section').removeClass('d-flex');
     jQuery('#' + sectionToDisplay).addClass('d-flex');
   });
+
+  jQuery('#manage-subscription-button').click((e) => {
+      topicClient.getSubscriptions((topic,topicMessage) => {
+        jQuery('#subscriptions-list').empty();
+        topicMessage.content.forEach((subscription) => {
+          let subscriptionItem = jQuery('#subscription-template').clone().removeClass('hidden').attr('id','').appendTo('#subscriptions-list');
+          subscriptionItem.find('p.subscription-text').text(subscription);
+          subscriptionItem.find('button').attr('data-subscription',subscription);
+        })
+      }).then(() => {})
+  });
+
   jQuery('#create-project-submit').click(createProject);
   jQuery('#create-project-form input').change(validateCreateProjectForm);
 
@@ -129,4 +141,23 @@ jQuery(document).ready((e) => {
     const projectId = currentButton.attr('data-projectid');
     subscribeToCreatedProjectMoleculeLoadedEvent(projectId);
   });
+
+  jQuery('#addsubscription').click((e) => {
+    const newSubscription = jQuery('#newsubscription').val();
+    topicClient.subscribe(newSubscription,(topic,topicMessage) => {
+      displayNotification('Notification received', 'With content : ' + JSON.stringify(topicMessage.content));
+    }).then(() => {});
+    window.setTimeout(() => {
+      jQuery('#manage-subscription-button').trigger('click');
+    }, 1000);
+  });
+
+  jQuery(document).on('click', '#subscriptions-list > li > button',(e) => {
+    const btn = jQuery(e.currentTarget);
+    topicClient.unSubscribe(btn.attr('data-subscription'));
+    window.setTimeout(() => {
+      jQuery('#manage-subscription-button').trigger('click');
+    }, 1000);
+  })
+
 });

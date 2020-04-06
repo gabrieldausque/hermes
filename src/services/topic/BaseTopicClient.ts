@@ -67,7 +67,12 @@ export abstract class BaseTopicClient implements TopicClient{
 
   async publish(topic: string, messageContent: any): Promise<void> {
     const message = new TopicMessage(messageContent, this.topicClientId);
-    await this.topicService.publish(topic, message);
+    try{
+      await this.topicService.publish(topic, message);
+    }
+    catch(error) {
+      console.log('Error while publishing : ' + error);
+    }
   }
 
   subscribe(topic: string, handler: Function, handlerOwner:any) {
@@ -105,7 +110,7 @@ export abstract class BaseTopicClient implements TopicClient{
 
   unsubscribe(topic: string) {
     if(Array.isArray(this.topicHandlers[topic])) {
-      this.topicHandlers[topic] = null;
+      delete this.topicHandlers[topic];
     }
   }
 }

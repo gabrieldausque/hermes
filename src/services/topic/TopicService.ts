@@ -18,11 +18,7 @@ export class TopicService {
     for(let clientIndex in this.clients){
       const client = this.clients[clientIndex];
       if(client.isListeningTo(topic)){
-        try {
-          await client.topicTriggered(topic, toSend);
-        } catch(error) {
-          console.error(error);
-        }
+        client.topicTriggered(topic, toSend).catch((error) => console.log('got error : ' + error));
       }
     }
   }
