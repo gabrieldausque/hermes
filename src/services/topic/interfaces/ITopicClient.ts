@@ -1,9 +1,10 @@
-import {TopicService} from "./TopicService";
-import {TopicMessage} from "./TopicMessage";
+import {TopicMessage} from "../datas/TopicMessage";
 
-export interface TopicClient {
+export type TopicHandlerFunction = (topic:string,topicMessage:TopicMessage) => void;
+
+export interface ITopicClient {
   topicClientId:string,
-  subscribe(topic:string, handler:Function, handlerContext:any);
+  subscribe(topic:string, handler:TopicHandlerFunction, handlerContext:any);
   unsubscribe(topic:string);
   publish(topic:string, messageContent:any):Promise<void>;
   topicTriggered(topicTriggered:string, topicMessage:TopicMessage):Promise<void>;

@@ -1,16 +1,15 @@
-import {TopicClient} from "../topic/TopicClient";
+import {ITopicClient} from "../topic/interfaces/ITopicClient";
 import {BackEndService} from "../backend/BackEndService";
-import {NullableProjectDto, ProjectDto} from "../../datas/dtos/ProjectDto";
 import util from 'util';
 import {ProjectEntity} from "../../datas/entities/ProjectEntity";
 import {MoleculeEntity} from "../../datas/entities/MoleculeEntity";
-import {TopicMessage} from "../topic/TopicMessage";
+import {TopicMessage} from "../topic/datas/TopicMessage";
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class MoleculeLoader {
-  private topicClient: TopicClient;
+  private topicClient: ITopicClient;
   private backendService: BackEndService;
-  constructor(topicClient:TopicClient, backendService:BackEndService) {
+  constructor(topicClient:ITopicClient, backendService:BackEndService) {
     this.topicClient = topicClient;
     this.backendService = backendService;
     this.topicClient.subscribe('global.project_created', this.loadMolecules, this);

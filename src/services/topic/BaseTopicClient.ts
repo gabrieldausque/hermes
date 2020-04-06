@@ -1,10 +1,10 @@
-import {TopicClient} from "./TopicClient";
+import {ITopicClient, TopicHandlerFunction} from "./interfaces/ITopicClient";
 import {TopicService} from "./TopicService";
 import {uuid} from "uuidv4";
 import {TopicHandler} from "./TopicHandler";
-import {TopicMessage} from "./TopicMessage";
+import {TopicMessage} from "./datas/TopicMessage";
 
-export abstract class BaseTopicClient implements TopicClient{
+export abstract class BaseTopicClient implements ITopicClient{
 
   protected topicService: TopicService;
   public topicClientId: string;
@@ -75,7 +75,7 @@ export abstract class BaseTopicClient implements TopicClient{
     }
   }
 
-  subscribe(topic: string, handler: Function, handlerOwner:any) {
+  subscribe(topic: string, handler: TopicHandlerFunction, handlerOwner:any) {
     if(!topic.trim()){
       console.error("Error on subscription from " + this.topicClientId +  ": topic must be one word at least and can't be empty !")
     } else {

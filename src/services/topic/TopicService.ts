@@ -1,10 +1,10 @@
-import {TopicClient} from "./TopicClient";
-import {TopicMessage} from "./TopicMessage";
+import {ITopicClient} from "./interfaces/ITopicClient";
+import {TopicMessage} from "./datas/TopicMessage";
 import {uuid} from "uuidv4";
 
 export class TopicService {
   private serverId:string;
-  private clients: TopicClient[];
+  private clients: ITopicClient[];
   constructor(){
     this.serverId = 'server_' + uuid();
     this.clients = [];
@@ -23,14 +23,14 @@ export class TopicService {
     }
   }
 
-  addClient(newClient: TopicClient) {
+  addClient(newClient: ITopicClient) {
     const clientsIndex = this.clients.indexOf(newClient);
     if(clientsIndex < 0){
       this.clients.push(newClient);
     }
   }
 
-  removeClient(clientToDelete: TopicClient) {
+  removeClient(clientToDelete: ITopicClient) {
     const clientsIndex = this.clients.indexOf(clientToDelete);
     if(clientsIndex >= 0){
       this.clients.slice(clientsIndex,1);

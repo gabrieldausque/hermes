@@ -1,7 +1,9 @@
+import {TopicHandlerFunction} from "./interfaces/ITopicClient";
+
 export class TopicHandler {
-  public topicHandlerFunction: Function;
+  public topicHandlerFunction: TopicHandlerFunction;
   public callingContext: any;
-  constructor(topicHandlerFunction:Function, topicHandlerThisObject:any){
+  constructor(topicHandlerFunction:TopicHandlerFunction, topicHandlerThisObject:any){
     this.topicHandlerFunction = topicHandlerFunction;
     this.callingContext = topicHandlerThisObject;
   }

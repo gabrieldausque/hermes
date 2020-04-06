@@ -1,8 +1,6 @@
-import {uuid} from "uuidv4";
 import {TopicService} from "./TopicService";
-import {TopicClient} from "./TopicClient";
 import {BaseTopicClient} from "./BaseTopicClient";
-import {TopicMessage} from "./TopicMessage";
+import {TopicMessage} from "./datas/TopicMessage";
 
 export class SocketIOTopicServiceClient extends BaseTopicClient {
   private socket: any;
