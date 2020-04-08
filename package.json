@@ -30,7 +30,7 @@
     "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit",
     "compile": "shx rm -rf lib/ && tsc",
     "docs": "npm run compile && ./node_modules/.bin/typedoc --includes src/services/topic/docs/ --plugin none --out docs/html/Reference src/services/topic && ./node_modules/.bin/typedoc --plugin typedoc-plugin-markdown --includes src/services/topic/docs/ --out docs/markdown/Reference src/services/topic",
-    "package": "shx rm -rf lib/ && tsc -p src/services/topic",
+    "build": "shx rm -rf lib/ && tsc -p src/services/topic",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
   },
