@@ -1,6 +1,6 @@
 {
   "name": "theloneblacksheep-topicservice",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description":"A topic pub/sub implementation in node JS for Realtime and lazy coupled communication between objects",
   "main":"lib/index.js",
   "types":"lib/index.d.ts",
