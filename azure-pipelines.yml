@@ -21,6 +21,7 @@ steps:
   displayName: 'npm install and build'
 
 - task: Npm@1
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
   inputs:
     command: publish
     publishRegistry: useFeed
