@@ -17,7 +17,7 @@ A npm package is available to make installation easiest as possible.
 
 First you need to be autorize as a reader of the Hermes project. If you are not at least readers, please contact : 
 
-[gabrieldausque.pro@gmail.com](<gabrieldausque.pro@gmail.com>)
+[gabrieldausque.pro@gmail.com](mailto:gabrieldausque.pro@gmail.com)
 
 Then you will need to add the Hermes registry. A complete tutorial is available in *npm* section : [click here](https://gdausquepro.visualstudio.com/Hermes/_packaging?_a=connect&feed=hermes)
 
