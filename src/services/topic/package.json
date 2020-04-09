@@ -1,9 +1,9 @@
 {
   "name": "theloneblacksheep-topicservice",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description":"A topic pub/sub implementation in node JS for Realtime and lazy coupled communication between objects",
-  "main":"index.js",
-  "types":"index.d.ts",
+  "main":"lib/index.js",
+  "types":"lib/index.d.ts",
   "dependencies": {
     "uuidv4": "^6.0.7",
     "socket.io": "^2.3.0"
@@ -13,5 +13,5 @@
     "tslint": "^6.1.1",
     "tslint-config-prettier": "^1.18.0"
   },
-  "files": ["packages/lib/**/*"]
+  "files": ["lib/**/*"]
 }
