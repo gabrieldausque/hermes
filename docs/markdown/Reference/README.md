@@ -1,6 +1,6 @@
-[theloneblacksheep-topicservice](README.md) › [Globals](globals.md)
+[@hermes/topicservice](README.md) › [Globals](globals.md)
 
-# theloneblacksheep-topicservice
+# @hermes/topicservice
 
 # Hermes - TopicService
 This is a test for Topic readme file

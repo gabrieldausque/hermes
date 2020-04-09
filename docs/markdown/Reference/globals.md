@@ -1,15 +1,31 @@
-[theloneblacksheep-topicservice](README.md) › [Globals](globals.md)
+[@hermes/topicservice](README.md) › [Globals](globals.md)
 
-# theloneblacksheep-topicservice
+# @hermes/topicservice
 
 ## Index
 
-### Modules
+### Classes
 
-* ["BaseTopicClient"](modules/_basetopicclient_.md)
-* ["MemoryTopicServiceClient"](modules/_memorytopicserviceclient_.md)
-* ["SocketIOTopicServiceClient"](modules/_socketiotopicserviceclient_.md)
-* ["TopicHandler"](modules/_topichandler_.md)
-* ["TopicService"](modules/_topicservice_.md)
-* ["datas/TopicMessage"](modules/_datas_topicmessage_.md)
-* ["interfaces/ITopicClient"](modules/_interfaces_itopicclient_.md)
+* [BaseTopicClient](classes/basetopicclient.md)
+* [MemoryTopicServiceClient](classes/memorytopicserviceclient.md)
+* [SocketIOTopicServiceClient](classes/socketiotopicserviceclient.md)
+* [TopicHandler](classes/topichandler.md)
+* [TopicMessage](classes/topicmessage.md)
+* [TopicService](classes/topicservice.md)
+
+### Interfaces
+
+* [ITopicClient](interfaces/itopicclient.md)
+* [TopicHandlerFunction](interfaces/topichandlerfunction.md)
+
+### Variables
+
+* [Socket](globals.md#socket)
+
+## Variables
+
+###  Socket
+
+• **Socket**: *any*
+
+Defined in SocketIOTopicServiceClient.ts:4
