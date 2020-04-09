@@ -112,3 +112,4 @@ $RECYCLE.BIN/
 /lib/
 packages/
 /src/services/topic/lib/
+*.tgz
