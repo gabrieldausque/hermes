@@ -113,3 +113,4 @@ $RECYCLE.BIN/
 packages/
 /src/services/topic/lib/
 *.tgz
+/src/services/topic/package-lock.json

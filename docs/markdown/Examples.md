@@ -1,2 +1,3 @@
-# HomePage - Example
-Test for example content
+# HomePage - Examples
+
+

@@ -72,19 +72,29 @@ export abstract class BaseTopicClient implements ITopicClient{
    * @inheritDoc
    */
   isListeningTo(topic: string): boolean {
-    //TODO : customize this for use of wildcard
-    for(let topicListenedTo in this.topicHandlers) {
-      const pattern = this.getPatternForTopic(topicListenedTo);
-      const regexp = new RegExp(pattern, 'g');
-      if(regexp.test(topic) && this.topicHandlers[topicListenedTo].length > 0) {
-        //console.log('pattern ' + pattern + ' is ok for ' + topic);
-        return true;
-      }/*
+    const wildCardRegexp = /[^\.]*\.*[\*|#]\.*/g;
+    if(topic.match(wildCardRegexp)){
+      // In this case, the publish is trying to multicast or broadcast, so we test the published topic against all listened topic
+      const pattern = this.getPatternForTopic(topic);
+      const regexp = new RegExp(pattern);
+      for(const topicListenedTo in this.topicHandlers){
+        if(regexp.test(topicListenedTo) && this.topicHandlers[topicListenedTo].length > 0){
+          return true;
+        }
+      }
+    } else {
+      for(const topicListenedTo in this.topicHandlers) {
+        const pattern = this.getPatternForTopic(topicListenedTo);
+        const regexp = new RegExp(pattern, 'g');
+        if(regexp.test(topic) && this.topicHandlers[topicListenedTo].length > 0) {
+          // console.log('pattern ' + pattern + ' is ok for ' + topic);
+          return true;
+        }/*
       else {
         console.warn('pattern ' + pattern + ' is not ok for ' + topic)
       }*/
+      }
     }
-
     return false;
   }
 
@@ -123,21 +133,38 @@ export abstract class BaseTopicClient implements ITopicClient{
    * @inheritDoc
    */
   async topicTriggered(topicTriggered: string, topicMessage: TopicMessage): Promise<void> {
-    for(let topicListenedTo in this.topicHandlers) {
-      let pattern = this.getPatternForTopic(topicListenedTo);
-      let regexp = new RegExp(pattern, 'g');
-      if(regexp.test(topicTriggered)){
-        //console.log(pattern + ' is a right topic to raised');
-        this.topicHandlers[topicListenedTo].forEach((handler) => {
+    const wildCardRegexp = /[^\.]*\.*[\*|#]\.*/g;
+    if(topicTriggered.match(wildCardRegexp)){
+      const pattern = this.getPatternForTopic(topicTriggered);
+      const regexp = new RegExp(pattern, 'g');
+      for(const topicListenedTo in this.topicHandlers) {
+        if(regexp.test(topicListenedTo)){
+          this.topicHandlers[topicListenedTo].forEach((handler) => {
             topicMessage.fromTopic = topicTriggered;
             topicMessage.listenedTopic = topicListenedTo;
             new Promise(() => {
               handler.call(topicListenedTo, topicMessage);
-          }).then(() => {}).catch((error) => console.log('Error while executing a handler for topic ' + topicTriggered + ' : ' + error));
-        });
-      } /*else {
+            }).then(() => {}).catch((error) => console.log('Error while executing a handler for topic ' + topicTriggered + ' : ' + error));
+          });
+        }
+      }
+    } else {
+      for(const topicListenedTo in this.topicHandlers) {
+        const pattern = this.getPatternForTopic(topicListenedTo);
+        const regexp = new RegExp(pattern, 'g');
+        if(regexp.test(topicTriggered)){
+          // console.log(pattern + ' is a right topic to raised');
+          this.topicHandlers[topicListenedTo].forEach((handler) => {
+            topicMessage.fromTopic = topicTriggered;
+            topicMessage.listenedTopic = topicListenedTo;
+            new Promise(() => {
+              handler.call(topicListenedTo, topicMessage);
+            }).then(() => {}).catch((error) => console.log('Error while executing a handler for topic ' + topicTriggered + ' : ' + error));
+          });
+        } /*else {
         console.warn(pattern +' is not the right for tested topic : ' + topicTriggered)
       }*/
+      }
     }
   }
 
