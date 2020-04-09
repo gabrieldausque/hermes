@@ -34,4 +34,10 @@ export class TopicMessage{
     this.content = content;
   }
 
+  /**
+   * Clone the current message
+   */
+  clone():TopicMessage {
+    return JSON.parse(JSON.stringify(this));
+  }
 }

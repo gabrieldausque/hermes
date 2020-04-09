@@ -8,6 +8,7 @@ It allows lazy coupled communication by message between object or method.
 It uses also a hierarchical structure for the topic construction that allows multicasting/broadcasting message.
 
 
+
 ## Installation
 
 [Examples](Examples/globals.md)

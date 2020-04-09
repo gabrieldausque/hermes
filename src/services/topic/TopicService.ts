@@ -29,10 +29,11 @@ export class TopicService {
     if(!(toSend as TopicMessage).content){
       toSend = new TopicMessage(topicMessage, this.serverId)
     }
-    for(let clientIndex in this.clients){
+    for(const clientIndex in this.clients){
       const client = this.clients[clientIndex];
       if(client.isListeningTo(topic)){
-        client.topicTriggered(topic, toSend).catch((error) => console.log('got error : ' + error));
+        const messageCopy = toSend.clone();
+        client.topicTriggered(topic, messageCopy).catch((error) => console.log('got error : ' + error));
       }
     }
   }

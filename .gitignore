@@ -114,3 +114,4 @@ packages/
 /src/services/topic/lib/
 *.tgz
 /src/services/topic/package-lock.json
+/docs/.~lock.topicservice-schemas.odg#
