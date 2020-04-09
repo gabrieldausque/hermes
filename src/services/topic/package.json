@@ -1,6 +1,6 @@
 {
-  "name": "theloneblacksheep-topicservice",
-  "version": "1.0.7",
+  "name": "@hermes/topicservice",
+  "version": "1.0.8",
   "description":"A topic pub/sub implementation in node JS for Realtime and lazy coupled communication between objects",
   "main":"lib/index.js",
   "types":"lib/index.d.ts",
