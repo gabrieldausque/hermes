@@ -1,9 +1,10 @@
-export * from './datas/TopicMessage';
-export * from './interfaces/ITopicClient';
-export * from './BaseTopicClient';
-export * from './MemoryTopicServiceClient';
-export * from './SocketIOTopicServiceClient';
-export * from './TopicHandler';
-export * from './TopicService';
+export {TopicMessage} from './datas/TopicMessage';
+export {ITopicClient} from './interfaces/ITopicClient';
+export {BaseTopicClient} from './BaseTopicClient';
+export {MemoryTopicServiceClient} from './MemoryTopicServiceClient';
+export {SocketIOTopicServiceClient} from './SocketIOTopicServiceClient';
+export {TopicHandler} from './TopicHandler';
+export {TopicHandlerFunction} from './interfaces/ITopicClient'
+export {TopicService} from './TopicService';
 
 
