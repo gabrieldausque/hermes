@@ -6,7 +6,8 @@
     "rootDir": "./",
     "strict": false,
     "esModuleInterop": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "declaration": true
   },
   "exclude": [
     "test"
