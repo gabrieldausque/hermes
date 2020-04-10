@@ -103,6 +103,6 @@ the id of the [ITopicClient](../interfaces/itopicclient.md) that has send the me
 
 Defined in datas/TopicMessage.ts:40
 
-Clone the current message
+Clone the current message. Beware ! Methods and function of the content are not clone !
 
 **Returns:** *[TopicMessage](topicmessage.md)*
