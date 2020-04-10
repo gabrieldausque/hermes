@@ -1,18 +1,5 @@
+import {SocketIOTopicServiceClientProxy} from "../lib/topic/SocketIOTopicServiceClientProxy.js";
 
-
-let topicClient = null;
-topicClient = new SocketIOTopicServiceClientProxy(socket);
-topicClient.ready(() => {
-  topicClient.subscribe('global.project_created', (topic, topicMessage) => {
-    displayNotification("ProjectEntity Created", "The project with id " + topicMessage.content.id + " has been created")
-  }).then(() => {
-  });
-
-  topicClient.subscribe('global.project_created', (topic, topicMessage) => {
-    displayProjectCard(topicMessage);
-  }).then(() => {
-  });
-});
 
 function validateCreateProjectForm() {
   const isValid = jQuery('#create-project-form').addClass('was-validated')[0].checkValidity();
@@ -27,6 +14,7 @@ function validateCreateProjectForm() {
 const socket = io(window.location.href);
 const app = feathers();
 app.configure(feathers.socketio(socket));
+const topicClient = new SocketIOTopicServiceClientProxy(socket);
 
 const ownCreatedProjectIds = [];
 
@@ -106,6 +94,19 @@ function displayProjectCard(topicMessage) {
 }
 
 jQuery(document).ready((e) => {
+
+  topicClient.ready(() => {
+    topicClient.subscribe('global.project_created', (topic, topicMessage) => {
+      displayNotification("ProjectEntity Created", "The project with id " + topicMessage.content.id + " has been created")
+    }).then(() => {
+    });
+
+    topicClient.subscribe('global.project_created', (topic, topicMessage) => {
+      displayProjectCard(topicMessage);
+    }).then(() => {
+    });
+  });
+
   jQuery(".left-sidebar ul > li > a ").click((e) => {
     const sectionToDisplay = jQuery(e.currentTarget).attr("data-section");
     jQuery('main > section').removeClass('d-flex');

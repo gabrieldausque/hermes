@@ -17,7 +17,8 @@ export class MoleculeLoader {
   }
 
   private async loadMolecules(topicTriggered:string, topicMessage:TopicMessage) {
-    const project:ProjectEntity = topicMessage.content as ProjectEntity;
+    const content = topicMessage.content as ProjectEntity;
+    const project:ProjectEntity = this.backendService.getProject(content.id.toString());
     const currentService = this;
     setTimeoutPromise(1000, project).then(this.addRandomMolecule.bind(currentService));
     setTimeoutPromise(3000, project).then(this.addRandomMolecule.bind(currentService))

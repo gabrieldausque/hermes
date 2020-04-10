@@ -35,7 +35,7 @@ export class TopicMessage{
   }
 
   /**
-   * Clone the current message
+   * Clone the current message. Beware ! Methods and function of the content are not clone !
    */
   clone():TopicMessage {
     return JSON.parse(JSON.stringify(this));
