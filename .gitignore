@@ -115,3 +115,4 @@ packages/
 *.tgz
 package-lock.json
 .~lock.topicservice-schemas.odg#
+/examples/AConsoleChatApplication/lib/
