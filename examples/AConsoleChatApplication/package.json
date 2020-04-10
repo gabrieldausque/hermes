@@ -1,0 +1,22 @@
+{
+  "name": "aconsolechatapplication",
+  "version": "1.0.0",
+  "description": "A sample console chat application that demonstrates capabilities of the topicservice implementation",
+  "main": "src",
+  "scripts": {
+    "compile": "./node_modules/.bin/shx rm -rf lib && tsc ",
+    "start-server": "npm run compile && node lib/ --server true --client false",
+    "start-client": "npm run compile && node lib/ --client true",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^5.0.0",
+    "uribuilder": "^1.0.5"
+  },
+  "devDependencies": {
+    "shx": "^0.3.2",
+    "ts-node": "^8.8.2"
+  }
+}

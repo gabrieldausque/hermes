@@ -1,3 +1,5 @@
+[Home](./README.md)
+
 # Hermes - TopicService : All Resources
 >All resources from Source code, including example 
 
@@ -154,7 +156,7 @@ You can now react to any event published on server side if you listen to the rig
 
 ## Resources :
 
-[Examples](Examples/globals.md)
+[Examples](Examples/)
 
-[Code Reference](Reference/globals.md)
+[Code Reference](Reference/)
 
