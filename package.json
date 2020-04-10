@@ -25,12 +25,12 @@
   },
   "scripts": {
     "test": "npm run compile && npm run mocha",
-    "dev": "ts-node-dev --no-notify src/",
-    "start": "npm run compile && node lib/",
+    "dev": "npm run compile && ts-node-dev --no-notify src/",
+    "start": "npm run compile && node lib/dist",
     "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit",
-    "compile": "shx rm -rf lib/ && tsc",
+    "compile": "shx rm -rf lib/ && tsc && node_modules/.bin/ncp src/services/topic/browser/ public/lib/topic/",
     "docs": "npm run compile && ./node_modules/.bin/typedoc --options typedoc-html.json src/services/topic && ./node_modules/.bin/typedoc --options typedoc-md.json src/services/topic",
-    "build": "shx rm -rf lib/ && tsc -p src/services/topic",
+    "build": "shx rm -rf src/services/topic/lib/ && tsc -p src/services/topic && node_modules/.bin/ncp src/services/topic/browser/ src/services/topic/lib/browser",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
   },
@@ -73,15 +73,16 @@
     "@types/serve-favicon": "^2.5.0",
     "axios": "^0.19.2",
     "mocha": "^7.1.1",
+    "ncp": "^2.0.0",
     "nodemon": "^2.0.2",
     "shx": "^0.3.2",
     "ts-mocha": "^7.0.0",
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^6.1.0",
+    "tslint-config-prettier": "^1.18.0",
     "typedoc": "^0.17.4",
     "typedoc-plugin-markdown": "^2.2.17",
     "typedoc-plugin-markdown-pages": "^0.3.0",
-    "typescript": "^3.8.3",
-    "tslint-config-prettier": "^1.18.0"
+    "typescript": "^3.8.3"
   }
 }

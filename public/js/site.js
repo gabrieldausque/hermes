@@ -1,3 +1,19 @@
+
+
+let topicClient = null;
+topicClient = new SocketIOTopicServiceClientProxy(socket);
+topicClient.ready(() => {
+  topicClient.subscribe('global.project_created', (topic, topicMessage) => {
+    displayNotification("ProjectEntity Created", "The project with id " + topicMessage.content.id + " has been created")
+  }).then(() => {
+  });
+
+  topicClient.subscribe('global.project_created', (topic, topicMessage) => {
+    displayProjectCard(topicMessage);
+  }).then(() => {
+  });
+});
+
 function validateCreateProjectForm() {
   const isValid = jQuery('#create-project-form').addClass('was-validated')[0].checkValidity();
   if(isValid){
@@ -11,7 +27,7 @@ function validateCreateProjectForm() {
 const socket = io(window.location.href);
 const app = feathers();
 app.configure(feathers.socketio(socket));
-const topicClient = new TopicClientSocketIoProxy(socket);
+
 const ownCreatedProjectIds = [];
 
 function createProject(event){
@@ -109,17 +125,6 @@ jQuery(document).ready((e) => {
 
   jQuery('#create-project-submit').click(createProject);
   jQuery('#create-project-form input').change(validateCreateProjectForm);
-
-  topicClient.ready(() => {
-    topicClient.subscribe('global.project_created', (topic, topicMessage) => {
-      displayNotification("ProjectEntity Created", "The project with id " + topicMessage.content.id + " has been created")
-    }).then(() => {});
-
-    topicClient.subscribe('global.project_created', (topic, topicMessage) => {
-      displayProjectCard(topicMessage);
-    }).then(() => {});
-
-  });
 
   jQuery(document).on('click','.project-molecules .display-molecules', (event) => {
     const moleculesList = jQuery(event.currentTarget).siblings("ul");

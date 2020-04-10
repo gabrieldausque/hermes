@@ -87,6 +87,19 @@ client1.subscribe('atopic', (topic:string, topicMessage:TopicMessage) =>{
 client2.publish('atopic', "A content");
 
 ```
+At execution, this will result in this display
+
+``` json
+a message has been received
+{
+  createdAt: 1586506633766,
+  senderId: '85ee5174-f321-42ce-9501-0081df97e21e',
+  content: 'A content',
+  fromTopic: 'atopic',
+  listenedTopic: 'atopic'
+}
+```
+
 
 ## Resources :
 

@@ -1,4 +1,6 @@
-# HelloWorld Example
-----
+[@hermes/Index](../README.md) > [Examples](../Examples.md) > [globals](globals.md) 
 
->This is a helloworld example to prepare documentation structure
+# Code Examples
+>Here you will find use case to integrate topicservice in your application
+
+
