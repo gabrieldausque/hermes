@@ -1,5 +1,6 @@
 import {Command} from 'commander';
 import {UriBuilder} from "uribuilder";
+import {ChatServer} from "./ChatServer";
 
 const command = new Command();
 command
@@ -11,7 +12,7 @@ command
 command.parse(process.argv);
 if(command.server){
   const uriBuilder = UriBuilder.parse(command.chatserver + ":" + command.port);
-  console.log('Starting Chat server at uri : ' +  uriBuilder.toString())
+  const chatServer = new ChatServer(parseInt(command.port));
 } else {
   const uriBuilder = UriBuilder.parse(command.chatserver + ":" + command.port);
   console.log(`Starting client, connecting to ${uriBuilder.toString()}`)

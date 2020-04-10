@@ -13,7 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^5.0.0",
-    "uribuilder": "^1.0.5"
+    "uribuilder": "^1.0.5",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "shx": "^0.3.2",
