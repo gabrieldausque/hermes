@@ -29,5 +29,5 @@ Initialize npm first
  ``` bash
  npm init
  ```
- Add the hermes repository, by following [this tutorial](/README#installation-for-server-side) 
+ Add the hermes repository, by following [this tutorial](/README#configuration-of-the-registry) 
  
