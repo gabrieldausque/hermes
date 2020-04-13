@@ -156,7 +156,7 @@ You can now react to any event published on server side if you listen to the rig
 
 ## Resources :
 
-[Examples](Examples/)
+[Examples](/Examples)
 
 [Code Reference](Reference/)
 
