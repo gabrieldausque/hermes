@@ -8,7 +8,7 @@ This section contains examples and how to's documentation to help you to use the
 
 A simple CRUD project using featherjs
 
-Go to [The documentation](../../examples/TheProjectApplication/README.md) 
+Go to [The documentation](https://gdausquepro.visualstudio.com/_git/Hermes?path=%2Fexamples%2FTheProjectApplication)
 
  
   
