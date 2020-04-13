@@ -49,9 +49,12 @@ export class TopicService {
     if(!(toSend as TopicMessage).content){
       toSend = new TopicMessage(topicMessage, this.serverId)
     }
-    for(const clientIndex in this.clients){require("socket.io-client")
+    for(const clientIndex in this.clients){
       const client = this.clients[clientIndex];
       if(client.isListeningTo(topic)){
+        if(!toSend.publishedOnServer){
+          toSend.publishedOnServer = this.serverId;
+        }
         const messageCopy = toSend.clone();
         client.topicTriggered(topic, messageCopy).catch((error) => console.log('got error : ' + error));
       }
@@ -83,8 +86,8 @@ export class TopicService {
   public async initializeCluster() {
     console.log("Initialize cluster");
     if(this.config && !this.config.standAlone) {
-      //get random peer to connect to :
-      let peerHost = this.config.getRandomHost();
+      // get random peer to connect to :
+      const peerHost = this.config.getRandomHost();
       console.log("Trying to connect to " + peerHost);
       let socket:Socket;
       try {
@@ -120,7 +123,9 @@ export class TopicService {
         this.clusterClient = new SocketIOTopicServiceClientProxy(socket, () => {
           console.log('Subscribing to all event from other cluster node : ' + peerHost);
           currentService.clusterClient.subscribe('#', (topic, topicMessage) => {
-            currentService.publish(topic, topicMessage.content).catch((error) => console.error('Error while forwarding message from cluster : \n' + error));
+            if(topicMessage.publishedOnServer !== currentService.serverId){
+              currentService.publish(topic, topicMessage).catch((error) => console.error('Error while forwarding message from cluster : \n' + error));
+            }
           })
         })
       } catch(error) {

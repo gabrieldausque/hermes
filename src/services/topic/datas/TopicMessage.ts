@@ -24,6 +24,11 @@ export class TopicMessage{
   public listenedTopic:string;
 
   /**
+   * Id of the topicService where the message has been published on the first time
+   */
+  public publishedOnServer: string;
+
+  /**
    * Create a new message
    * @param content the content that will be send across the {@link TopicService}
    * @param senderId the {@link ITopicClient} id
@@ -38,6 +43,20 @@ export class TopicMessage{
    * Clone the current message. Beware ! Methods and function of the content are not clone !
    */
   clone():TopicMessage {
-    return JSON.parse(JSON.stringify(this));
+    const clone = new TopicMessage(JSON.parse(JSON.stringify(this.content)), this.senderId);
+    clone.createdAt = this.createdAt;
+    clone.publishedOnServer = this.publishedOnServer;
+    clone.listenedTopic = this.listenedTopic;
+    clone.fromTopic = this.fromTopic;
+    return clone;
+  }
+
+  static deserialize(topicMessage: TopicMessage):TopicMessage {
+    const deserializedMessage = new TopicMessage(topicMessage.content, topicMessage.senderId);
+    deserializedMessage.createdAt = topicMessage.createdAt;
+    deserializedMessage.publishedOnServer = topicMessage.publishedOnServer;
+    deserializedMessage.listenedTopic = topicMessage.listenedTopic;
+    deserializedMessage.fromTopic = topicMessage.fromTopic;
+    return deserializedMessage;
   }
 }

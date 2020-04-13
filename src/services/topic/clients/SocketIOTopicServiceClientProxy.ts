@@ -1,4 +1,4 @@
-import {TopicHandlerFunction} from "..";
+import {TopicHandlerFunction, TopicMessage} from "..";
 import Socket = SocketIOClient.Socket;
 
 export interface SocketIOTopicServiceClientProxyReadyFunction { (): void}
@@ -57,7 +57,8 @@ export class SocketIOTopicServiceClientProxy {
   async subscribe(topic:string, handler:TopicHandlerFunction) {
     this.socket.emit(this.topicClientId + '.subscribe', topic);
     this.socket.on(topic,(topicMessage) => {
-      handler(topicMessage.fromTopic, topicMessage);
+      const deserializeTopicMessage = TopicMessage.deserialize(topicMessage);
+      handler(topicMessage.fromTopic, deserializeTopicMessage);
     })
   }
   /**
