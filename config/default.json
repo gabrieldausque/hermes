@@ -5,5 +5,14 @@
   "paginate": {
     "default": 10,
     "max": 50
+  },
+  "topicService":{
+    "host":"http://localhost:3030",
+    "standAlone": false,
+    "clusterNodes":[
+      "http://localhost:3031",
+      "http://localhost:3030",
+      "http://localhost:3032"
+    ]
   }
 }

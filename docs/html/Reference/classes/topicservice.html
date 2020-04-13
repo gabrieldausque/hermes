@@ -95,6 +95,8 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="topicservice.html#clients" class="tsd-kind-icon">clients</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="topicservice.html#clusterclient" class="tsd-kind-icon">cluster<wbr>Client</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="topicservice.html#config" class="tsd-kind-icon">config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="topicservice.html#serverid" class="tsd-kind-icon">server<wbr>Id</a></li>
 							</ul>
 						</section>
@@ -102,6 +104,7 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="topicservice.html#addclient" class="tsd-kind-icon">add<wbr>Client</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="topicservice.html#initializecluster" class="tsd-kind-icon">initialize<wbr>Cluster</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="topicservice.html#publish" class="tsd-kind-icon">publish</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="topicservice.html#removeclient" class="tsd-kind-icon">remove<wbr>Client</a></li>
 							</ul>
@@ -115,15 +118,28 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Topic<wbr>Service<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="topicservice.html" class="tsd-signature-type">TopicService</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Topic<wbr>Service<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">?: </span><a href="topicserviceconfiguration.html" class="tsd-signature-type">TopicServiceConfiguration</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="topicservice.html" class="tsd-signature-type">TopicService</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in TopicService.ts:16</li>
+									<li>Defined in TopicService.ts:28</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="topicserviceconfiguration.html" class="tsd-signature-type">TopicServiceConfiguration</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The configuration used to initialize a TopicService cluster and other configuration parameters</p>
+										</div>
+									</div>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="topicservice.html" class="tsd-signature-type">TopicService</a></h4>
 						</li>
 					</ul>
@@ -137,7 +153,7 @@
 					<div class="tsd-signature tsd-kind-icon">clients<span class="tsd-signature-symbol">:</span> <a href="../interfaces/itopicclient.html" class="tsd-signature-type">ITopicClient</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in TopicService.ts:16</li>
+							<li>Defined in TopicService.ts:20</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -147,12 +163,37 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="clusterclient" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> cluster<wbr>Client</h3>
+					<div class="tsd-signature tsd-kind-icon">cluster<wbr>Client<span class="tsd-signature-symbol">:</span> <a href="socketiotopicserviceclientproxy.html" class="tsd-signature-type">SocketIOTopicServiceClientProxy</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in TopicService.ts:28</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="config" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> config</h3>
+					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="topicserviceconfiguration.html" class="tsd-signature-type">TopicServiceConfiguration</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in TopicService.ts:24</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The service configuration. Used for cluster.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="serverid" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> server<wbr>Id</h3>
 					<div class="tsd-signature tsd-kind-icon">server<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in TopicService.ts:12</li>
+							<li>Defined in TopicService.ts:16</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -174,7 +215,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in TopicService.ts:45</li>
+									<li>Defined in TopicService.ts:65</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -196,6 +237,23 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="initializecluster" class="tsd-anchor"></a>
+					<h3>initialize<wbr>Cluster</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">initialize<wbr>Cluster<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in TopicService.ts:83</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="publish" class="tsd-anchor"></a>
 					<h3>publish</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -205,7 +263,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in TopicService.ts:27</li>
+									<li>Defined in TopicService.ts:47</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -242,7 +300,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in TopicService.ts:56</li>
+									<li>Defined in TopicService.ts:76</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -285,6 +343,9 @@
 						<a href="socketiotopicserviceclient.html" class="tsd-kind-icon">SocketIOTopic<wbr>Service<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="socketiotopicserviceclientproxy.html" class="tsd-kind-icon">SocketIOTopic<wbr>Service<wbr>Client<wbr>Proxy</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="topichandler.html" class="tsd-kind-icon">Topic<wbr>Handler</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -302,10 +363,19 @@
 								<a href="topicservice.html#clients" class="tsd-kind-icon">clients</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="topicservice.html#clusterclient" class="tsd-kind-icon">cluster<wbr>Client</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="topicservice.html#config" class="tsd-kind-icon">config</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="topicservice.html#serverid" class="tsd-kind-icon">server<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="topicservice.html#addclient" class="tsd-kind-icon">add<wbr>Client</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="topicservice.html#initializecluster" class="tsd-kind-icon">initialize<wbr>Cluster</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="topicservice.html#publish" class="tsd-kind-icon">publish</a>
@@ -317,8 +387,14 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="topicserviceconfiguration.html" class="tsd-kind-icon">Topic<wbr>Service<wbr>Configuration</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/itopicclient.html" class="tsd-kind-icon">ITopic<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/socketiotopicserviceclientproxyreadyfunction.html" class="tsd-kind-icon">SocketIOTopic<wbr>Service<wbr>Client<wbr>Proxy<wbr>Ready<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/topichandlerfunction.html" class="tsd-kind-icon">Topic<wbr>Handler<wbr>Function</a>
@@ -354,6 +430,9 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 		</div>
 	</div>

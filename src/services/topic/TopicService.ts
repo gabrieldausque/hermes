@@ -1,6 +1,10 @@
 import {ITopicClient} from "./interfaces/ITopicClient";
 import {TopicMessage} from "./datas/TopicMessage";
 import {uuid} from "uuidv4";
+import {TopicServiceConfiguration} from "./configuration/TopicServiceConfiguration";
+import {SocketIOTopicServiceClientProxy} from "./clients/SocketIOTopicServiceClientProxy";
+import io from 'socket.io-client';
+import Socket = SocketIOClient.Socket;
 
 /**
  * The topic service that represents the hub on which all message will be send across
@@ -14,7 +18,23 @@ export class TopicService {
    * The list of {@link ITopicClient} that are using this topic service instance
    */
   private clients: ITopicClient[];
-  constructor(){
+  /**
+   * The service configuration. Used for cluster.
+   */
+  private config: TopicServiceConfiguration;
+  /**
+   *
+   */
+  private clusterClient: SocketIOTopicServiceClientProxy;
+
+  /**
+   *
+   * @param config The configuration used to initialize a TopicService cluster and other configuration parameters
+   */
+  constructor(config?:TopicServiceConfiguration){
+    if(config && config.validate()) {
+      this.config = config;
+    }
     this.serverId = 'server_' + uuid();
     this.clients = [];
   }
@@ -29,7 +49,7 @@ export class TopicService {
     if(!(toSend as TopicMessage).content){
       toSend = new TopicMessage(topicMessage, this.serverId)
     }
-    for(const clientIndex in this.clients){
+    for(const clientIndex in this.clients){require("socket.io-client")
       const client = this.clients[clientIndex];
       if(client.isListeningTo(topic)){
         const messageCopy = toSend.clone();
@@ -57,6 +77,57 @@ export class TopicService {
     const clientsIndex = this.clients.indexOf(clientToDelete);
     if(clientsIndex >= 0){
       this.clients.slice(clientsIndex,1);
+    }
+  }
+
+  public async initializeCluster() {
+    console.log("Initialize cluster");
+    if(this.config && !this.config.standAlone) {
+      //get random peer to connect to :
+      let peerHost = this.config.getRandomHost();
+      console.log("Trying to connect to " + peerHost);
+      let socket:Socket;
+      try {
+        const currentService = this;
+        const socketId = uuid();
+         socket = require('socket.io-client')(peerHost, {
+           reconnection: false
+         });
+         socket.on('connect', (socket) => {
+           console.log("connection to" + peerHost + " done.");
+         });
+         socket.on('connect_error', (error) => {
+           console.log("Error while connecting to server " + peerHost + " : " + error);
+           console.log("socketId : " + socketId);
+           console.log("Waiting 5s before retrying ....");
+           const waiting = new Promise(resolve => setTimeout(resolve, 5000));
+           waiting.then(() => {
+             currentService.initializeCluster();
+           })
+         });
+         socket.on('connect_timeout', () => {
+           console.log("Timeout while connecting to server " + peerHost + " : ");
+           currentService.initializeCluster();
+         });
+         socket.on('disconnect', (reason) => {
+           console.log("Server " + peerHost + " disconnected because : " + reason);
+           console.log("Waiting 5s before retrying ....");
+           const waiting = new Promise(resolve => setTimeout(resolve, 5000));
+           waiting.then(() => {
+             currentService.initializeCluster();
+           })
+         });
+        this.clusterClient = new SocketIOTopicServiceClientProxy(socket, () => {
+          console.log('Subscribing to all event from other cluster node : ' + peerHost);
+          currentService.clusterClient.subscribe('#', (topic, topicMessage) => {
+            currentService.publish(topic, topicMessage.content).catch((error) => console.error('Error while forwarding message from cluster : \n' + error));
+          })
+        })
+      } catch(error) {
+        console.log("Error while connecting :" + error)
+      }
+    } else {
+      console.warn("No configuration for cluster or server is configured as a standalone server. Starting standalone node");
     }
   }
 }

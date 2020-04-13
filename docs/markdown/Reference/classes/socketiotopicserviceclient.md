@@ -45,7 +45,7 @@ A client that represents in the server side (node instance of the topic service)
 
 *Overrides [BaseTopicClient](basetopicclient.md).[constructor](basetopicclient.md#protected-constructor)*
 
-Defined in SocketIOTopicServiceClient.ts:13
+Defined in clients/SocketIOTopicServiceClient.ts:13
 
 **Parameters:**
 
@@ -62,7 +62,7 @@ Name | Type |
 
 • **socket**: *Socket*
 
-Defined in SocketIOTopicServiceClient.ts:13
+Defined in clients/SocketIOTopicServiceClient.ts:13
 
 the socket that allow communication with distant client
 
@@ -76,7 +76,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[topicClientId](basetopicclient.md#topicclientid)*
 
-Defined in BaseTopicClient.ts:19
+Defined in clients/BaseTopicClient.ts:19
 
 The Id of the client, based on uuid v4 specifications
 
@@ -88,7 +88,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[topicHandlers](basetopicclient.md#protected-topichandlers)*
 
-Defined in BaseTopicClient.ts:23
+Defined in clients/BaseTopicClient.ts:23
 
 The lists of [TopicHandlerFunction](../interfaces/topichandlerfunction.md) by topic listened
 
@@ -102,7 +102,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[topicService](basetopicclient.md#protected-topicservice)*
 
-Defined in BaseTopicClient.ts:15
+Defined in clients/BaseTopicClient.ts:15
 
 The topicService on which the current is listening on
 
@@ -116,7 +116,7 @@ The topicService on which the current is listening on
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[disconnect](basetopicclient.md#disconnect)*
 
-Defined in BaseTopicClient.ts:174
+Defined in clients/BaseTopicClient.ts:174
 
 Disconnect definitively the client of the topicService
 
@@ -132,7 +132,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[isListeningTo](basetopicclient.md#islisteningto)*
 
-Defined in BaseTopicClient.ts:74
+Defined in clients/BaseTopicClient.ts:74
 
 Check if the current client is listening to a topic.
 
@@ -154,7 +154,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[publish](basetopicclient.md#publish)*
 
-Defined in BaseTopicClient.ts:104
+Defined in clients/BaseTopicClient.ts:104
 
 Publish a message to all client that are listening the specified topic
 
@@ -173,7 +173,7 @@ ___
 
 ▸ **sendToSocketIO**(`topicTriggered`: string, `topicMessage`: [TopicMessage](topicmessage.md)): *void*
 
-Defined in SocketIOTopicServiceClient.ts:41
+Defined in clients/SocketIOTopicServiceClient.ts:41
 
 The [TopicHandlerFunction](../interfaces/topichandlerfunction.md) used to transmit topic triggered in the topicService to the distant client
 
@@ -196,7 +196,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[subscribe](basetopicclient.md#subscribe)*
 
-Defined in BaseTopicClient.ts:117
+Defined in clients/BaseTopicClient.ts:117
 
 Subscribe a topic to execute the specified handler using the handlerContext as the 'this' keyword.
 
@@ -220,7 +220,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[topicTriggered](basetopicclient.md#topictriggered)*
 
-Defined in BaseTopicClient.ts:135
+Defined in clients/BaseTopicClient.ts:135
 
 Execute all [TopicHandlerFunction](../interfaces/topichandlerfunction.md) when receiving a message for the subscribed topic
 
@@ -243,7 +243,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[unsubscribe](basetopicclient.md#unsubscribe)*
 
-Defined in BaseTopicClient.ts:181
+Defined in clients/BaseTopicClient.ts:181
 
 Unsubscribe the specified topic
 

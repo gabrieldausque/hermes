@@ -1,12 +1,13 @@
 {
   "name": "@hermes/topicservice",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "A topic pub/sub implementation in node JS for Realtime and lazy coupled communication between objects",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "dependencies": {
     "uuidv4": "^6.0.7",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "typescript": "^3.8.3",

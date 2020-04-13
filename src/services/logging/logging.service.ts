@@ -3,7 +3,7 @@ import { ServiceAddons } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
 import { Logging } from './logging.class';
 import hooks from './logging.hooks';
-import {MemoryTopicServiceClient} from "../topic/MemoryTopicServiceClient";
+import {MemoryTopicServiceClient} from "../topic/clients/MemoryTopicServiceClient";
 
 // Add this service to the service type index
 declare module '../../declarations' {

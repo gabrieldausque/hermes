@@ -1,6 +1,6 @@
 import assert from 'assert';
 import app from '../../src/app';
-import {MemoryTopicServiceClient} from "../../src/services/topic/MemoryTopicServiceClient";
+import {MemoryTopicServiceClient} from "../../src/services/topic/clients/MemoryTopicServiceClient";
 import {TopicService} from "../../src/services/topic";
 
 describe('TopicService Tests', () => {
