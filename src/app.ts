@@ -34,7 +34,7 @@ app.configure(configuration());
 const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
 app.topicService = new TopicService(topicConfiguration);
 app.backend = new BackEndService();
-app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend);
+app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend, app.topicService);
 
 
 // Enable security, CORS, compression, favicon and body parsing

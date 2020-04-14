@@ -18,9 +18,11 @@ export class MoleculeLoader {
   private async loadMolecules(topicTriggered:string, topicMessage:TopicMessage) {
     const content = topicMessage.content as ProjectEntity;
     const project:ProjectEntity = this.backendService.getProject(content.id.toString());
-    const currentService = this;
-    setTimeoutPromise(1000, project).then(this.addRandomMolecule.bind(currentService));
-    setTimeoutPromise(3000, project).then(this.addRandomMolecule.bind(currentService))
+    if(project) {
+      const currentService = this;
+      setTimeoutPromise(1000, project).then(this.addRandomMolecule.bind(currentService));
+      setTimeoutPromise(3000, project).then(this.addRandomMolecule.bind(currentService))
+    }
   }
 
   private addRandomMolecule(project:ProjectEntity){
@@ -35,6 +37,11 @@ export class MoleculeLoader {
     const currentProject = this.backendService.getProject(projectId);
     if(currentProject !== null){
       this.addRandomMolecule(currentProject);
+    } else {
+      this.topicClient.publish(topicMessage.senderId + ".errors", {
+        fromMethod:"addMolecule",
+        error: "Missing project with id " + projectId + " in current storage"
+      }).catch((error) => "Error while publishing error : " + error);
     }
   }
 }

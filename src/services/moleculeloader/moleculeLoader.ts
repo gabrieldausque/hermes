@@ -1,15 +1,16 @@
-import {ITopicClient} from "../topic/interfaces/ITopicClient";
-import {BackEndService} from "../backend/BackEndService";
 import util from 'util';
-import {ProjectEntity} from "../../datas/entities/ProjectEntity";
-import {MoleculeEntity} from "../../datas/entities/MoleculeEntity";
-import {TopicMessage} from "../topic/datas/TopicMessage";
+import {BackEndService} from '../backend/BackEndService';
+import {ProjectEntity} from '../../datas/entities/ProjectEntity';
+import {MoleculeEntity} from '../../datas/entities/MoleculeEntity';
+import {TopicMessage, TopicService, ITopicClient} from "../topic";
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class MoleculeLoader {
   private topicClient: ITopicClient;
   private backendService: BackEndService;
-  constructor(topicClient:ITopicClient, backendService:BackEndService) {
+  private topicService: TopicService;
+  constructor(topicClient:ITopicClient, backendService:BackEndService, topicService:TopicService) {
+    this.topicService = topicService;
     this.topicClient = topicClient;
     this.backendService = backendService;
     this.topicClient.subscribe('global.project_created', this.loadMolecules, this);
@@ -38,7 +39,7 @@ export class MoleculeLoader {
     const currentProject = this.backendService.getProject(projectId);
     if(currentProject !== null){
       this.addRandomMolecule(currentProject);
-    } else {
+    } else if(topicMessage.publishedOnServer === this.topicService.serverId) {
       this.topicClient.publish(topicMessage.senderId + ".errors", {
         fromMethod:"addMolecule",
         error: "Missing project with id " + projectId + " in current storage"

@@ -43,10 +43,8 @@ export abstract class BaseTopicClient implements ITopicClient{
     this.subscribe(this.topicClientId + '.unsubscribe', (topic, topicMessage:TopicMessage) => {
       this.unsubscribe(topicMessage.content);
     }, this);
-    this.onError((topic, topicMessage) => console.error("An error has been received : " + topicMessage))
+    this.onError((topic, topicMessage) => console.error("An error has been received : " + JSON.stringify(topicMessage)))
   }
-
-
 
   /**
    * Get the regexp pattern to test if the tested topic is listened to

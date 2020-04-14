@@ -17,13 +17,19 @@ app.configure(feathers.socketio(socket));
 const topicClient = new SocketIOTopicServiceClientProxy(socket, () => {
   topicClient.subscribe('global.project_created', (topic, topicMessage) => {
     displayNotification("ProjectEntity Created", "The project with id " + topicMessage.content.id + " has been created")
-  }).then(() => {
+  }).catch((error) => {
+    displayNotification('Error', JSON.stringify(error), true)
   });
 
   topicClient.subscribe('global.project_created', (topic, topicMessage) => {
     displayProjectCard(topicMessage);
-  }).then(() => {
+  }).catch((error) => {
+    displayNotification('Error', JSON.stringify(error), true)
   });
+
+  topicClient.onError((topic, topicMessage) => {
+    displayNotification('Error', JSON.stringify(topicMessage), true)
+  })
 });
 window.app = app;
 window.topicClient = topicClient;
@@ -80,16 +86,28 @@ function subscribeToCreatedProjectMoleculeLoadedEvent(createdProjectId) {
   })
 }
 
-function displayNotification(header, content){
-  const notifNode = jQuery('#notification-template').clone().toast({
-    animation:true,
-    autohide:true,
-    delay:5000
-  });
-  notifNode.attr("id","");
-  notifNode.find('#notification-header').text(header);
-  notifNode.find('#notification-content').text(content);
-  notifNode.appendTo('#notification-zone').toast('show');
+function displayNotification(header, content, isError){
+  if(!isError){
+    const notifNode = jQuery('#notification-template').clone().toast({
+      animation:true,
+      autohide:true,
+      delay:5000
+    });
+    notifNode.attr("id","");
+    notifNode.find('#notification-header').text(header);
+    notifNode.find('#notification-content').text(content);
+    notifNode.appendTo('#notification-zone').toast('show');
+  } else {
+    const notifNode = jQuery('#notification-template-error').clone().toast({
+      animation:true,
+      autohide:true,
+      delay:5000
+    });
+    notifNode.attr("id","");
+    notifNode.find('#notification-error-content').text(content);
+    notifNode.appendTo('#notification-zone').toast('show');
+  }
+
 }
 
 function displayProjectCard(topicMessage) {

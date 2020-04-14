@@ -3,7 +3,6 @@ import {TopicMessage} from "./datas/TopicMessage";
 import {uuid} from "uuidv4";
 import {TopicServiceConfiguration} from "./configuration/TopicServiceConfiguration";
 import {SocketIOTopicServiceClientProxy} from "./clients/SocketIOTopicServiceClientProxy";
-import io from 'socket.io-client';
 import Socket = SocketIOClient.Socket;
 import {isString} from "util";
 
@@ -14,7 +13,7 @@ export class TopicService {
   /**
    * The id of the server. Used pattern : server_ + uuid (v4)
    */
-  private serverId:string;
+  public serverId:string;
   /**
    * The list of {@link ITopicClient} that are using this topic service instance
    */

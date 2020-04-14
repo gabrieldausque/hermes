@@ -26,9 +26,8 @@ const app: Application = express(feathers());
 // Load app configuration
 app.configure(configuration());
 
-//topic management :
-console.log(app.get("topicservice"));
-app.topicService = new TopicService();
+const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
+app.topicService = new TopicService(topicConfiguration);
 app.backend = new BackEndService();
 app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend);
 
@@ -46,17 +45,21 @@ app.use('/', express.static(app.get('public')));
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(socketio((io) => {
+  console.log('Socket.Io server created and listening on ');
   io.on('connection', (socket) => {
     const topicClient = new SocketIOTopicServiceClient(app.topicService, socket);
-  })
+    console.log("Connecting new client " + topicClient.topicClientId);
+  });
+  app.topicService.initializeCluster().catch((error) => console.error(error));
 }));
-
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
 // Set up our services (see `services/index.js`)
 app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
+
+
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());

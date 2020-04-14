@@ -140,11 +140,9 @@ export class Project implements ServiceMethods<Data> {
     }
     let project = this.app.backend.createProject(ProjectEntity.loadFromDto(data));
     const newProject = ProjectDto.createFromEntity(project);
-    try{
-      this.app.topicService.publish("global.project_created", project).then(() => {});
-    } catch(error){
+    this.app.topicService.publish("global.project_created", project).catch((error) => {
       console.error("error in create : " + error);
-    }
+    });
     return newProject;
   }
 

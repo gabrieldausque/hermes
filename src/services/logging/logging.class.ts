@@ -20,6 +20,10 @@ export class Logging implements ServiceMethods<Data> {
     this.topicClient = topicClient;
     this.topicClient.subscribe('#', (topic:string,topicMessage:TopicMessage) => {
       this.memoryStorage.push(topicMessage);
+      if(topicMessage.fromTopic !== 'global.log_received') {
+        this.topicClient.publish('global.log_received', topicMessage.content);
+      }
+
     }, this);
 
   }
