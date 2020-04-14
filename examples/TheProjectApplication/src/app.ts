@@ -19,6 +19,7 @@ import channels from './channels';
 import {TopicService, SocketIOTopicServiceClient, MemoryTopicServiceClient} from "@hermes/topicservice";
 import {BackEndService} from "./services/backend/BackEndService";
 import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
+import {TopicServiceConfiguration} from "@hermes/topicservice/lib/configuration/TopicServiceConfiguration";
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
@@ -29,7 +30,7 @@ app.configure(configuration());
 const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
 app.topicService = new TopicService(topicConfiguration);
 app.backend = new BackEndService();
-app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend);
+app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend, app.topicService);
 
 
 // Enable security, CORS, compression, favicon and body parsing

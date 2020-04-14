@@ -79,6 +79,18 @@ Modify the package.json to add distant client script to public directory :
   ...
 ```
 
+**<u>NB :</u>** Don't forget to run compile before starting app or to run the start script directly, as the copy of the browser script is needed for the topicService to work
+
+``` bash
+npm run compile
+```
+
+or 
+
+``` bash
+npm run start
+```
+
 ### Integration of TopicService 
 
 #### In the feather app
@@ -105,7 +117,8 @@ app.configure(configuration());
 ...
 
 //topic management, must be load after configuration :
-app.topicService = new TopicService();
+const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
+app.topicService = new TopicService(topicConfiguration);
 ...
 
 app.configure(socketio((io) => {

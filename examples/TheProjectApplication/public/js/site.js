@@ -1,4 +1,4 @@
-import {SocketIOTopicServiceClientProxy} from "../lib/topic/SocketIOTopicServiceClientProxy.js";
+import {SocketIOTopicServiceClientProxy} from "../lib/topicservice/SocketIOTopicServiceClientProxy.js";
 
 
 function validateCreateProjectForm() {
