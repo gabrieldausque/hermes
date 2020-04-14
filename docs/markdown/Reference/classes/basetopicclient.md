@@ -33,6 +33,7 @@ Represents basic implementation of all TopicClient.
 * [disconnect](basetopicclient.md#disconnect)
 * [getPatternForTopic](basetopicclient.md#private-getpatternfortopic)
 * [isListeningTo](basetopicclient.md#islisteningto)
+* [onError](basetopicclient.md#onerror)
 * [publish](basetopicclient.md#publish)
 * [subscribe](basetopicclient.md#subscribe)
 * [topicTriggered](basetopicclient.md#topictriggered)
@@ -98,7 +99,7 @@ The topicService on which the current is listening on
 
 *Implementation of [ITopicClient](../interfaces/itopicclient.md)*
 
-Defined in clients/BaseTopicClient.ts:174
+Defined in clients/BaseTopicClient.ts:177
 
 Disconnect definitively the client of the topicService
 
@@ -110,7 +111,7 @@ ___
 
 ▸ **getPatternForTopic**(`topic`: string): *string*
 
-Defined in clients/BaseTopicClient.ts:52
+Defined in clients/BaseTopicClient.ts:55
 
 Get the regexp pattern to test if the tested topic is listened to
 
@@ -130,7 +131,7 @@ ___
 
 *Implementation of [ITopicClient](../interfaces/itopicclient.md)*
 
-Defined in clients/BaseTopicClient.ts:74
+Defined in clients/BaseTopicClient.ts:77
 
 Check if the current client is listening to a topic.
 
@@ -144,13 +145,33 @@ Name | Type |
 
 ___
 
+###  onError
+
+▸ **onError**(`errorsHandler`: [TopicHandlerFunction](../interfaces/topichandlerfunction.md)): *void*
+
+*Implementation of [ITopicClient](../interfaces/itopicclient.md)*
+
+Defined in clients/BaseTopicClient.ts:193
+
+Set error when error is raised on topic topicClientId.error
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`errorsHandler` | [TopicHandlerFunction](../interfaces/topichandlerfunction.md) |
+
+**Returns:** *void*
+
+___
+
 ###  publish
 
 ▸ **publish**(`topic`: string, `messageContent`: any): *Promise‹void›*
 
 *Implementation of [ITopicClient](../interfaces/itopicclient.md)*
 
-Defined in clients/BaseTopicClient.ts:104
+Defined in clients/BaseTopicClient.ts:107
 
 Publish a message to all client that are listening the specified topic
 
@@ -171,7 +192,7 @@ ___
 
 *Implementation of [ITopicClient](../interfaces/itopicclient.md)*
 
-Defined in clients/BaseTopicClient.ts:117
+Defined in clients/BaseTopicClient.ts:120
 
 Subscribe a topic to execute the specified handler using the handlerContext as the 'this' keyword.
 
@@ -193,7 +214,7 @@ ___
 
 *Implementation of [ITopicClient](../interfaces/itopicclient.md)*
 
-Defined in clients/BaseTopicClient.ts:135
+Defined in clients/BaseTopicClient.ts:138
 
 Execute all [TopicHandlerFunction](../interfaces/topichandlerfunction.md) when receiving a message for the subscribed topic
 
@@ -214,7 +235,7 @@ ___
 
 *Implementation of [ITopicClient](../interfaces/itopicclient.md)*
 
-Defined in clients/BaseTopicClient.ts:181
+Defined in clients/BaseTopicClient.ts:184
 
 Unsubscribe the specified topic
 

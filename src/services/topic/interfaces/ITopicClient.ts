@@ -54,4 +54,10 @@ export interface ITopicClient {
    * Disconnect definitively the client of the topicService
    */
   disconnect();
+
+  /**
+   * Set error when error is raised on topic topicClientId.error
+   * @param errorsHandler The error handler to be executed when an error message is received
+   */
+  onError(errorsHandler:TopicHandlerFunction);
 }

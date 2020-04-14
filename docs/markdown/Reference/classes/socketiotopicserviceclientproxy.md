@@ -17,6 +17,7 @@
 * [isReady](socketiotopicserviceclientproxy.md#isready)
 * [readyHandler](socketiotopicserviceclientproxy.md#readyhandler)
 * [socket](socketiotopicserviceclientproxy.md#socket)
+* [subscriptions](socketiotopicserviceclientproxy.md#subscriptions)
 * [topicClientId](socketiotopicserviceclientproxy.md#topicclientid)
 
 ### Methods
@@ -33,7 +34,7 @@
 
 \+ **new SocketIOTopicServiceClientProxy**(`socket`: Socket, `readyHandler?`: [SocketIOTopicServiceClientProxyReadyFunction](../interfaces/socketiotopicserviceclientproxyreadyfunction.md)): *[SocketIOTopicServiceClientProxy](socketiotopicserviceclientproxy.md)*
 
-Defined in clients/SocketIOTopicServiceClientProxy.ts:22
+Defined in clients/SocketIOTopicServiceClientProxy.ts:26
 
 **Parameters:**
 
@@ -76,6 +77,16 @@ the socket used to communicate to the client object on server side
 
 ___
 
+###  subscriptions
+
+• **subscriptions**: *string[]*
+
+Defined in clients/SocketIOTopicServiceClientProxy.ts:26
+
+The list of current subscriptions
+
+___
+
 ###  topicClientId
 
 • **topicClientId**: *string*
@@ -90,7 +101,7 @@ id of the client that has been received from the server after registering
 
 ▸ **getSubscriptions**(`callback`: TopicHandlerFunction): *Promise‹void›*
 
-Defined in clients/SocketIOTopicServiceClientProxy.ts:79
+Defined in clients/SocketIOTopicServiceClientProxy.ts:90
 
 List all subscriptions registered on server side
 
@@ -108,7 +119,7 @@ ___
 
 ▸ **publish**(`topic`: string, `topicContent`: any): *Promise‹void›*
 
-Defined in clients/SocketIOTopicServiceClientProxy.ts:68
+Defined in clients/SocketIOTopicServiceClientProxy.ts:79
 
 Publish a message on a specific topic
 
@@ -127,7 +138,7 @@ ___
 
 ▸ **ready**(`readyHandler`: [SocketIOTopicServiceClientProxyReadyFunction](../interfaces/socketiotopicserviceclientproxyreadyfunction.md)): *void*
 
-Defined in clients/SocketIOTopicServiceClientProxy.ts:47
+Defined in clients/SocketIOTopicServiceClientProxy.ts:54
 
 Set the Handler to be executed just after the client has been registered on server side
 
@@ -145,7 +156,7 @@ ___
 
 ▸ **subscribe**(`topic`: string, `handler`: TopicHandlerFunction): *Promise‹void›*
 
-Defined in clients/SocketIOTopicServiceClientProxy.ts:57
+Defined in clients/SocketIOTopicServiceClientProxy.ts:64
 
 Subscribe to a topic and execute the handler when the corresponding topic is raised by the server
 
@@ -164,7 +175,7 @@ ___
 
 ▸ **unSubscribe**(`topic`: string): *Promise‹void›*
 
-Defined in clients/SocketIOTopicServiceClientProxy.ts:93
+Defined in clients/SocketIOTopicServiceClientProxy.ts:104
 
 Unsubscribe all handlers for the specified topic
 

@@ -34,7 +34,7 @@ The topic service that represents the hub on which all message will be send acro
 
 \+ **new TopicService**(`config?`: [TopicServiceConfiguration](topicserviceconfiguration.md)): *[TopicService](topicservice.md)*
 
-Defined in TopicService.ts:28
+Defined in TopicService.ts:29
 
 **Parameters:**
 
@@ -50,7 +50,7 @@ Name | Type | Description |
 
 • **clients**: *[ITopicClient](../interfaces/itopicclient.md)[]*
 
-Defined in TopicService.ts:20
+Defined in TopicService.ts:21
 
 The list of [ITopicClient](../interfaces/itopicclient.md) that are using this topic service instance
 
@@ -60,7 +60,7 @@ ___
 
 • **clusterClient**: *[SocketIOTopicServiceClientProxy](socketiotopicserviceclientproxy.md)*
 
-Defined in TopicService.ts:28
+Defined in TopicService.ts:29
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 • **config**: *[TopicServiceConfiguration](topicserviceconfiguration.md)*
 
-Defined in TopicService.ts:24
+Defined in TopicService.ts:25
 
 The service configuration. Used for cluster.
 
@@ -78,7 +78,7 @@ ___
 
 • **serverId**: *string*
 
-Defined in TopicService.ts:16
+Defined in TopicService.ts:17
 
 The id of the server. Used pattern : server_ + uuid (v4)
 
@@ -88,7 +88,7 @@ The id of the server. Used pattern : server_ + uuid (v4)
 
 ▸ **addClient**(`newClient`: [ITopicClient](../interfaces/itopicclient.md)): *void*
 
-Defined in TopicService.ts:65
+Defined in TopicService.ts:69
 
 Add a [ITopicClient](../interfaces/itopicclient.md) to listen to message send on this [TopicService](topicservice.md) instance
 
@@ -104,9 +104,17 @@ ___
 
 ###  initializeCluster
 
-▸ **initializeCluster**(): *Promise‹void›*
+▸ **initializeCluster**(`previousHost?`: string): *Promise‹void›*
 
-Defined in TopicService.ts:83
+Defined in TopicService.ts:91
+
+Initialize the cluster configuration
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`previousHost?` | string | The previous peer will be excluded from the authorized peer to connect  |
 
 **Returns:** *Promise‹void›*
 
@@ -116,7 +124,7 @@ ___
 
 ▸ **publish**(`topic`: string, `topicMessage`: [TopicMessage](topicmessage.md) | any): *Promise‹void›*
 
-Defined in TopicService.ts:47
+Defined in TopicService.ts:48
 
 Publish a [TopicMessage](topicmessage.md) for all [ITopicClient](../interfaces/itopicclient.md) that are listening to the corresponding topic
 
@@ -135,7 +143,7 @@ ___
 
 ▸ **removeClient**(`clientToDelete`: [ITopicClient](../interfaces/itopicclient.md)): *void*
 
-Defined in TopicService.ts:76
+Defined in TopicService.ts:80
 
 Remove a [ITopicClient](../interfaces/itopicclient.md) from the listening clients
 

@@ -24,6 +24,7 @@ The ITopicClient represents the operations contract of the client on server side
 
 * [disconnect](itopicclient.md#disconnect)
 * [isListeningTo](itopicclient.md#islisteningto)
+* [onError](itopicclient.md#onerror)
 * [publish](itopicclient.md#publish)
 * [subscribe](itopicclient.md#subscribe)
 * [topicTriggered](itopicclient.md#topictriggered)
@@ -68,6 +69,24 @@ Name | Type | Description |
 `topic` | string | the topic to test  |
 
 **Returns:** *boolean*
+
+___
+
+###  onError
+
+▸ **onError**(`errorsHandler`: [TopicHandlerFunction](topichandlerfunction.md)): *any*
+
+Defined in interfaces/ITopicClient.ts:62
+
+Set error when error is raised on topic topicClientId.error
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`errorsHandler` | [TopicHandlerFunction](topichandlerfunction.md) | The error handler to be executed when an error message is received  |
+
+**Returns:** *any*
 
 ___
 

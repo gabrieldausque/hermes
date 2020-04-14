@@ -30,6 +30,7 @@ A client that is in the same memory space as the listened [TopicService](topicse
 
 * [disconnect](memorytopicserviceclient.md#disconnect)
 * [isListeningTo](memorytopicserviceclient.md#islisteningto)
+* [onError](memorytopicserviceclient.md#onerror)
 * [publish](memorytopicserviceclient.md#publish)
 * [subscribe](memorytopicserviceclient.md#subscribe)
 * [topicTriggered](memorytopicserviceclient.md#topictriggered)
@@ -103,7 +104,7 @@ The topicService on which the current is listening on
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[disconnect](basetopicclient.md#disconnect)*
 
-Defined in clients/BaseTopicClient.ts:174
+Defined in clients/BaseTopicClient.ts:177
 
 Disconnect definitively the client of the topicService
 
@@ -119,7 +120,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[isListeningTo](basetopicclient.md#islisteningto)*
 
-Defined in clients/BaseTopicClient.ts:74
+Defined in clients/BaseTopicClient.ts:77
 
 Check if the current client is listening to a topic.
 
@@ -133,6 +134,28 @@ Name | Type |
 
 ___
 
+###  onError
+
+▸ **onError**(`errorsHandler`: [TopicHandlerFunction](../interfaces/topichandlerfunction.md)): *void*
+
+*Implementation of [ITopicClient](../interfaces/itopicclient.md)*
+
+*Inherited from [BaseTopicClient](basetopicclient.md).[onError](basetopicclient.md#onerror)*
+
+Defined in clients/BaseTopicClient.ts:193
+
+Set error when error is raised on topic topicClientId.error
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`errorsHandler` | [TopicHandlerFunction](../interfaces/topichandlerfunction.md) |
+
+**Returns:** *void*
+
+___
+
 ###  publish
 
 ▸ **publish**(`topic`: string, `messageContent`: any): *Promise‹void›*
@@ -141,7 +164,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[publish](basetopicclient.md#publish)*
 
-Defined in clients/BaseTopicClient.ts:104
+Defined in clients/BaseTopicClient.ts:107
 
 Publish a message to all client that are listening the specified topic
 
@@ -164,7 +187,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[subscribe](basetopicclient.md#subscribe)*
 
-Defined in clients/BaseTopicClient.ts:117
+Defined in clients/BaseTopicClient.ts:120
 
 Subscribe a topic to execute the specified handler using the handlerContext as the 'this' keyword.
 
@@ -188,7 +211,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[topicTriggered](basetopicclient.md#topictriggered)*
 
-Defined in clients/BaseTopicClient.ts:135
+Defined in clients/BaseTopicClient.ts:138
 
 Execute all [TopicHandlerFunction](../interfaces/topichandlerfunction.md) when receiving a message for the subscribed topic
 
@@ -211,7 +234,7 @@ ___
 
 *Inherited from [BaseTopicClient](basetopicclient.md).[unsubscribe](basetopicclient.md#unsubscribe)*
 
-Defined in clients/BaseTopicClient.ts:181
+Defined in clients/BaseTopicClient.ts:184
 
 Unsubscribe the specified topic
 

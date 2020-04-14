@@ -20,11 +20,13 @@ Represents a message with a content and metadatas describing the context of the 
 * [createdAt](topicmessage.md#createdat)
 * [fromTopic](topicmessage.md#fromtopic)
 * [listenedTopic](topicmessage.md#listenedtopic)
+* [publishedOnServer](topicmessage.md#publishedonserver)
 * [senderId](topicmessage.md#senderid)
 
 ### Methods
 
 * [clone](topicmessage.md#clone)
+* [deserialize](topicmessage.md#static-deserialize)
 
 ## Constructors
 
@@ -32,7 +34,7 @@ Represents a message with a content and metadatas describing the context of the 
 
 \+ **new TopicMessage**(`content`: any, `senderId`: string): *[TopicMessage](topicmessage.md)*
 
-Defined in datas/TopicMessage.ts:24
+Defined in datas/TopicMessage.ts:29
 
 Create a new message
 
@@ -87,6 +89,16 @@ the topic that is listened to that has been tested to raise the handler
 
 ___
 
+###  publishedOnServer
+
+• **publishedOnServer**: *string*
+
+Defined in datas/TopicMessage.ts:29
+
+Id of the topicService where the message has been published on the first time
+
+___
+
 ###  senderId
 
 • **senderId**: *string*
@@ -101,8 +113,24 @@ the id of the [ITopicClient](../interfaces/itopicclient.md) that has send the me
 
 ▸ **clone**(): *[TopicMessage](topicmessage.md)*
 
-Defined in datas/TopicMessage.ts:40
+Defined in datas/TopicMessage.ts:45
 
 Clone the current message. Beware ! Methods and function of the content are not clone !
+
+**Returns:** *[TopicMessage](topicmessage.md)*
+
+___
+
+### `Static` deserialize
+
+▸ **deserialize**(`topicMessage`: [TopicMessage](topicmessage.md)): *[TopicMessage](topicmessage.md)*
+
+Defined in datas/TopicMessage.ts:54
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`topicMessage` | [TopicMessage](topicmessage.md) |
 
 **Returns:** *[TopicMessage](topicmessage.md)*

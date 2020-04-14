@@ -5,6 +5,7 @@ import {TopicServiceConfiguration} from "./configuration/TopicServiceConfigurati
 import {SocketIOTopicServiceClientProxy} from "./clients/SocketIOTopicServiceClientProxy";
 import io from 'socket.io-client';
 import Socket = SocketIOClient.Socket;
+import {isString} from "util";
 
 /**
  * The topic service that represents the hub on which all message will be send across
@@ -79,15 +80,25 @@ export class TopicService {
   removeClient(clientToDelete: ITopicClient) {
     const clientsIndex = this.clients.indexOf(clientToDelete);
     if(clientsIndex >= 0){
-      this.clients.slice(clientsIndex,1);
+      this.clients.splice(clientsIndex,1)
     }
   }
 
-  public async initializeCluster() {
+  /**
+   * Initialize the cluster configuration
+   * @param previousHost The previous peer will be excluded from the authorized peer to connect
+   */
+  public async initializeCluster(previousHost?:string) {
     console.log("Initialize cluster");
     if(this.config && !this.config.standAlone) {
       // get random peer to connect to :
-      const peerHost = this.config.getRandomHost();
+      let peerHost:string = '';
+      if(isString(previousHost))
+      {
+        peerHost = this.config.getRandomHost([previousHost]);
+      } else {
+        peerHost = this.config.getRandomHost();
+      }
       console.log("Trying to connect to " + peerHost);
       let socket:Socket;
       try {
@@ -105,19 +116,19 @@ export class TopicService {
            console.log("Waiting 5s before retrying ....");
            const waiting = new Promise(resolve => setTimeout(resolve, 5000));
            waiting.then(() => {
-             currentService.initializeCluster();
+             currentService.initializeCluster(peerHost);
            })
          });
          socket.on('connect_timeout', () => {
            console.log("Timeout while connecting to server " + peerHost + " : ");
-           currentService.initializeCluster();
+           currentService.initializeCluster(peerHost);
          });
          socket.on('disconnect', (reason) => {
            console.log("Server " + peerHost + " disconnected because : " + reason);
            console.log("Waiting 5s before retrying ....");
            const waiting = new Promise(resolve => setTimeout(resolve, 5000));
            waiting.then(() => {
-             currentService.initializeCluster();
+             currentService.initializeCluster(peerHost);
            })
          });
         this.clusterClient = new SocketIOTopicServiceClientProxy(socket, () => {

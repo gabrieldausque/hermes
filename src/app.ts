@@ -66,6 +66,7 @@ app.configure(socketio((io) => {
   console.log('Socket.Io server created and listening on ');
   io.on('connection', (socket) => {
     const topicClient = new SocketIOTopicServiceClient(app.topicService, socket);
+    console.log("Connecting new client " + topicClient.topicClientId);
   });
   app.topicService.initializeCluster().catch((error) => console.error(error));
 }));

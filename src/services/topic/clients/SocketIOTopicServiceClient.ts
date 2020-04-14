@@ -15,22 +15,39 @@ export class SocketIOTopicServiceClient extends BaseTopicClient {
     super(service);
     this.socket = socket;
     //communication with proxy client ...
-    const currentClient = this;
+    this.initializeProxyChannelProtocol();
     socket.emit('clientId', this.topicClientId);
-    socket.on('reconnect', (socket) => {
+  }
+
+  /**
+   * Initialize communication with socketIo channel protocol (for subscribe, publish and changeId when reconnected)
+   */
+  initializeProxyChannelProtocol() {
+    const currentClient = this;
+    this.socket.on('reconnect', (socket) => {
       console.log('reconnection of client with id ' + currentClient.topicClientId);
       currentClient.socket = socket;
+      currentClient.initializeProxyChannelProtocol();
     });
-    socket.on('disconnect', (socket) => {
+    this.socket.on('disconnect', (socket) => {
       console.log('disconnection of client with id ' + currentClient.topicClientId);
       currentClient.disconnect();
     });
-    socket.on(this.topicClientId + '.subscribe', (topic) => {
-       currentClient.subscribe(topic, currentClient.sendToSocketIO, currentClient);
+    this.socket.on(this.topicClientId + '.subscribe', (topic) => {
+      currentClient.subscribe(topic, currentClient.sendToSocketIO, currentClient);
     });
-    socket.on(this.topicClientId + '.publish', (publishArgs) => {
-      currentClient.publish(publishArgs.topic, publishArgs.content).then(() => {});
-    })
+    this.socket.on(this.topicClientId + '.publish', (publishArgs) => {
+      currentClient.publish(publishArgs.topic, publishArgs.content).catch((error) => {
+        console.error("Error while publishing from socketio : " + error)
+      });
+    });
+    this.socket.on(this.topicClientId + '.changeId', (newId) => {
+      currentClient.topicClientId = newId;
+      currentClient.initializeProxyChannelProtocol();
+      currentClient.socket.emit(currentClient.topicClientId + ".reconnected");
+    });
+    //propagate error :
+    this.onError((topic, topicMessage) => currentClient.socket.emit(topic,topicMessage));
   }
 
   /**

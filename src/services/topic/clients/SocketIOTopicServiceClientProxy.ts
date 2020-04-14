@@ -21,13 +21,17 @@ export class SocketIOTopicServiceClientProxy {
    */
   socket:Socket;
   /**
+   * The list of current subscriptions
+   */
+  subscriptions:string[];
+  /**
    * @param socket The socket used to connect to the topicservice server
    * @param readyHandler The handler to be executed just after the client has been registered
    */
   constructor(socket:Socket, readyHandler?:SocketIOTopicServiceClientProxyReadyFunction) {
     this.isReady = false;
-    this.isReady = false;
     this.socket = socket;
+    this.subscriptions=[];
     this.ready(readyHandler);
     const current = this;
     this.socket.on('clientId', (clientId) => {
@@ -38,6 +42,9 @@ export class SocketIOTopicServiceClientProxy {
     });
     this.socket.on('reconnect', () => {
       console.log('reconnecting with id :' + current.topicClientId);
+      current.subscriptions.forEach((subscription) => {
+        current.socket.emit(this.topicClientId + '.subscribe', subscription);
+      })
     })
   }
   /**
@@ -56,6 +63,9 @@ export class SocketIOTopicServiceClientProxy {
    */
   async subscribe(topic:string, handler:TopicHandlerFunction) {
     this.socket.emit(this.topicClientId + '.subscribe', topic);
+    if(this.subscriptions.indexOf(topic) < 0){
+      this.subscriptions.push(topic);
+    }
     this.socket.on(topic,(topicMessage) => {
       const deserializeTopicMessage = TopicMessage.deserialize(topicMessage);
       handler(topicMessage.fromTopic, deserializeTopicMessage);
@@ -84,7 +94,7 @@ export class SocketIOTopicServiceClientProxy {
       currentClient.unSubscribe(subscriptionsListTopic).then(() => {});
       callback(topic, topicMessage);
     });
-    this.publish(this.topicClientId + '.subscriptions.get', null);
+    this.publish(this.topicClientId + '.subscriptions.get', null).catch((error) => {console.error("Error when getting subscriptions : " + error)});
   }
 
   /**
@@ -93,6 +103,9 @@ export class SocketIOTopicServiceClientProxy {
    */
   async unSubscribe(topic:string) {
     this.socket.removeListener(topic);
-    this.publish(this.topicClientId + '.unsubscribe', topic).then(() => {});
+    if(this.subscriptions.indexOf(topic) >= 0){
+      this.subscriptions.slice(this.subscriptions.indexOf(topic),1);
+    }
+    this.publish(this.topicClientId + '.unsubscribe', topic).catch((error) => {console.error("Error when unsubscribing " + topic + " : " + error)});
   }
 }

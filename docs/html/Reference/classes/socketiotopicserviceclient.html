@@ -115,7 +115,9 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="socketiotopicserviceclient.html#disconnect" class="tsd-kind-icon">disconnect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="socketiotopicserviceclient.html#initializeproxychannelprotocol" class="tsd-kind-icon">initialize<wbr>Proxy<wbr>Channel<wbr>Protocol</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="socketiotopicserviceclient.html#islisteningto" class="tsd-kind-icon">is<wbr>Listening<wbr>To</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="socketiotopicserviceclient.html#onerror" class="tsd-kind-icon">on<wbr>Error</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="socketiotopicserviceclient.html#publish" class="tsd-kind-icon">publish</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="socketiotopicserviceclient.html#sendtosocketio" class="tsd-kind-icon">send<wbr>ToSocketIO</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="socketiotopicserviceclient.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
@@ -242,12 +244,34 @@
 								<p>Implementation of <a href="../interfaces/itopicclient.html">ITopicClient</a>.<a href="../interfaces/itopicclient.html#disconnect">disconnect</a></p>
 								<p>Inherited from <a href="basetopicclient.html">BaseTopicClient</a>.<a href="basetopicclient.html#disconnect">disconnect</a></p>
 								<ul>
-									<li>Defined in clients/BaseTopicClient.ts:174</li>
+									<li>Defined in clients/BaseTopicClient.ts:177</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Disconnect definitively the client of the topicService</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="initializeproxychannelprotocol" class="tsd-anchor"></a>
+					<h3>initialize<wbr>Proxy<wbr>Channel<wbr>Protocol</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">initialize<wbr>Proxy<wbr>Channel<wbr>Protocol<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in clients/SocketIOTopicServiceClient.ts:25</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initialize communication with socketIo channel protocol (for subscribe, publish and changeId when reconnected)</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -266,7 +290,7 @@
 								<p>Implementation of <a href="../interfaces/itopicclient.html">ITopicClient</a>.<a href="../interfaces/itopicclient.html#islisteningto">isListeningTo</a></p>
 								<p>Inherited from <a href="basetopicclient.html">BaseTopicClient</a>.<a href="basetopicclient.html#islisteningto">isListeningTo</a></p>
 								<ul>
-									<li>Defined in clients/BaseTopicClient.ts:74</li>
+									<li>Defined in clients/BaseTopicClient.ts:77</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -285,6 +309,36 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="onerror" class="tsd-anchor"></a>
+					<h3>on<wbr>Error</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Error<span class="tsd-signature-symbol">(</span>errorsHandler<span class="tsd-signature-symbol">: </span><a href="../interfaces/topichandlerfunction.html" class="tsd-signature-type">TopicHandlerFunction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/itopicclient.html">ITopicClient</a>.<a href="../interfaces/itopicclient.html#onerror">onError</a></p>
+								<p>Inherited from <a href="basetopicclient.html">BaseTopicClient</a>.<a href="basetopicclient.html#onerror">onError</a></p>
+								<ul>
+									<li>Defined in clients/BaseTopicClient.ts:193</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set error when error is raised on topic topicClientId.error</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>errorsHandler: <a href="../interfaces/topichandlerfunction.html" class="tsd-signature-type">TopicHandlerFunction</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="publish" class="tsd-anchor"></a>
 					<h3>publish</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -296,7 +350,7 @@
 								<p>Implementation of <a href="../interfaces/itopicclient.html">ITopicClient</a>.<a href="../interfaces/itopicclient.html#publish">publish</a></p>
 								<p>Inherited from <a href="basetopicclient.html">BaseTopicClient</a>.<a href="basetopicclient.html#publish">publish</a></p>
 								<ul>
-									<li>Defined in clients/BaseTopicClient.ts:104</li>
+									<li>Defined in clients/BaseTopicClient.ts:107</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -327,7 +381,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in clients/SocketIOTopicServiceClient.ts:41</li>
+									<li>Defined in clients/SocketIOTopicServiceClient.ts:58</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -366,7 +420,7 @@
 								<p>Implementation of <a href="../interfaces/itopicclient.html">ITopicClient</a>.<a href="../interfaces/itopicclient.html#subscribe">subscribe</a></p>
 								<p>Inherited from <a href="basetopicclient.html">BaseTopicClient</a>.<a href="basetopicclient.html#subscribe">subscribe</a></p>
 								<ul>
-									<li>Defined in clients/BaseTopicClient.ts:117</li>
+									<li>Defined in clients/BaseTopicClient.ts:120</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -402,7 +456,7 @@
 								<p>Implementation of <a href="../interfaces/itopicclient.html">ITopicClient</a>.<a href="../interfaces/itopicclient.html#topictriggered">topicTriggered</a></p>
 								<p>Inherited from <a href="basetopicclient.html">BaseTopicClient</a>.<a href="basetopicclient.html#topictriggered">topicTriggered</a></p>
 								<ul>
-									<li>Defined in clients/BaseTopicClient.ts:135</li>
+									<li>Defined in clients/BaseTopicClient.ts:138</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -435,7 +489,7 @@
 								<p>Implementation of <a href="../interfaces/itopicclient.html">ITopicClient</a>.<a href="../interfaces/itopicclient.html#unsubscribe">unsubscribe</a></p>
 								<p>Inherited from <a href="basetopicclient.html">BaseTopicClient</a>.<a href="basetopicclient.html#unsubscribe">unsubscribe</a></p>
 								<ul>
-									<li>Defined in clients/BaseTopicClient.ts:181</li>
+									<li>Defined in clients/BaseTopicClient.ts:184</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -494,8 +548,14 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="socketiotopicserviceclient.html#disconnect" class="tsd-kind-icon">disconnect</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="socketiotopicserviceclient.html#initializeproxychannelprotocol" class="tsd-kind-icon">initialize<wbr>Proxy<wbr>Channel<wbr>Protocol</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="socketiotopicserviceclient.html#islisteningto" class="tsd-kind-icon">is<wbr>Listening<wbr>To</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="socketiotopicserviceclient.html#onerror" class="tsd-kind-icon">on<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="socketiotopicserviceclient.html#publish" class="tsd-kind-icon">publish</a>

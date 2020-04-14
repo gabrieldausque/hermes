@@ -36,8 +36,8 @@ export class ProjectEntity implements IProjectEntity {
 
   addMolecule(molecule:MoleculeEntity):void{
     const moleculeIndex = this.molecules.findIndex((m) => m.moleculeId === molecule.moleculeId);
-    if(moleculeIndex < 0){
-      this.molecules.slice(moleculeIndex,1)
+    if(moleculeIndex >= 0){
+      this.molecules.splice(moleculeIndex,1)
     }
     this.molecules.push(molecule);
   }

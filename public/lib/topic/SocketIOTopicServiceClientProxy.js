@@ -11,6 +11,10 @@ export class SocketIOTopicServiceClientProxy {
    */
   topicClientId="";
   /**
+   * id of reconnected client
+   */
+  reconnectedTopicClientId="";
+  /**
    * handler to be execute just after the client has been registered on server side
    */
   readyHandler=null;
@@ -19,25 +23,52 @@ export class SocketIOTopicServiceClientProxy {
    */
   socket;
   /**
+   * The list of current subscriptions
+   */
+  subscriptions;
+  /**
    * @param socket The socket used to connect to the topicservice server
    * @param readyHandler The handler to be executed just after the client has been registered
    */
   constructor(socket, readyHandler) {
     this.isReady = false;
     this.socket = socket;
+    this.subscriptions = [];
     this.ready(readyHandler);
     const current = this;
     this.socket.on('clientId', (clientId) => {
-      current.topicClientId = clientId;
-      if(typeof current.readyHandler === 'function'){
-        current.readyHandler.call(current);
+      if(!current.topicClientId){
+        current.topicClientId = clientId;
+        if(typeof current.readyHandler === 'function'){
+          current.readyHandler.call(current);
+        }
+      } else {
+        current.reconnectedTopicClientId = clientId;
+        current.socket.emit(current.reconnectedTopicClientId + ".changeId", current.topicClientId);
       }
     });
     this.socket.on('reconnect', () => {
       console.log('reconnecting with id :' + current.topicClientId);
+      current.socket.once(current.topicClientId + ".reconnected", () => {
+        current.subscriptions.forEach((subscription) => {
+          console.log("resubscribing to " + subscription);
+          current.socket.emit(this.topicClientId + '.subscribe', subscription);
+        })
+      });
     })
   }
 
+  /**
+   * Set an error handler to be executed when an error is sent to the client
+   */
+  onError(errorHandler){
+    const topic = this.topicClientId+".errors";
+    this.socket.on(topic, (topicMessage) => {
+      if(typeof errorHandler === 'function'){
+          errorHandler(topic, topicMessage);
+      }
+    })
+  }
   /**
    * Set the Handler to be executed just after the client has been registered on server side
    * @param readyHandler
@@ -55,7 +86,11 @@ export class SocketIOTopicServiceClientProxy {
    */
   async subscribe(topic, handler){
     this.socket.emit(this.topicClientId + '.subscribe', topic);
+    if(this.subscriptions.indexOf(topic) < 0){
+      this.subscriptions.push(topic);
+    }
     this.socket.on(topic,(topicMessage) => {
+      console.log(topicMessage);
       handler(topicMessage.fromTopic, topicMessage);
     })
   }
@@ -92,6 +127,9 @@ export class SocketIOTopicServiceClientProxy {
    */
   async unSubscribe(topic) {
     this.socket.removeAllListeners(topic);
+    if(this.subscriptions.indexOf(topic) >= 0){
+      this.subscriptions.slice(this.subscriptions.indexOf(topic),1);
+    }
     this.publish(this.topicClientId + '.unsubscribe', topic).then(() => {});
   }
 }

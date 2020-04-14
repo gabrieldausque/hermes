@@ -44,6 +44,6 @@ export class MemoryStorage {
   }
 
   all():ProjectEntity[] {
-    return this.innerStorage.slice();
+    return this.innerStorage;
   }
 }

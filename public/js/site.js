@@ -14,7 +14,25 @@ function validateCreateProjectForm() {
 const socket = io(window.location.href);
 const app = feathers();
 app.configure(feathers.socketio(socket));
-const topicClient = new SocketIOTopicServiceClientProxy(socket);
+const topicClient = new SocketIOTopicServiceClientProxy(socket, () => {
+  topicClient.subscribe('global.project_created', (topic, topicMessage) => {
+    displayNotification("ProjectEntity Created", "The project with id " + topicMessage.content.id + " has been created")
+  }).catch((error) => {
+    displayNotification('Error', JSON.stringify(error), true)
+  });
+
+  topicClient.subscribe('global.project_created', (topic, topicMessage) => {
+    displayProjectCard(topicMessage);
+  }).catch((error) => {
+    displayNotification('Error', JSON.stringify(error), true)
+  });
+
+  topicClient.onError((topic, topicMessage) => {
+    displayNotification('Error', JSON.stringify(topicMessage), true)
+  })
+});
+window.app = app;
+window.topicClient = topicClient;
 
 const ownCreatedProjectIds = [];
 
@@ -68,16 +86,28 @@ function subscribeToCreatedProjectMoleculeLoadedEvent(createdProjectId) {
   })
 }
 
-function displayNotification(header, content){
-  const notifNode = jQuery('#notification-template').clone().toast({
-    animation:true,
-    autohide:true,
-    delay:5000
-  });
-  notifNode.attr("id","");
-  notifNode.find('#notification-header').text(header);
-  notifNode.find('#notification-content').text(content);
-  notifNode.appendTo('#notification-zone').toast('show');
+function displayNotification(header, content, isError){
+  if(!isError){
+    const notifNode = jQuery('#notification-template').clone().toast({
+      animation:true,
+      autohide:true,
+      delay:5000
+    });
+    notifNode.attr("id","");
+    notifNode.find('#notification-header').text(header);
+    notifNode.find('#notification-content').text(content);
+    notifNode.appendTo('#notification-zone').toast('show');
+  } else {
+    const notifNode = jQuery('#notification-template-error').clone().toast({
+      animation:true,
+      autohide:true,
+      delay:5000
+    });
+    notifNode.attr("id","");
+    notifNode.find('#notification-error-content').text(content);
+    notifNode.appendTo('#notification-zone').toast('show');
+  }
+
 }
 
 function displayProjectCard(topicMessage) {
@@ -94,18 +124,6 @@ function displayProjectCard(topicMessage) {
 }
 
 jQuery(document).ready((e) => {
-
-  topicClient.ready(() => {
-    topicClient.subscribe('global.project_created', (topic, topicMessage) => {
-      displayNotification("ProjectEntity Created", "The project with id " + topicMessage.content.id + " has been created")
-    }).then(() => {
-    });
-
-    topicClient.subscribe('global.project_created', (topic, topicMessage) => {
-      displayProjectCard(topicMessage);
-    }).then(() => {
-    });
-  });
 
   jQuery(".left-sidebar ul > li > a ").click((e) => {
     const sectionToDisplay = jQuery(e.currentTarget).attr("data-section");

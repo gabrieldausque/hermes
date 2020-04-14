@@ -38,12 +38,15 @@ export abstract class BaseTopicClient implements ITopicClient{
           subscriptionsList.push(subscription)
         }
       }
-      this.publish(this.topicClientId+'.subscriptions.list', subscriptionsList).then(() => {});
+      this.publish(this.topicClientId+'.subscriptions.list', subscriptionsList).catch((error) => {console.error("error when publishing list of subscriptions")});
     }, this);
     this.subscribe(this.topicClientId + '.unsubscribe', (topic, topicMessage:TopicMessage) => {
       this.unsubscribe(topicMessage.content);
     }, this);
+    this.onError((topic, topicMessage) => console.error("An error has been received : " + topicMessage))
   }
+
+
 
   /**
    * Get the regexp pattern to test if the tested topic is listened to
@@ -71,7 +74,7 @@ export abstract class BaseTopicClient implements ITopicClient{
   /**
    * @inheritDoc
    */
-  isListeningTo(topic: string): boolean {
+  public isListeningTo(topic: string): boolean {
     const wildCardRegexp = /[^\.]*\.*[\*|#]\.*/g;
     if(topic.match(wildCardRegexp)){
       // In this case, the publish is trying to multicast or broadcast, so we test the published topic against all listened topic
@@ -101,7 +104,7 @@ export abstract class BaseTopicClient implements ITopicClient{
   /**
    * @inheritDoc
    */
-  async publish(topic: string, messageContent: any): Promise<void> {
+  public async publish(topic: string, messageContent: any): Promise<void> {
     const message = new TopicMessage(messageContent, this.topicClientId);
     try{
       await this.topicService.publish(topic, message);
@@ -114,7 +117,7 @@ export abstract class BaseTopicClient implements ITopicClient{
   /**
    * @inheritDoc
    */
-  subscribe(topic: string, handler: TopicHandlerFunction, handlerOwner:any) {
+  public subscribe(topic: string, handler: TopicHandlerFunction, handlerOwner:any) {
     if(!topic.trim()){
       console.error("Error on subscription from " + this.topicClientId +  ": topic must be one word at least and can't be empty !")
     } else {
@@ -132,7 +135,7 @@ export abstract class BaseTopicClient implements ITopicClient{
   /**
    * @inheritDoc
    */
-  async topicTriggered(topicTriggered: string, topicMessage: TopicMessage): Promise<void> {
+  public async topicTriggered(topicTriggered: string, topicMessage: TopicMessage): Promise<void> {
     const wildCardRegexp = /[^\.]*\.*[\*|#]\.*/g;
     if(topicTriggered.match(wildCardRegexp)){
       const pattern = this.getPatternForTopic(topicTriggered);
@@ -171,16 +174,23 @@ export abstract class BaseTopicClient implements ITopicClient{
   /**
    * @inheritDoc
    */
-  disconnect(){
+  public disconnect(){
     this.topicService.removeClient(this);
   }
 
   /**
    * @inheritDoc
    */
-  unsubscribe(topic: string) {
+  public unsubscribe(topic: string) {
     if(Array.isArray(this.topicHandlers[topic])) {
       delete this.topicHandlers[topic];
     }
+  }
+
+  /**
+   * @inheritDoc
+   */
+  onError(errorsHandler: TopicHandlerFunction) {
+    this.subscribe(this.topicClientId + ".errors", errorsHandler, this);
   }
 }
