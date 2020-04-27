@@ -10,6 +10,7 @@ export class HermesApp {
   backend?:BackEndService;
   topicService?:TopicService;
   moleculeLoader?:MoleculeLoader;
+  loadedServices?:[];
 }
 
 // The application instance type that will be used everywhere else

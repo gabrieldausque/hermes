@@ -90,7 +90,6 @@ export class SocketIOTopicServiceClientProxy {
       this.subscriptions.push(topic);
     }
     this.socket.on(topic,(topicMessage) => {
-      console.log(topicMessage);
       handler(topicMessage.fromTopic, topicMessage);
     })
   }

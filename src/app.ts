@@ -23,6 +23,8 @@ import {SocketIOTopicServiceClient} from "./services/topic/clients/SocketIOTopic
 import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
 import {MemoryTopicServiceClient} from "./services/topic/clients/MemoryTopicServiceClient";
 import {TopicServiceConfiguration} from "./services/topic/configuration/TopicServiceConfiguration";
+import {ServicesFactory} from "./services/factory/ServicesFactory";
+import {MemoryStorage} from "./services/backend/MemoryStorage";
 
 // Don't remove this comment. It's needed to format import lines nicely.
 
@@ -36,6 +38,15 @@ app.topicService = new TopicService(topicConfiguration);
 app.backend = new BackEndService();
 app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend, app.topicService);
 
+let test = null;
+try {
+  const factory = new ServicesFactory();
+  test = factory.getService('MemoryStorage', './services/backend/MemoryStorage');
+}catch(error) {
+  console.error(error);
+}
+
+const isMemoryStorage = test instanceof MemoryStorage;
 
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());
