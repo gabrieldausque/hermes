@@ -23,8 +23,9 @@ import {SocketIOTopicServiceClient} from "./services/topic/clients/SocketIOTopic
 import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
 import {MemoryTopicServiceClient} from "./services/topic/clients/MemoryTopicServiceClient";
 import {TopicServiceConfiguration} from "./services/topic/configuration/TopicServiceConfiguration";
-import {ServicesFactory} from "./services/factory/ServicesFactory";
+import {InstancesFactory} from "./services/factory/InstancesFactory";
 import {MemoryStorage} from "./services/backend/MemoryStorage";
+import {IExportedClass} from "./DirectoryCatalog/IExportedClass";
 
 // Don't remove this comment. It's needed to format import lines nicely.
 
@@ -38,14 +39,23 @@ app.topicService = new TopicService(topicConfiguration);
 app.backend = new BackEndService();
 app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend, app.topicService);
 
+// The factory experiment ...
 let test = null;
 try {
-  const factory = new ServicesFactory();
-  test = factory.getService('MemoryStorage', './services/backend/MemoryStorage');
-  const noCtorArgsService = factory.getService('ServiceWithNoCtorArgs', './services/runtimeLoadedService/ServiceWithNoCtorArgs');
-  const ctorArgsService = factory.getService('ServiceWithCtorArgs', './services/runtimeLoadedService/ServiceWithCtorArgs', 'Gabriel', 'DAUSQUE-JOUAN');
+  const factory = new InstancesFactory();
+  // load class dynamically from a directory
+  test = factory.getInstanceFromModule('MemoryStorage', './services/backend/MemoryStorage');
+  const noCtorArgsService = factory.getInstanceFromModule('ServiceWithNoCtorArgs', './services/runtimeLoadedService/ServiceWithNoCtorArgs');
+  const ctorArgsService = factory.getInstanceFromModule('ServiceWithCtorArgs', './services/runtimeLoadedService/ServiceWithCtorArgs', 'Gabriel', 'DAUSQUE-JOUAN');
   console.log(noCtorArgsService.helloWorld());
   console.log(ctorArgsService.helloWorld());
+  // load class from constructed catalog (Work in progress)
+  factory.loadExportedClassesFromDirectory('./DirectoryCatalog');
+  // the objectives is to do this from a configuration file ...
+  const firstCreatedFromCatalog = factory.getInstanceFromCatalogs('IExportedClass', 'First') ;
+  const secondCreatedFromCatalog = factory.getInstanceFromCatalogs('IExportedClass', 'Second');
+  console.log(firstCreatedFromCatalog.helloWorld());
+  console.log(secondCreatedFromCatalog.helloWorld());
 }catch(error) {
   console.error(error);
 }
