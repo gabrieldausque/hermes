@@ -9,11 +9,15 @@ export class ServicesFactory {
       }
 
   }
-  getService(serviceName:string, servicePath:string) {
+  getService(serviceName:string, servicePath:string, ...constructorArgs:any) {
      const serviceRealPath = path.resolve(this.directoryCatalogRoot, servicePath);
      console.debug('Getting service from path : ' + serviceRealPath);
      const importedModule = require(serviceRealPath);
-     const instance = new importedModule[serviceName];
-     return instance;
+     if(Array.isArray(constructorArgs)) {
+       return new importedModule[serviceName](...constructorArgs);
+     }
+     else {
+       return new importedModule[serviceName]();
+     }
   }
 }

@@ -42,6 +42,10 @@ let test = null;
 try {
   const factory = new ServicesFactory();
   test = factory.getService('MemoryStorage', './services/backend/MemoryStorage');
+  const noCtorArgsService = factory.getService('ServiceWithNoCtorArgs', './services/runtimeLoadedService/ServiceWithNoCtorArgs');
+  const ctorArgsService = factory.getService('ServiceWithCtorArgs', './services/runtimeLoadedService/ServiceWithCtorArgs', 'Gabriel', 'DAUSQUE-JOUAN');
+  console.log(noCtorArgsService.helloWorld());
+  console.log(ctorArgsService.helloWorld());
 }catch(error) {
   console.error(error);
 }
