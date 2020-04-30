@@ -1,5 +1,5 @@
 import {IExportedClass} from "./IExportedClass";
-import {ExportMetadatas} from "../services/factory/ExportMetadatas";
+import {ExportMetadatas} from "../services/composition/ExportMetadatas";
 
 export class SecondExportedClassExample
   implements IExportedClass {

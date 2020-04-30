@@ -1,7 +1,7 @@
 import {BackEndService} from "../services/backend/BackEndService";
 import {MemoryTopicServiceClient, TopicService} from "../services/topic";
 import {MoleculeLoader} from "../services/moleculeloader/moleculeLoader";
-import {globalInstancesFactory} from "../services/factory/InstancesFactory";
+import {globalInstancesFactory} from "../services/composition/InstancesFactory";
 import {TopicServiceConfiguration} from "../services/topic/configuration/TopicServiceConfiguration";
 
 interface PlatformConfiguration {
@@ -20,6 +20,6 @@ export class Platform {
     this.topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default', topicConfiguration);
     this.backend = new BackEndService();
     this.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(this.topicService), this.backend, this.topicService);
-    // TODO : from configuration, read the list of workers, create them using global factory
+    // TODO : from configuration, read the list of workers, create them using global composition
   }
 }

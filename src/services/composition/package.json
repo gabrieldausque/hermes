@@ -1,0 +1,16 @@
+{
+  "name": "@hermes/composition",
+  "version": "0.0.1",
+  "description": "A composition and dynamic loader of class for lazy coupling between class",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^3.8.3",
+    "tslint": "^6.1.1",
+    "tslint-config-prettier": "^1.18.0"
+  },
+  "files": [
+    "lib/**/*"
+  ]
+}

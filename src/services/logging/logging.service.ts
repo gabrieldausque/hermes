@@ -4,7 +4,7 @@ import { Application } from '../../declarations';
 import { Logging } from './logging.class';
 import hooks from './logging.hooks';
 import {MemoryTopicServiceClient} from "../topic/clients/MemoryTopicServiceClient";
-import {globalInstancesFactory} from "../factory/InstancesFactory";
+import {globalInstancesFactory} from "../composition/InstancesFactory";
 
 // Add this service to the service type index
 declare module '../../declarations' {

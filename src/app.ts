@@ -23,7 +23,7 @@ import {SocketIOTopicServiceClient} from "./services/topic/clients/SocketIOTopic
 import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
 import {MemoryTopicServiceClient} from "./services/topic/clients/MemoryTopicServiceClient";
 import {TopicServiceConfiguration} from "./services/topic/configuration/TopicServiceConfiguration";
-import {InstancesFactory,globalInstancesFactory} from "./services/factory/InstancesFactory";
+import {InstancesFactory,globalInstancesFactory} from "./services/composition/InstancesFactory";
 import {MemoryStorage} from "./services/backend/MemoryStorage";
 import {IExportedClass} from "./DirectoryCatalog/IExportedClass";
 import {Platform} from "./platform/Platform";
@@ -41,22 +41,19 @@ const configurationObject = {
 };
 
 // load class from constructed catalog (Work in progress)
-globalInstancesFactory.loadExportedClassesFromDirectory('./DirectoryCatalog');
 globalInstancesFactory.loadExportedClassesFromDirectory('./services/topic/');
 
 app.platform = new Platform(configurationObject);
 
-// const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
 const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
-// app.topicService = new TopicService(topicConfiguration);
-// app.backend = new BackEndService();
-// app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend, app.topicService);
 
-// The factory experiment ...
+// The composition experiment ...
 try {
   // load class dynamically from a directory
   const test = globalInstancesFactory.getInstanceFromModule('MemoryStorage', './services/backend/MemoryStorage');
   const isMemoryStorage = test instanceof MemoryStorage;
+  // load class from exported class in catalog
+  globalInstancesFactory.loadExportedClassesFromDirectory('./DirectoryCatalog');
   const noCtorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithNoCtorArgs', './services/runtimeLoadedService/ServiceWithNoCtorArgs');
   const ctorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithCtorArgs', './services/runtimeLoadedService/ServiceWithCtorArgs', 'Gabriel', 'DAUSQUE-JOUAN');
   console.log(noCtorArgsService.helloWorld());

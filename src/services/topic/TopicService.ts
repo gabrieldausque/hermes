@@ -6,7 +6,7 @@ import {SocketIOTopicServiceClientProxy} from "./clients/SocketIOTopicServiceCli
 import Socket = SocketIOClient.Socket;
 import {isString} from "util";
 // @ts-ignore
-import {ExportMetadatas} from "../factory/ExportMetadatas";
+import {ExportMetadatas} from "../composition/ExportMetadatas";
 
 /**
  * The topic service that represents the hub on which all message will be send across

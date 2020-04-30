@@ -1,4 +1,4 @@
-import {ExportMetadatas} from "../services/factory/ExportMetadatas";
+import {ExportMetadatas} from "../services/composition/ExportMetadatas";
 import {IExportedClass} from "./IExportedClass";
 
 export class ExportedClassExample

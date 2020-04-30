@@ -31,6 +31,8 @@
     "compile": "shx rm -rf lib/ && tsc && node_modules/.bin/ncp src/services/topic/browser/ public/lib/topic/",
     "docs": "npm run compile && ./node_modules/.bin/typedoc --options typedoc-html.json src/services/topic && ./node_modules/.bin/typedoc --options typedoc-md.json src/services/topic",
     "build": "shx rm -rf src/services/topic/lib/ && tsc -p src/services/topic && node_modules/.bin/ncp src/services/topic/browser/ src/services/topic/lib/browser",
+    "buildTopicPackage": "shx rm -rf src/services/topic/lib/ && tsc -p src/services/topic && node_modules/.bin/ncp src/services/topic/browser/ src/services/topic/lib/browser",
+    "buildCompositionPackage": "shx rm -rf src/services/composition/lib/ && tsc -p src/services/composition",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
   },
