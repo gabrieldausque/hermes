@@ -23,44 +23,52 @@ import {SocketIOTopicServiceClient} from "./services/topic/clients/SocketIOTopic
 import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
 import {MemoryTopicServiceClient} from "./services/topic/clients/MemoryTopicServiceClient";
 import {TopicServiceConfiguration} from "./services/topic/configuration/TopicServiceConfiguration";
-import {InstancesFactory} from "./services/factory/InstancesFactory";
+import {InstancesFactory,globalInstancesFactory} from "./services/factory/InstancesFactory";
 import {MemoryStorage} from "./services/backend/MemoryStorage";
 import {IExportedClass} from "./DirectoryCatalog/IExportedClass";
+import {Platform} from "./platform/Platform";
 
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
 
 // Load app configuration
-app.configure(configuration());
+const config = configuration();
+app.configure(config);
 
-const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
-app.topicService = new TopicService(topicConfiguration);
-app.backend = new BackEndService();
-app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend, app.topicService);
+const configurationObject = {
+  topicService: app.get('topicService')
+};
+
+// load class from constructed catalog (Work in progress)
+globalInstancesFactory.loadExportedClassesFromDirectory('./DirectoryCatalog');
+globalInstancesFactory.loadExportedClassesFromDirectory('./services/topic/');
+
+app.platform = new Platform(configurationObject);
+
+// const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
+const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
+// app.topicService = new TopicService(topicConfiguration);
+// app.backend = new BackEndService();
+// app.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(app.topicService), app.backend, app.topicService);
 
 // The factory experiment ...
-let test = null;
 try {
-  const factory = new InstancesFactory();
   // load class dynamically from a directory
-  test = factory.getInstanceFromModule('MemoryStorage', './services/backend/MemoryStorage');
-  const noCtorArgsService = factory.getInstanceFromModule('ServiceWithNoCtorArgs', './services/runtimeLoadedService/ServiceWithNoCtorArgs');
-  const ctorArgsService = factory.getInstanceFromModule('ServiceWithCtorArgs', './services/runtimeLoadedService/ServiceWithCtorArgs', 'Gabriel', 'DAUSQUE-JOUAN');
+  const test = globalInstancesFactory.getInstanceFromModule('MemoryStorage', './services/backend/MemoryStorage');
+  const isMemoryStorage = test instanceof MemoryStorage;
+  const noCtorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithNoCtorArgs', './services/runtimeLoadedService/ServiceWithNoCtorArgs');
+  const ctorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithCtorArgs', './services/runtimeLoadedService/ServiceWithCtorArgs', 'Gabriel', 'DAUSQUE-JOUAN');
   console.log(noCtorArgsService.helloWorld());
   console.log(ctorArgsService.helloWorld());
-  // load class from constructed catalog (Work in progress)
-  factory.loadExportedClassesFromDirectory('./DirectoryCatalog');
   // the objectives is to do this from a configuration file ...
-  const firstCreatedFromCatalog = factory.getInstanceFromCatalogs('IExportedClass', 'First') ;
-  const secondCreatedFromCatalog = factory.getInstanceFromCatalogs('IExportedClass', 'Second');
+  const firstCreatedFromCatalog = globalInstancesFactory.getInstanceFromCatalogs('IExportedClass', 'First') ;
+  const secondCreatedFromCatalog = globalInstancesFactory.getInstanceFromCatalogs('IExportedClass', 'Second');
   console.log(firstCreatedFromCatalog.helloWorld());
   console.log(secondCreatedFromCatalog.helloWorld());
 }catch(error) {
   console.error(error);
 }
-
-const isMemoryStorage = test instanceof MemoryStorage;
 
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());
@@ -90,10 +98,12 @@ app.configure(swagger({
 app.configure(socketio((io) => {
   console.log('Socket.Io server created and listening on ');
   io.on('connection', (socket) => {
-    const topicClient = new SocketIOTopicServiceClient(app.topicService, socket);
+    const hub = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
+    console.debug('is TopicService Shared ? ' + (hub === topicService));
+    const topicClient = new SocketIOTopicServiceClient(hub, socket);
     console.log("Connecting new client " + topicClient.topicClientId);
   });
-  app.topicService.initializeCluster().catch((error) => console.error(error));
+  app.platform.topicService.initializeCluster().catch((error) => console.error(error));
 }));
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);

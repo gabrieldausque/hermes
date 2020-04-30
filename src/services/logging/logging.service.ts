@@ -4,6 +4,7 @@ import { Application } from '../../declarations';
 import { Logging } from './logging.class';
 import hooks from './logging.hooks';
 import {MemoryTopicServiceClient} from "../topic/clients/MemoryTopicServiceClient";
+import {globalInstancesFactory} from "../factory/InstancesFactory";
 
 // Add this service to the service type index
 declare module '../../declarations' {
@@ -18,7 +19,8 @@ export default function (app: Application) {
   };
 
   // Initialize our service with any options it requires
-  app.use('/logging', new Logging(options, app, new MemoryTopicServiceClient(app.topicService)));
+  const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
+  app.use('/logging', new Logging(options, app, new MemoryTopicServiceClient(topicService)));
 
   // Get our initialized service so that we can register hooks
   const service = app.service('logging');

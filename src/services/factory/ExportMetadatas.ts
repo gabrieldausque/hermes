@@ -1,5 +1,5 @@
 export class ExportMetadatas {
-  public IsShared:boolean;
-  public ContractType:string;
-  public ContractName:string;
+  public isShared:boolean;
+  public contractType:string;
+  public contractName:string;
 }

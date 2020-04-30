@@ -5,9 +5,9 @@ export class SecondExportedClassExample
   implements IExportedClass {
   public static metadatas:ExportMetadatas[] = [
     {
-      ContractType:'IExportedClass',
-      ContractName:'Second',
-      IsShared:false
+      contractType:'IExportedClass',
+      contractName:'Second',
+      isShared:false
     }
   ];
   helloWorld(): string {

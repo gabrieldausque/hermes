@@ -29,15 +29,15 @@ export class InstancesFactory {
        return new importedModule[exportName]();
      }
   }
-  getInstanceFromCatalogs(contractType:string, contractName:string):any {
+  getInstanceFromCatalogs(contractType:string, contractName:string, ...constructorArgs:any):any {
     let createdInstance = null;
     this.catalogs.forEach((catalog) => {
       if(catalog.hasExport(contractType, contractName)) {
-        createdInstance = catalog.getExport(contractType, contractName);
+        createdInstance = catalog.getExport(contractType, contractName, ...constructorArgs);
       }
     });
     return createdInstance;
   }
 }
 
-export const GlobalFactory = new InstancesFactory();
+export const globalInstancesFactory = new InstancesFactory();

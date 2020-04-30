@@ -6,6 +6,7 @@ import {ProjectEntity} from '../../datas/entities/ProjectEntity';
 type Data = NullableProjectDto | null;
 
 
+// tslint:disable-next-line:no-empty-interface
 interface ServiceOptions {}
 
 export class Project implements ServiceMethods<Data> {
@@ -126,11 +127,11 @@ export class Project implements ServiceMethods<Data> {
   }
 
   async find (params?: Params): Promise<Data[] | Paginated<Data>> {
-    return this.app.backend.all().map(p => ProjectDto.createFromEntity(p));
+    return this.app.platform.backend.all().map(p => ProjectDto.createFromEntity(p));
   }
 
   async get (id: Id, params?: Params): Promise<Data> {
-    const project = this.app.backend.getProject(id.toString());
+    const project = this.app.platform.backend.getProject(id.toString());
     return ProjectDto.createFromEntity(project);
   }
 
@@ -138,9 +139,9 @@ export class Project implements ServiceMethods<Data> {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    let project = this.app.backend.createProject(ProjectEntity.loadFromDto(data));
+    const project = this.app.platform.backend.createProject(ProjectEntity.loadFromDto(data));
     const newProject = ProjectDto.createFromEntity(project);
-    this.app.topicService.publish("global.project_created", project).catch((error) => {
+    this.app.platform.topicService.publish("global.project_created", project).catch((error) => {
       console.error("error in create : " + error);
     });
     return newProject;
@@ -152,7 +153,7 @@ export class Project implements ServiceMethods<Data> {
       this.create(data, params);
     else
     {
-      this.app.backend.updateProject(ProjectEntity.loadFromDto(data));
+      this.app.platform.backend.updateProject(ProjectEntity.loadFromDto(data));
     }
     return data;
   }
@@ -163,9 +164,9 @@ export class Project implements ServiceMethods<Data> {
   }
 
   async remove (id: NullableId, params?: Params): Promise<Data> {
-    const projectToDelete:ProjectEntity = this.app.backend.getProject(id.toString());
+    const projectToDelete:ProjectEntity = this.app.platform.backend.getProject(id.toString());
     if(projectToDelete !== null){
-      this.app.backend.deleteProject(projectToDelete);
+      this.app.platform.backend.deleteProject(projectToDelete);
     }
     return projectToDelete;
   }

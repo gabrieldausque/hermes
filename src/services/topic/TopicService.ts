@@ -5,11 +5,20 @@ import {TopicServiceConfiguration} from "./configuration/TopicServiceConfigurati
 import {SocketIOTopicServiceClientProxy} from "./clients/SocketIOTopicServiceClientProxy";
 import Socket = SocketIOClient.Socket;
 import {isString} from "util";
+// @ts-ignore
+import {ExportMetadatas} from "../factory/ExportMetadatas";
 
 /**
  * The topic service that represents the hub on which all message will be send across
  */
 export class TopicService {
+  public static metadatas:ExportMetadatas[] = [
+    {
+      contractType:'TopicService',
+      contractName:'Default',
+      isShared:true
+    }
+  ];
   /**
    * The id of the server. Used pattern : server_ + uuid (v4)
    */
