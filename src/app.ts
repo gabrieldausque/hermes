@@ -17,19 +17,14 @@ import middleware from './middleware';
 import services from './services';
 import appHooks from './app.hooks';
 import channels from './channels';
-import {BackEndService} from "./services/backend/BackEndService";
 import {TopicService} from "./services/topic/TopicService";
 import {SocketIOTopicServiceClient} from "./services/topic/clients/SocketIOTopicServiceClient";
-import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
-import {MemoryTopicServiceClient} from "./services/topic/clients/MemoryTopicServiceClient";
-import {TopicServiceConfiguration} from "./services/topic/configuration/TopicServiceConfiguration";
 import {InstancesFactory,globalInstancesFactory} from "./services/composition/InstancesFactory";
 import {MemoryStorage} from "./services/backend/MemoryStorage";
 import {IExportedClass} from "./DirectoryCatalog/IExportedClass";
 import {Platform} from "./platform/Platform";
 
 // Don't remove this comment. It's needed to format import lines nicely.
-
 const app: Application = express(feathers());
 
 // Load app configuration
@@ -37,12 +32,12 @@ const config = configuration();
 app.configure(config);
 
 const configurationObject = {
-  topicService: app.get('topicService')
+  topicService: app.get('topicService'),
+  platform: app.get('platform')
 };
 
 // load class from constructed catalog (Work in progress)
-globalInstancesFactory.loadExportedClassesFromDirectory('./services/topic/');
-
+globalInstancesFactory.loadExportedClassesFromDirectory('./services/');
 app.platform = new Platform(configurationObject);
 
 const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');

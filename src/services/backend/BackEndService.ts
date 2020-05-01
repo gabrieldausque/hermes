@@ -1,13 +1,22 @@
 import {MemoryStorage} from "./MemoryStorage";
 import {NullableProject, ProjectEntity} from "../../datas/entities/ProjectEntity";
+import {ExportMetadatas} from "../composition/ExportMetadatas";
 
 export class BackEndService {
+  public static metadatas:ExportMetadatas[] = [
+    {
+      contractType:"BackEndService",
+      contractName:"Default",
+      isShared:true
+    }
+  ];
+
   constructor(){
     this.store = new MemoryStorage();
   }
   store:MemoryStorage;
 
-  //usecase
+  // usecase
   getProject(id: string):NullableProject {
     return this.store.get(id);
   }

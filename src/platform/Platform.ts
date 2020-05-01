@@ -1,25 +1,30 @@
 import {BackEndService} from "../services/backend/BackEndService";
-import {MemoryTopicServiceClient, TopicService} from "../services/topic";
-import {MoleculeLoader} from "../services/moleculeloader/moleculeLoader";
+import {TopicService} from "../services/topic";
 import {globalInstancesFactory} from "../services/composition/InstancesFactory";
 import {TopicServiceConfiguration} from "../services/topic/configuration/TopicServiceConfiguration";
 
 interface PlatformConfiguration {
-  topicService?:object
+  topicService?:object,
+  platform?:{
+    plugins:any[]
+  }
 }
 
 export class Platform {
   backend?:BackEndService;
   topicService?:TopicService;
-  moleculeLoader?:MoleculeLoader;
-  workers:[];
+  workers:any[];
 
   constructor(configuration:PlatformConfiguration) {
     this.workers = [];
     const topicConfiguration = TopicServiceConfiguration.load(configuration.topicService);
     this.topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default', topicConfiguration);
-    this.backend = new BackEndService();
-    this.moleculeLoader = new MoleculeLoader(new MemoryTopicServiceClient(this.topicService), this.backend, this.topicService);
+    this.backend = globalInstancesFactory.getInstanceFromCatalogs('BackEndService', 'Default');
+    configuration.platform.plugins.forEach((plugin) => {
+      const {contractType, contractName} = plugin;
+      this.workers.push(globalInstancesFactory.getInstanceFromCatalogs(contractType, contractName))
+    });
+
     // TODO : from configuration, read the list of workers, create them using global composition
   }
 }

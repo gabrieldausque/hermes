@@ -2,17 +2,26 @@ import util from 'util';
 import {BackEndService} from '../backend/BackEndService';
 import {ProjectEntity} from '../../datas/entities/ProjectEntity';
 import {MoleculeEntity} from '../../datas/entities/MoleculeEntity';
-import {TopicMessage, TopicService, ITopicClient} from "../topic";
+import {TopicMessage, TopicService, ITopicClient, MemoryTopicServiceClient} from "../topic";
+import {ExportMetadatas} from "../composition/ExportMetadatas";
+import {globalInstancesFactory} from "../composition/InstancesFactory";
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class MoleculeLoader {
+  public static metadatas:ExportMetadatas[] = [
+    {
+      contractType:"MoleculeLoader",
+      contractName:"Default",
+      isShared:false
+    }
+  ];
   private topicClient: ITopicClient;
   private backendService: BackEndService;
   private topicService: TopicService;
-  constructor(topicClient:ITopicClient, backendService:BackEndService, topicService:TopicService) {
-    this.topicService = topicService;
-    this.topicClient = topicClient;
-    this.backendService = backendService;
+  constructor() {
+    this.topicService = globalInstancesFactory.getInstanceFromCatalogs("TopicService", "Default");
+    this.topicClient = new MemoryTopicServiceClient(this.topicService);
+    this.backendService = globalInstancesFactory.getInstanceFromCatalogs("BackEndService","Default");
     this.topicClient.subscribe('global.project_created', this.loadMolecules, this);
     this.topicClient.subscribe('global.project_addmolecule', this.addMolecule, this);
   }
