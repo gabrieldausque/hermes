@@ -11,6 +11,10 @@
       {
         "contractType": "MoleculeLoader",
         "contractName": "Default"
+      },
+      {
+        "contractType": "PropertyLoader",
+        "contractName": "Default"
       }
     ]
   },

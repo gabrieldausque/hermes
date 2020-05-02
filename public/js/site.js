@@ -75,12 +75,40 @@ function displayMolecules(topicMessage) {
   const moleculesList = jQuery('#project-' + topicMessage.content.id + ' .list-molecules');
   moleculesList.empty();
   topicMessage.content.molecules.forEach((m) => {
-    moleculesList.append('<li class="list-group-item">Name : ' + m.name + ' Description : ' + m.description + '</li>')
+    let moleculeElement = '<li class="list-group-item">' +
+      '<p>Name : ' + m.name + ' Description : ' + m.description + '</p>' +
+    '<p>';
+    if(Array.isArray(m.otherProperties) && m.otherProperties.length > 0){
+      moleculeElement += '<i>Other properties :</i></p><ul>';
+      m.otherProperties.forEach((prop) => {
+         for(const p in prop){
+           if(prop.hasOwnProperty(p)){
+             moleculeElement += '<li>' + p + ': ' + prop[p] + '</li>';
+           }
+         }
+      });
+      moleculeElement += '</ul>';
+    } else {
+      moleculeElement += '<i>'+ 'no other properties' +'</i>'
+    }
+    moleculeElement +=  '</li>';
+    moleculesList.append(moleculeElement)
+  })
+}
+
+function subscribeToMoleculePropertyAdded(topicMessage) {
+  topicClient.subscribe(topicMessage.content.id + '.*.property_added', (topic, topicMessage) => {
+    window.setTimeout(() => {
+      displayMolecules(topicMessage);
+    }, 2000);
+  }).catch((error) => {
+    console.error(error);
   })
 }
 
 function subscribeToCreatedProjectMoleculeLoadedEvent(createdProjectId) {
   topicClient.subscribe(createdProjectId + '.molecule_loaded', (topic, topicMessage) => {
+    subscribeToMoleculePropertyAdded(topicMessage);
     displayNotification("ProjectEntity molecule Loaded", "a molecule has been added to the project " + topicMessage.content.id);
     displayMolecules(topicMessage);
   })

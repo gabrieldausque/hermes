@@ -47,8 +47,14 @@ export class ExportCatalog {
     }
     else
     {
-      if(Array.isArray(constructorArgs)){
+      if(Array.isArray(constructorArgs) && constructorArgs.length > 0){
         createdInstance =  new exportedClass(...constructorArgs);
+      } else if(Array.isArray(metadata.constructorInjectedArgs) && metadata.constructorInjectedArgs.length > 0) {
+        const injectedArgs = [];
+        metadata.constructorInjectedArgs.forEach((injectedArg) => {
+          injectedArgs.push(this.getExport(injectedArg.contractType, injectedArg.contractName))
+        });
+        createdInstance = new exportedClass(...injectedArgs);
       } else {
         createdInstance = new exportedClass();
       }
