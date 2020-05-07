@@ -1,6 +1,6 @@
 {
   "name": "@hermes/composition",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A composition and dynamic loader of class for lazy coupling between class",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
