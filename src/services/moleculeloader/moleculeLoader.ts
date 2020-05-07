@@ -3,12 +3,11 @@ import {BackEndService} from '../backend/BackEndService';
 import {ProjectEntity} from '../../datas/entities/ProjectEntity';
 import {MoleculeEntity} from '../../datas/entities/MoleculeEntity';
 import {TopicMessage, TopicService, ITopicClient, MemoryTopicServiceClient} from "../topic";
-import {ExportMetadatas} from "../composition/ExportMetadatas";
 import {globalInstancesFactory} from "../composition/InstancesFactory";
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class MoleculeLoader {
-  public static metadatas:ExportMetadatas[] = [
+  public static metadatas:any[] = [
     {
       contractType:"MoleculeLoader",
       contractName:"Default",

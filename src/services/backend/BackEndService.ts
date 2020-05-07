@@ -1,9 +1,8 @@
 import {MemoryStorage} from "./MemoryStorage";
 import {NullableProject, ProjectEntity} from "../../datas/entities/ProjectEntity";
-import {ExportMetadatas} from "../composition/ExportMetadatas";
 
 export class BackEndService {
-  public static metadatas:ExportMetadatas[] = [
+  public static metadatas:any[] = [
     {
       contractType:"BackEndService",
       contractName:"Default",

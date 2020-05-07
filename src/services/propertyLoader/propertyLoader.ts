@@ -1,4 +1,3 @@
-import {ExportMetadatas} from "../composition";
 import {MemoryTopicServiceClient, TopicMessage, TopicService} from "../topic";
 import {BackEndService} from "../backend/BackEndService";
 import {ProjectEntity} from "../../datas/entities/ProjectEntity";
@@ -7,7 +6,7 @@ import util from "util";
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class PropertyLoader {
-  public static metadatas:ExportMetadatas[] = [
+  public static metadatas:any[] = [
     {
       contractType:'PropertyLoader',
       contractName:'Default',

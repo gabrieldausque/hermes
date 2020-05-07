@@ -1,9 +1,8 @@
-import {ExportMetadatas} from "../services/composition/ExportMetadatas";
 import {IExportedClass} from "./IExportedClass";
 
 export class ExportedClassExample
   implements IExportedClass {
-  public static metadatas: ExportMetadatas[] = [
+  public static metadatas: any[] = [
     {
       contractType:'IExportedClass',
       contractName:'First',
