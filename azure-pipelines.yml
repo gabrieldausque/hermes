@@ -41,7 +41,7 @@ steps:
 
 - task: Npm@1
   displayName: 'Publish topic to azuredevops Hermes/hermes feed'
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), variables['publishComposition'])
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), variables['publishCTopic'])
   inputs:
     command: publish
     publishRegistry: useFeed
