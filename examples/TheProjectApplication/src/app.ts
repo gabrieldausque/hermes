@@ -20,12 +20,16 @@ import {TopicService, SocketIOTopicServiceClient, MemoryTopicServiceClient} from
 import {BackEndService} from "./services/backend/BackEndService";
 import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
 import {TopicServiceConfiguration} from "@hermes/topicservice/lib/configuration/TopicServiceConfiguration";
+import {globalInstancesFactory} from "@hermes/composition";
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
 
 // Load app configuration
 app.configure(configuration());
+
+//Initialize globalInstancesFactory
+globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/topicservice');
 
 const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
 app.topicService = new TopicService(topicConfiguration);

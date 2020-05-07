@@ -13,11 +13,15 @@ export class ExportCatalog {
       fs.readdirSync(directoryCatalogPath).forEach((fileOrDirectoryName) => {
         const fullPath = path.resolve(directoryCatalogPath, fileOrDirectoryName);
         if (!fs.lstatSync(fullPath).isDirectory() && path.extname(fullPath) === '.js') {
-          const module = require(fullPath);
-          for (const exportedObjectName in module) {
-            if(module.hasOwnProperty(exportedObjectName) && Array.isArray(module[exportedObjectName].metadatas)) {
-              this.addExportedType(module[exportedObjectName]);
+          try {
+            const module = require(fullPath);
+            for (const exportedObjectName in module) {
+              if(module.hasOwnProperty(exportedObjectName) && Array.isArray(module[exportedObjectName].metadatas)) {
+                this.addExportedType(module[exportedObjectName]);
+              }
             }
+          }catch(error){
+            console.warn(fullPath + ' is not a regular or working nodejs exportable module. skipping it.')
           }
         } else if(fs.lstatSync(fullPath).isDirectory()) {
           this.loadFromDirectory(fullPath)
