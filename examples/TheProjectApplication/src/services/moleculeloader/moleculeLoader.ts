@@ -2,17 +2,18 @@ import {BackEndService} from "../backend/BackEndService";
 import util from 'util';
 import {ProjectEntity} from "../../datas/entities/ProjectEntity";
 import {MoleculeEntity} from "../../datas/entities/MoleculeEntity";
-import {TopicMessage, ITopicClient, TopicService} from "@hermes/topicservice";
+import {TopicMessage, ITopicClient, TopicService, MemoryTopicServiceClient} from "@hermes/topicservice";
+import {globalInstancesFactory} from "@hermes/composition";
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class MoleculeLoader {
   private topicClient: ITopicClient;
   private backendService: BackEndService;
   private topicService: TopicService;
-  constructor(topicClient:ITopicClient, backendService:BackEndService, topicService:TopicService) {
-    this.topicService = topicService;
-    this.topicClient = topicClient;
-    this.backendService = backendService;
+  constructor() {
+    this.topicClient = new MemoryTopicServiceClient(globalInstancesFactory.getInstanceFromCatalogs("TopicService", "Default"));
+    this.topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
+    this.backendService = globalInstancesFactory.getInstanceFromCatalogs('BackEndService', 'Default');
     this.topicClient.subscribe('global.project_created', this.loadMolecules, this);
     this.topicClient.subscribe('global.project_addmolecule', this.addMolecule, this);
   }

@@ -2,6 +2,14 @@ import {MemoryStorage} from "./MemoryStorage";
 import {NullableProject, ProjectEntity} from "../../datas/entities/ProjectEntity";
 
 export class BackEndService {
+  public static metadatas:any[] = [
+    {
+      contractType:'BackEndService',
+      contractName:'Default',
+      isShared:true
+    }
+  ];
+
   constructor(){
     this.store = new MemoryStorage();
   }
