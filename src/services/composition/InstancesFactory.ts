@@ -1,5 +1,6 @@
 import path from "path";
 import {ExportCatalog} from "./ExportCatalog";
+import {createTracing} from "trace_events";
 export class InstancesFactory {
   private readonly catalogs:ExportCatalog[];
   private readonly directoryCatalogRoot: string;
@@ -34,9 +35,10 @@ export class InstancesFactory {
   }
   getInstanceFromCatalogs(contractType:string, contractName:string, ...constructorArgs:any):any {
     let createdInstance = null;
-    this.catalogs.forEach((catalog) => {
+    this.catalogs.some((catalog) => {
       if(catalog.hasExport(contractType, contractName)) {
         createdInstance = catalog.getExport(contractType, contractName, ...constructorArgs);
+        return createdInstance !== null && typeof createdInstance !== 'undefined';
       }
     });
     return createdInstance;

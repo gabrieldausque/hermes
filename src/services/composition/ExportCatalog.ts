@@ -44,10 +44,14 @@ export class ExportCatalog {
   }
 
   hasExport(contractType: string, contractName: string):boolean {
-    return typeof this.exportedTypes[contractType] !== 'undefined' && this.exportedTypes[contractType][contractName] !== 'undefined';
+    return typeof this.exportedTypes[contractType] !== 'undefined' && typeof this.exportedTypes[contractType][contractName] !== 'undefined';
   }
 
   getExport(contractType: string, contractName: string, ...constructorArgs:any) {
+
+    if(!this.hasExport(contractType,contractName))
+      return null;
+
     let createdInstance;
     const exportedClass = this.exportedTypes[contractType][contractName];
     const metadata = exportedClass.metadatas.find((m) => m.contractType === contractType && m.contractName === contractName);
