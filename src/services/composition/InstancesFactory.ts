@@ -11,9 +11,12 @@ export class InstancesFactory {
       }
       this.catalogs = []
   }
-  loadExportedClassesFromDirectory(directoryCatalogRoot:string) {
+  loadExportedClassesFromDirectory(directoryCatalogRoot:string, isAbsolutePath:boolean=false) {
       const catalog = new ExportCatalog();
-      const realPath = path.resolve(this.directoryCatalogRoot, directoryCatalogRoot);
+      let realPath = path.resolve(this.directoryCatalogRoot, directoryCatalogRoot);
+      if(isAbsolutePath){
+        realPath = directoryCatalogRoot;
+      }
       console.debug('Loading catalog from ' + realPath);
       catalog.loadFromDirectory(realPath);
       this.catalogs.push(catalog);
