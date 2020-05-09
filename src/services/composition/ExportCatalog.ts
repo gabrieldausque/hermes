@@ -12,7 +12,12 @@ export class ExportCatalog {
   loadFromDirectory(directoryCatalogPath:string){
       fs.readdirSync(directoryCatalogPath).forEach((fileOrDirectoryName) => {
         const fullPath = path.resolve(directoryCatalogPath, fileOrDirectoryName);
-        if (!fs.lstatSync(fullPath).isDirectory() && path.extname(fullPath) === '.js') {
+        if (!fs.lstatSync(fullPath).isDirectory() &&
+            (
+              path.extname(fullPath) === '.js' ||
+              (path.extname(fullPath) === '.ts' && !fullPath.trim().endsWith('.d.ts'))
+            )
+           ){
           try {
             const module = require(fullPath);
             for (const exportedObjectName in module) {
