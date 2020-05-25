@@ -45,12 +45,12 @@ const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicServic
 // The composition experiment ...
 try {
   // load class dynamically from a directory
-  const test = globalInstancesFactory.getInstanceFromModule('MemoryStorage', './services/backend/MemoryStorage');
+  const test = globalInstancesFactory.getInstanceFromModule('MemoryStorage', __dirname + '/services/backend/MemoryStorage');
   const isMemoryStorage = test instanceof MemoryStorage;
   // load class from exported class in catalog
-  globalInstancesFactory.loadExportedClassesFromDirectory('./DirectoryCatalog');
-  const noCtorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithNoCtorArgs', './services/runtimeLoadedService/ServiceWithNoCtorArgs');
-  const ctorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithCtorArgs', './services/runtimeLoadedService/ServiceWithCtorArgs', 'Gabriel', 'DAUSQUE-JOUAN');
+  globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/DirectoryCatalog');
+  const noCtorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithNoCtorArgs', __dirname + '/services/runtimeLoadedService/ServiceWithNoCtorArgs');
+  const ctorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithCtorArgs', __dirname + '/services/runtimeLoadedService/ServiceWithCtorArgs', 'Gabriel', 'DAUSQUE-JOUAN');
   console.log(noCtorArgsService.helloWorld());
   console.log(ctorArgsService.helloWorld());
   // the objectives is to do this from a configuration file ...

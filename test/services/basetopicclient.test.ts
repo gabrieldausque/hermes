@@ -163,22 +163,18 @@ describe('TopicService Tests', () => {
     const memoryClientConsumer2 = new MemoryTopicServiceClient(topicService);
     const memoryClientProducer = new MemoryTopicServiceClient(topicService);
     let receivedMessageCount = 0;
-    memoryClientConsumer1.subscribe('level1.level2', (topic, topicMessage) => {
+    const messageHandler = (topic, topicMessage) => {
       receivedMessageCount++;
-      if(receivedMessageCount === 2){
+      if(receivedMessageCount >= 2){
         memoryClientConsumer1.disconnect();
         memoryClientConsumer2.disconnect();
         cb()
       }
-    }, null);
-    memoryClientConsumer2.subscribe('level1any.level2bis.level3', (topic, topicMessage) => {
-      receivedMessageCount++;
-      if(receivedMessageCount === 2){
-        memoryClientConsumer1.disconnect();
-        memoryClientConsumer2.disconnect();
-        cb()
-      }
-    }, null);
+    };
+    memoryClientConsumer1.subscribe('level1.level2', messageHandler, null);
+    // memoryClientConsumer1.onError(messageHandler);
+    memoryClientConsumer2.subscribe('level1any.level2bis.level3', messageHandler, null);
+    // memoryClientConsumer2.onError(messageHandler)
     memoryClientProducer.publish('#', 'this is a message content');
-  })
+  });
 });

@@ -1,5 +1,5 @@
 /**
- * Represents a message with a content and metadatas describing the context of the current message
+ * Represents a message with a content and metadata describing the context of the current message
  */
 export class TopicMessage{
   /**
@@ -9,7 +9,7 @@ export class TopicMessage{
   /**
    * The Date when the message has been created
    */
-  public createdAt:Number;
+  public createdAt:number;
   /**
    * the id of the {@link ITopicClient} that has send the message
    */

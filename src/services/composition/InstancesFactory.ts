@@ -3,7 +3,7 @@ import {ExportCatalog} from "./ExportCatalog";
 import {createTracing} from "trace_events";
 export class InstancesFactory {
   private readonly catalogs:ExportCatalog[];
-  private readonly directoryCatalogRoot: string;
+  public directoryCatalogRoot: string;
   constructor(directoryCatalogRoot?:string) {
       if(!directoryCatalogRoot) {
         this.directoryCatalogRoot = path.dirname(require.main.filename);
@@ -13,7 +13,7 @@ export class InstancesFactory {
       this.catalogs = []
   }
   loadExportedClassesFromDirectory(directoryCatalogRoot:string, isAbsolutePath:boolean=false) {
-      const catalog = new ExportCatalog();
+      const catalog = new ExportCatalog(this);
       let realPath = path.resolve(this.directoryCatalogRoot, directoryCatalogRoot);
       if(isAbsolutePath){
         realPath = directoryCatalogRoot;

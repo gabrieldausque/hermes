@@ -1,5 +1,5 @@
-import {ExportMetadatas} from "./ExportMetadatas";
+import {ExportMetadata} from "./ExportMetadata";
 
 export interface IExportableClass {
-  metadatas:ExportMetadatas[];
+  metadata:ExportMetadata[];
 }

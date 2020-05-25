@@ -2,7 +2,7 @@ import {MemoryStorage} from "./MemoryStorage";
 import {NullableProject, ProjectEntity} from "../../datas/entities/ProjectEntity";
 
 export class BackEndService {
-  public static metadatas:any[] = [
+  public static metadata:any[] = [
     {
       contractType:'BackEndService',
       contractName:'Default',

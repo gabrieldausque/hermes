@@ -137,8 +137,8 @@ export abstract class BaseTopicClient implements ITopicClient{
     const wildCardRegexp = /[^\.]*\.*[\*|#]\.*/g;
     if(topicTriggered.match(wildCardRegexp)){
       const pattern = this.getPatternForTopic(topicTriggered);
-      const regexp = new RegExp(pattern, 'g');
       for(const topicListenedTo in this.topicHandlers) {
+        const regexp = new RegExp(pattern, 'g');
         if(regexp.test(topicListenedTo)){
           this.topicHandlers[topicListenedTo].forEach((handler) => {
             topicMessage.fromTopic = topicTriggered;

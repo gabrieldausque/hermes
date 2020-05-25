@@ -9,7 +9,7 @@ import {isString} from "util";
  * The topic service that represents the hub on which all message will be send across
  */
 export class TopicService {
-  public static metadatas:any[] = [
+  public static metadata:any[] = [
     {
       contractType:'TopicService',
       contractName:'Default',

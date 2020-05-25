@@ -7,7 +7,7 @@ import {globalInstancesFactory} from "../composition/InstancesFactory";
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class MoleculeLoader {
-  public static metadatas:any[] = [
+  public static metadata:any[] = [
     {
       contractType:"MoleculeLoader",
       contractName:"Default",

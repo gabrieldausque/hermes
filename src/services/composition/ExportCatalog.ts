@@ -1,13 +1,18 @@
 import {IExportableClass} from "./IExportableClass";
 import fs from 'fs';
 import path from 'path';
+import { InstancesFactory } from './InstancesFactory';
 
 export class ExportCatalog {
   private exportedTypes:object;
   private sharedInstances:object;
-  constructor(){
+  private factoryOwner: InstancesFactory;
+  constructor(factoryOwner?:InstancesFactory){
     this.exportedTypes = {};
     this.sharedInstances = {};
+    if(factoryOwner){
+      this.factoryOwner = factoryOwner;
+    }
   }
   loadFromDirectory(directoryCatalogPath:string){
       fs.readdirSync(directoryCatalogPath).forEach((fileOrDirectoryName) => {
@@ -21,7 +26,7 @@ export class ExportCatalog {
           try {
             const module = require(fullPath);
             for (const exportedObjectName in module) {
-              if(module.hasOwnProperty(exportedObjectName) && Array.isArray(module[exportedObjectName].metadatas)) {
+              if(module.hasOwnProperty(exportedObjectName) && Array.isArray(module[exportedObjectName].metadata)) {
                 this.addExportedType(module[exportedObjectName]);
               }
             }
@@ -34,12 +39,12 @@ export class ExportCatalog {
       })
   }
   addExportedType(exportedClass:IExportableClass) {
-    const classMetadatas = exportedClass.metadatas;
-    classMetadatas.forEach((classMetadata) => {
-      if(!this.exportedTypes[classMetadata.contractType]) {
-        this.exportedTypes[classMetadata.contractType] = {};
+    const classMetadata = exportedClass.metadata;
+    classMetadata.forEach((data) => {
+      if(!this.exportedTypes[data.contractType]) {
+        this.exportedTypes[data.contractType] = {};
       }
-      this.exportedTypes[classMetadata.contractType][classMetadata.contractName] = exportedClass;
+      this.exportedTypes[data.contractType][data.contractName] = exportedClass;
     })
   }
 
@@ -54,7 +59,7 @@ export class ExportCatalog {
 
     let createdInstance;
     const exportedClass = this.exportedTypes[contractType][contractName];
-    const metadata = exportedClass.metadatas.find((m) => m.contractType === contractType && m.contractName === contractName);
+    const metadata = exportedClass.metadata.find((m) => m.contractType === contractType && m.contractName === contractName);
     if(metadata.isShared && this.sharedInstances[contractType] && this.sharedInstances[contractType][contractName]) {
       createdInstance = this.sharedInstances[contractType][contractName];
     }
@@ -65,7 +70,12 @@ export class ExportCatalog {
       } else if(Array.isArray(metadata.constructorInjectedArgs) && metadata.constructorInjectedArgs.length > 0) {
         const injectedArgs = [];
         metadata.constructorInjectedArgs.forEach((injectedArg) => {
-          injectedArgs.push(this.getExport(injectedArg.contractType, injectedArg.contractName))
+          let arg:any = null;
+          if(this.factoryOwner)
+            arg = this.factoryOwner.getInstanceFromCatalogs(injectedArg.contractType, injectedArg.contractName);
+          else
+            arg = this.getExport(injectedArg.contractType, injectedArg.contractName)
+          injectedArgs.push(arg);
         });
         createdInstance = new exportedClass(...injectedArgs);
       } else {
@@ -79,7 +89,7 @@ export class ExportCatalog {
   }
 
   addSharedInstance(exportedClass: any, createdInstance: any) {
-    exportedClass.metadatas.forEach((metadata) => {
+    exportedClass.metadata.forEach((metadata) => {
       if(!this.sharedInstances[metadata.contractType])
         this.sharedInstances[metadata.contractType] = {};
       if(!this.sharedInstances[metadata.contractType][metadata.contractName])

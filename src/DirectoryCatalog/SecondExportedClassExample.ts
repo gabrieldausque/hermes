@@ -2,7 +2,7 @@ import {IExportedClass} from "./IExportedClass";
 
 export class SecondExportedClassExample
   implements IExportedClass {
-  public static metadatas:any[] = [
+  public static metadata:any[] = [
     {
       contractType:'IExportedClass',
       contractName:'Second',

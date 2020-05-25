@@ -2,6 +2,21 @@ import assert from 'assert';
 import { Server } from 'http';
 import url from 'url';
 import axios from 'axios';
+import * as path from 'path';
+
+import { globalInstancesFactory } from '../src/services/composition';
+
+globalInstancesFactory.directoryCatalogRoot = path.resolve(__dirname);
+globalInstancesFactory.loadExportedClassesFromDirectory('../src/DirectoryCatalog');
+globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/backend');
+globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/moleculeloader');
+globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/propertyLoader');
+globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/runtimeLoadedService');
+globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/topic');
+const test = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
+console.log("Is test null ? " + (test === null))
+console.log(__dirname);
+console.log('Directory catalog root is ' + globalInstancesFactory.directoryCatalogRoot);
 
 import app from '../src/app';
 

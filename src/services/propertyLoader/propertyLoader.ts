@@ -6,7 +6,7 @@ import util from "util";
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class PropertyLoader {
-  public static metadatas:any[] = [
+  public static metadata:any[] = [
     {
       contractType:'PropertyLoader',
       contractName:'Default',
