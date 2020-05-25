@@ -41,11 +41,11 @@ steps:
 
 - task: Npm@1
   displayName: 'Publish topic to azuredevops Hermes/hermes feed'
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), variables['publishCTopic'])
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), variables['publishTopic'])
   inputs:
     command: publish
     publishRegistry: useFeed
     publishFeed: Hermes/hermes
     workingDir: $(Build.Repository.LocalPath)/src/services/topic/
 
-    
+
