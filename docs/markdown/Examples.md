@@ -2,9 +2,9 @@
 
 # HomePage - Examples
 
-This section contains examples and how to's documentation to help you to use the hermes topic service  
+This section contains examples and how to's documentation to help you to use the hermes frameworks
 
-## The Project Application
+## The Project Application (Topic Service demo)
 
 A simple CRUD project using featherjs
 

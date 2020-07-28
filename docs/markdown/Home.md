@@ -7,9 +7,9 @@ Hermes is a set of frameworks developed to simplify the decoupling and the modul
 
 Today, Hermes frameworks is composed of two frameworks : 
 
-- [TopicService](/HomeTopicService) : a framework that provides a notification service which can be used from inner node
+- [TopicService](/HomeTopic) : a framework that provides a notification service which can be used from inner node
 process and from external clients (browser or other node process) using socket.io
-- [Composition](/HomeCompositionService) : a framework that help compose a service or an application based on contract 
+- [Composition](/HomeComposition) : a framework that help compose a service or an application based on contract 
 and metadata worn by class
 
 
