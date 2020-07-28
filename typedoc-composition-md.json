@@ -1,0 +1,10 @@
+{
+  "mode": "file",
+  "out": "docs/markdown/Composition/Reference",
+  "includes": "src/services/composition/docs",
+  "exclude": [
+    "src/services/composition/node_modules/**/*",
+    "src/services/composition/lib/**/*"
+  ],
+  "plugin": "typedoc-plugin-markdown"
+}

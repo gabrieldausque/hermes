@@ -1,0 +1,10 @@
+{
+  "mode": "file",
+  "out": "docs/html/Topic/Reference",
+  "includes": "src/services/topic/docs",
+  "exclude": [
+    "src/services/topic/node_modules/**/*",
+    "src/services/topic/lib/**/*"
+  ],
+  "plugin": "none"
+}
