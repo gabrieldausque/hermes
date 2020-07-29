@@ -5,7 +5,7 @@ export class MemoryStorage {
     this.innerStorage = [];
   }
 
-  private innerStorage:ProjectEntity[];
+  innerStorage:ProjectEntity[];
   get(id:string):NullableProject{
     if(this.exists(id)){
       return this.innerStorage[this.innerStorage.findIndex(value => value.id === id)];

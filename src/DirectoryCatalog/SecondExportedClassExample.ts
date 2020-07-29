@@ -9,8 +9,16 @@ export class SecondExportedClassExample
       isShared:false
     }
   ];
+
+  private firstName: string;
+  private lastName: string;
+
+  constructor(firstName:string='test', lastName:string='TEST') {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
   helloWorld(): string {
-    return "Hello world from second";
+    return `Hello ${this.firstName} ${this.lastName} from second`;
   }
 }
 

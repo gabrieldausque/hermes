@@ -42,26 +42,6 @@ app.platform = new Platform(configurationObject);
 
 const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
 
-// The composition experiment ...
-try {
-  // load class dynamically from a directory
-  const test = globalInstancesFactory.getInstanceFromModule('MemoryStorage', __dirname + '/services/backend/MemoryStorage');
-  const isMemoryStorage = test instanceof MemoryStorage;
-  // load class from exported class in catalog
-  globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/DirectoryCatalog');
-  const noCtorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithNoCtorArgs', __dirname + '/services/runtimeLoadedService/ServiceWithNoCtorArgs');
-  const ctorArgsService = globalInstancesFactory.getInstanceFromModule('ServiceWithCtorArgs', __dirname + '/services/runtimeLoadedService/ServiceWithCtorArgs', 'Gabriel', 'DAUSQUE-JOUAN');
-  console.log(noCtorArgsService.helloWorld());
-  console.log(ctorArgsService.helloWorld());
-  // the objectives is to do this from a configuration file ...
-  const firstCreatedFromCatalog = globalInstancesFactory.getInstanceFromCatalogs('IExportedClass', 'First') ;
-  const secondCreatedFromCatalog = globalInstancesFactory.getInstanceFromCatalogs('IExportedClass', 'Second');
-  console.log(firstCreatedFromCatalog.helloWorld());
-  console.log(secondCreatedFromCatalog.helloWorld());
-}catch(error) {
-  console.error(error);
-}
-
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());
 app.use(cors());

@@ -6,7 +6,7 @@ export class ExportedClassExample
     {
       contractType:'IExportedClass',
       contractName:'First',
-      isShared:false
+      isShared:true
     }
   ];
 

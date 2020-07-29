@@ -100,7 +100,7 @@ ___
 
 ▸ **addSharedInstance**(`exportedClass`: [AutoDescribed](../interfaces/autodescribed.md), `createdInstance`: any): *void*
 
-Defined in ExportCatalog.ts:137
+Defined in ExportCatalog.ts:139
 
 Add a shared instance to the current catalog for all specified exported class
 
@@ -119,7 +119,7 @@ ___
 
 ▸ **getExport**(`contractType`: string, `contractName`: string, ...`constructorArgs`: any): *any*
 
-Defined in ExportCatalog.ts:96
+Defined in ExportCatalog.ts:98
 
 return an instance of the exported class corresponding to the specified contract type and name. Can be also a shared instance.
 
@@ -139,7 +139,7 @@ ___
 
 ▸ **hasExport**(`contractType`: string, `contractName`: string): *boolean*
 
-Defined in ExportCatalog.ts:86
+Defined in ExportCatalog.ts:88
 
 Check if this catalog contains a specific export
 

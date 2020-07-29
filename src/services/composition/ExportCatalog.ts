@@ -71,10 +71,12 @@ export class ExportCatalog {
   addExportedType(exportedClass:AutoDescribed) {
     const classMetadata = exportedClass.metadata;
     classMetadata.forEach((data) => {
-      if(!this.exportedTypes[data.contractType]) {
-        this.exportedTypes[data.contractType] = {};
+      if(data.contractType && data.contractName) {
+        if(!this.exportedTypes[data.contractType]) {
+          this.exportedTypes[data.contractType] = {};
+        }
+        this.exportedTypes[data.contractType][data.contractName] = exportedClass;
       }
-      this.exportedTypes[data.contractType][data.contractName] = exportedClass;
     })
   }
 
@@ -136,7 +138,7 @@ export class ExportCatalog {
    */
   addSharedInstance(exportedClass: AutoDescribed, createdInstance: any) {
     exportedClass.metadata.forEach((metadata) => {
-      if(metadata instanceof ExportMetadata){
+      if(metadata.contractType && metadata.contractName){
         if(!this.sharedInstances[metadata.contractType])
           this.sharedInstances[metadata.contractType] = {};
         if(!this.sharedInstances[metadata.contractType][metadata.contractName])

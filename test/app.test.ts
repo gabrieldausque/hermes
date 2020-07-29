@@ -13,10 +13,6 @@ globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/molecul
 globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/propertyLoader');
 globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/runtimeLoadedService');
 globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/topic');
-const test = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
-console.log("Is test null ? " + (test === null))
-console.log(__dirname);
-console.log('Directory catalog root is ' + globalInstancesFactory.directoryCatalogRoot);
 
 import app from '../src/app';
 
@@ -31,12 +27,12 @@ const getUrl = (pathname?: string) => url.format({
 describe('Feathers application tests', () => {
   let server: Server;
 
-  before(function(done) {
+  before((done) => {
     server = app.listen(port);
     server.once('listening', () => done());
   });
 
-  after(function(done) {
+  after((done) => {
     server.close(done);
   });
 
@@ -46,7 +42,7 @@ describe('Feathers application tests', () => {
     assert.ok(data.indexOf('<html lang="en">') !== -1);
   });
 
-  describe('404', function() {
+  describe('404', () => {
     it('shows a 404 HTML page', async () => {
       try {
         await axios.get(getUrl('path/to/nowhere'), {

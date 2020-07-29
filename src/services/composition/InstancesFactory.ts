@@ -54,7 +54,7 @@ export class InstancesFactory {
    */
   getInstanceFromModule(exportName:string, modulePath:string, ...constructorArgs:any):any {
      const serviceRealPath = path.resolve(this.directoryCatalogRoot, modulePath);
-     console.debug('Getting service from path : ' + serviceRealPath);
+     console.debug('Getting instance from path : ' + serviceRealPath);
      const importedModule = require(serviceRealPath);
      if(Array.isArray(constructorArgs)) {
        return new importedModule[exportName](...constructorArgs);
