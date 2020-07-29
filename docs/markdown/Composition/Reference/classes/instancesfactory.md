@@ -2,6 +2,9 @@
 
 # Class: InstancesFactory
 
+Factory to discover, import and create any object instance based on contract type (aka interface) and name (a key to distinguish
+each implementation) to compose easily an object or a service
+
 ## Hierarchy
 
 * **InstancesFactory**
@@ -29,7 +32,9 @@
 
 \+ **new InstancesFactory**(`directoryCatalogRoot?`: string): *[InstancesFactory](instancesfactory.md)*
 
-Defined in InstancesFactory.ts:6
+Defined in InstancesFactory.ts:17
+
+Create instance of a factory
 
 **Parameters:**
 
@@ -45,7 +50,9 @@ Name | Type |
 
 • **catalogs**: *[ExportCatalog](exportcatalog.md)[]*
 
-Defined in InstancesFactory.ts:5
+Defined in InstancesFactory.ts:13
+
+The list of catalogs that contains exportable class
 
 ___
 
@@ -53,7 +60,9 @@ ___
 
 • **directoryCatalogRoot**: *string*
 
-Defined in InstancesFactory.ts:6
+Defined in InstancesFactory.ts:17
+
+The default root path from which to load catalogs.
 
 ## Methods
 
@@ -61,15 +70,17 @@ Defined in InstancesFactory.ts:6
 
 ▸ **getInstanceFromCatalogs**(`contractType`: string, `contractName`: string, ...`constructorArgs`: any): *any*
 
-Defined in InstancesFactory.ts:36
+Defined in InstancesFactory.ts:73
+
+Get an instance from a discovered catalog.
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`contractType` | string |
-`contractName` | string |
-`...constructorArgs` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`contractType` | string | the contract type that you want to get |
+`contractName` | string | the contract name related to the contract type that you want to get |
+`...constructorArgs` | any | args to be passed to the constructors  |
 
 **Returns:** *any*
 
@@ -79,15 +90,17 @@ ___
 
 ▸ **getInstanceFromModule**(`exportName`: string, `modulePath`: string, ...`constructorArgs`: any): *any*
 
-Defined in InstancesFactory.ts:25
+Defined in InstancesFactory.ts:55
+
+Create instance from a node module
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`exportName` | string |
-`modulePath` | string |
-`...constructorArgs` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`exportName` | string | the export name to create from |
+`modulePath` | string | the path to the module |
+`...constructorArgs` | any | args to be passed to the constructors  |
 
 **Returns:** *any*
 
@@ -97,13 +110,15 @@ ___
 
 ▸ **loadExportedClassesFromDirectory**(`directoryCatalogRoot`: string, `isAbsolutePath`: boolean): *void*
 
-Defined in InstancesFactory.ts:15
+Defined in InstancesFactory.ts:38
+
+Discover classes from a specified directory
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`directoryCatalogRoot` | string | - |
-`isAbsolutePath` | boolean | false |
+Name | Type | Default | Description |
+------ | ------ | ------ | ------ |
+`directoryCatalogRoot` | string | - | The path to the catalog to discover. Can be absolute path, if you want to discover a catalog not under the default directory catalog root |
+`isAbsolutePath` | boolean | false | - |
 
 **Returns:** *void*

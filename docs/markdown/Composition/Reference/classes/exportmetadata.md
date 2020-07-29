@@ -2,6 +2,8 @@
 
 # Class: ExportMetadata
 
+A metadata to be worn by any class that allow instance factory to discover a class and add it to an export catalog
+
 ## Hierarchy
 
 * **ExportMetadata**
@@ -21,7 +23,10 @@
 
 • **constructorInjectedArgs**? : *any[]*
 
-Defined in ExportMetadata.ts:5
+Defined in ExportMetadata.ts:21
+
+If the class need to import some component during creation, contains the list of couple contract type/name to inject
+to the constructor
 
 ___
 
@@ -29,7 +34,9 @@ ___
 
 • **contractName**: *string*
 
-Defined in ExportMetadata.ts:4
+Defined in ExportMetadata.ts:16
+
+The contract name identifier. a key to distinguish underlying implementation of the contract type.
 
 ___
 
@@ -37,7 +44,9 @@ ___
 
 • **contractType**: *string*
 
-Defined in ExportMetadata.ts:3
+Defined in ExportMetadata.ts:12
+
+The contract type identifier. Prefer the interface name
 
 ___
 
@@ -45,4 +54,6 @@ ___
 
 • **isShared**: *boolean*
 
-Defined in ExportMetadata.ts:2
+Defined in ExportMetadata.ts:8
+
+Indicates to the factory if the exported instance is shared, aka is a singleton

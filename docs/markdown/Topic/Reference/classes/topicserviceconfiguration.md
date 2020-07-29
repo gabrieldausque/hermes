@@ -72,13 +72,15 @@ indicate if the cluster needs to be initialized
 
 ▸ **getRandomHost**(`excludeHosts?`: string[]): *string*
 
-Defined in configuration/TopicServiceConfiguration.ts:29
+Defined in configuration/TopicServiceConfiguration.ts:36
+
+Get a random host from current configuration excluding a list of host
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`excludeHosts?` | string[] |
+Name | Type | Description |
+------ | ------ | ------ |
+`excludeHosts?` | string[] | The list of host to exclude from the list of host to obtain from  |
 
 **Returns:** *string*
 
@@ -88,7 +90,9 @@ ___
 
 ▸ **validate**(): *boolean*
 
-Defined in configuration/TopicServiceConfiguration.ts:25
+Defined in configuration/TopicServiceConfiguration.ts:28
+
+Validate the current configuration
 
 **Returns:** *boolean*
 
@@ -98,12 +102,14 @@ ___
 
 ▸ **load**(`topicServiceConfiguration`: any): *[TopicServiceConfiguration](topicserviceconfiguration.md)‹›*
 
-Defined in configuration/TopicServiceConfiguration.ts:42
+Defined in configuration/TopicServiceConfiguration.ts:53
+
+Load a topic service configuration from a json object
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`topicServiceConfiguration` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`topicServiceConfiguration` | any |   |
 
 **Returns:** *[TopicServiceConfiguration](topicserviceconfiguration.md)‹›*

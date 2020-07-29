@@ -22,10 +22,17 @@ export class TopicServiceConfiguration {
     this.standAlone = true;
   }
 
+  /**
+   * Validate the current configuration
+   */
   validate() {
     return this.host && Array.isArray(this.clusterNodes) && (this.clusterNodes.length > 0);
   }
 
+  /**
+   * Get a random host from current configuration excluding a list of host
+   * @param excludeHosts The list of host to exclude from the list of host to obtain from
+   */
   getRandomHost(excludeHosts?: string[]) {
     if(!Array.isArray(excludeHosts)){
       excludeHosts = [];
@@ -39,6 +46,10 @@ export class TopicServiceConfiguration {
     }
   }
 
+  /**
+   * Load a topic service configuration from a json object
+   * @param topicServiceConfiguration
+   */
   static load(topicServiceConfiguration: any) {
     const configurationToReturn = new TopicServiceConfiguration();
     if(topicServiceConfiguration){

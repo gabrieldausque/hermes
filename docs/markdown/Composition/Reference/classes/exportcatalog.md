@@ -2,6 +2,8 @@
 
 # Class: ExportCatalog
 
+A catalog that contains exported class.
+
 ## Hierarchy
 
 * **ExportCatalog**
@@ -32,7 +34,9 @@
 
 \+ **new ExportCatalog**(`factoryOwner?`: [InstancesFactory](instancesfactory.md)): *[ExportCatalog](exportcatalog.md)*
 
-Defined in ExportCatalog.ts:9
+Defined in ExportCatalog.ts:24
+
+Create new catalog instance
 
 **Parameters:**
 
@@ -48,7 +52,9 @@ Name | Type |
 
 • **exportedTypes**: *object*
 
-Defined in ExportCatalog.ts:7
+Defined in ExportCatalog.ts:14
+
+Hashset of exported class indexed by contract type/contract name
 
 ___
 
@@ -56,7 +62,9 @@ ___
 
 • **factoryOwner**: *[InstancesFactory](instancesfactory.md)*
 
-Defined in ExportCatalog.ts:9
+Defined in ExportCatalog.ts:24
+
+The Instances factory that own this catalog, used for injection
 
 ___
 
@@ -64,21 +72,25 @@ ___
 
 • **sharedInstances**: *object*
 
-Defined in ExportCatalog.ts:8
+Defined in ExportCatalog.ts:19
+
+Hashset of shared instance of exported class indexed by contract type/contract name
 
 ## Methods
 
 ###  addExportedType
 
-▸ **addExportedType**(`exportedClass`: [IExportableClass](../interfaces/iexportableclass.md)): *void*
+▸ **addExportedType**(`exportedClass`: [AutoDescribed](../interfaces/autodescribed.md)): *void*
 
-Defined in ExportCatalog.ts:41
+Defined in ExportCatalog.ts:71
+
+Add an AutoDescribed class in this catalog for the specified contract types and names (can be multiple)
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`exportedClass` | [IExportableClass](../interfaces/iexportableclass.md) |
+Name | Type | Description |
+------ | ------ | ------ |
+`exportedClass` | [AutoDescribed](../interfaces/autodescribed.md) |   |
 
 **Returns:** *void*
 
@@ -86,16 +98,18 @@ ___
 
 ###  addSharedInstance
 
-▸ **addSharedInstance**(`exportedClass`: any, `createdInstance`: any): *void*
+▸ **addSharedInstance**(`exportedClass`: [AutoDescribed](../interfaces/autodescribed.md), `createdInstance`: any): *void*
 
-Defined in ExportCatalog.ts:91
+Defined in ExportCatalog.ts:137
+
+Add a shared instance to the current catalog for all specified exported class
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`exportedClass` | any |
-`createdInstance` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`exportedClass` | [AutoDescribed](../interfaces/autodescribed.md) | the corresponding exported class |
+`createdInstance` | any | the shared instance  |
 
 **Returns:** *void*
 
@@ -105,15 +119,17 @@ ___
 
 ▸ **getExport**(`contractType`: string, `contractName`: string, ...`constructorArgs`: any): *any*
 
-Defined in ExportCatalog.ts:55
+Defined in ExportCatalog.ts:96
+
+return an instance of the exported class corresponding to the specified contract type and name. Can be also a shared instance.
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`contractType` | string |
-`contractName` | string |
-`...constructorArgs` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`contractType` | string | the interface to get an instance for |
+`contractName` | string | the specific implementation label to get an instance for |
+`...constructorArgs` | any | - |
 
 **Returns:** *any*
 
@@ -123,14 +139,16 @@ ___
 
 ▸ **hasExport**(`contractType`: string, `contractName`: string): *boolean*
 
-Defined in ExportCatalog.ts:51
+Defined in ExportCatalog.ts:86
+
+Check if this catalog contains a specific export
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`contractType` | string |
-`contractName` | string |
+Name | Type | Description |
+------ | ------ | ------ |
+`contractType` | string | the contract type to test |
+`contractName` | string | the contract name for the specified contract type to test  |
 
 **Returns:** *boolean*
 
@@ -140,12 +158,14 @@ ___
 
 ▸ **loadFromDirectory**(`directoryCatalogPath`: string): *void*
 
-Defined in ExportCatalog.ts:17
+Defined in ExportCatalog.ts:42
+
+Discover all exported class from a specified directory
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`directoryCatalogPath` | string |
+Name | Type | Description |
+------ | ------ | ------ |
+`directoryCatalogPath` | string |   |
 
 **Returns:** *void*

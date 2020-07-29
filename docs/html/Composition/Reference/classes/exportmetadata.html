@@ -66,6 +66,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A metadata to be worn by any class that allow instance factory to discover a class and add it to an export catalog</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -98,9 +105,15 @@
 					<div class="tsd-signature tsd-kind-icon">constructor<wbr>Injected<wbr>Args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ExportMetadata.ts:5</li>
+							<li>Defined in ExportMetadata.ts:21</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If the class need to import some component during creation, contains the list of couple contract type/name to inject
+							to the constructor</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="contractname" class="tsd-anchor"></a>
@@ -108,9 +121,14 @@
 					<div class="tsd-signature tsd-kind-icon">contract<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ExportMetadata.ts:4</li>
+							<li>Defined in ExportMetadata.ts:16</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The contract name identifier. a key to distinguish underlying implementation of the contract type.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="contracttype" class="tsd-anchor"></a>
@@ -118,9 +136,14 @@
 					<div class="tsd-signature tsd-kind-icon">contract<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ExportMetadata.ts:3</li>
+							<li>Defined in ExportMetadata.ts:12</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The contract type identifier. Prefer the interface name</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="isshared" class="tsd-anchor"></a>
@@ -128,9 +151,14 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Shared<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ExportMetadata.ts:2</li>
+							<li>Defined in ExportMetadata.ts:8</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Indicates to the factory if the exported instance is shared, aka is a singleton</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -172,7 +200,7 @@
 						<a href="instancesfactory.html" class="tsd-kind-icon">Instances<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/iexportableclass.html" class="tsd-kind-icon">IExportable<wbr>Class</a>
+						<a href="../interfaces/autodescribed.html" class="tsd-kind-icon">Auto<wbr>Described</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#globalinstancesfactory" class="tsd-kind-icon">global<wbr>Instances<wbr>Factory</a>

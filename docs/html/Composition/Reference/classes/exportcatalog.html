@@ -66,6 +66,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A catalog that contains exported class.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -117,9 +124,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in ExportCatalog.ts:9</li>
+									<li>Defined in ExportCatalog.ts:24</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create new catalog instance</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -139,9 +151,14 @@
 					<div class="tsd-signature tsd-kind-icon">exported<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ExportCatalog.ts:7</li>
+							<li>Defined in ExportCatalog.ts:14</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Hashset of exported class indexed by contract type/contract name</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="factoryowner" class="tsd-anchor"></a>
@@ -149,9 +166,14 @@
 					<div class="tsd-signature tsd-kind-icon">factory<wbr>Owner<span class="tsd-signature-symbol">:</span> <a href="instancesfactory.html" class="tsd-signature-type">InstancesFactory</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ExportCatalog.ts:9</li>
+							<li>Defined in ExportCatalog.ts:24</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The Instances factory that own this catalog, used for injection</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="sharedinstances" class="tsd-anchor"></a>
@@ -159,9 +181,14 @@
 					<div class="tsd-signature tsd-kind-icon">shared<wbr>Instances<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ExportCatalog.ts:8</li>
+							<li>Defined in ExportCatalog.ts:19</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Hashset of shared instance of exported class indexed by contract type/contract name</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -170,19 +197,26 @@
 					<a name="addexportedtype" class="tsd-anchor"></a>
 					<h3>add<wbr>Exported<wbr>Type</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Exported<wbr>Type<span class="tsd-signature-symbol">(</span>exportedClass<span class="tsd-signature-symbol">: </span><a href="../interfaces/iexportableclass.html" class="tsd-signature-type">IExportableClass</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Exported<wbr>Type<span class="tsd-signature-symbol">(</span>exportedClass<span class="tsd-signature-symbol">: </span><a href="../interfaces/autodescribed.html" class="tsd-signature-type">AutoDescribed</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in ExportCatalog.ts:41</li>
+									<li>Defined in ExportCatalog.ts:71</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add an AutoDescribed class in this catalog for the specified contract types and names (can be multiple)</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>exportedClass: <a href="../interfaces/iexportableclass.html" class="tsd-signature-type">IExportableClass</a></h5>
+									<h5>exportedClass: <a href="../interfaces/autodescribed.html" class="tsd-signature-type">AutoDescribed</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -193,22 +227,33 @@
 					<a name="addsharedinstance" class="tsd-anchor"></a>
 					<h3>add<wbr>Shared<wbr>Instance</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Shared<wbr>Instance<span class="tsd-signature-symbol">(</span>exportedClass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, createdInstance<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Shared<wbr>Instance<span class="tsd-signature-symbol">(</span>exportedClass<span class="tsd-signature-symbol">: </span><a href="../interfaces/autodescribed.html" class="tsd-signature-type">AutoDescribed</a>, createdInstance<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in ExportCatalog.ts:91</li>
+									<li>Defined in ExportCatalog.ts:137</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add a shared instance to the current catalog for all specified exported class</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>exportedClass: <span class="tsd-signature-type">any</span></h5>
+									<h5>exportedClass: <a href="../interfaces/autodescribed.html" class="tsd-signature-type">AutoDescribed</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the corresponding exported class</p>
+									</div>
 								</li>
 								<li>
 									<h5>createdInstance: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the shared instance</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -225,16 +270,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in ExportCatalog.ts:55</li>
+									<li>Defined in ExportCatalog.ts:96</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>return an instance of the exported class corresponding to the specified contract type and name. Can be also a shared instance.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>contractType: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the interface to get an instance for</p>
+									</div>
 								</li>
 								<li>
 									<h5>contractName: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the specific implementation label to get an instance for</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>constructorArgs: <span class="tsd-signature-type">any</span></h5>
@@ -254,16 +310,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in ExportCatalog.ts:51</li>
+									<li>Defined in ExportCatalog.ts:86</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Check if this catalog contains a specific export</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>contractType: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the contract type to test</p>
+									</div>
 								</li>
 								<li>
 									<h5>contractName: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the contract name for the specified contract type to test</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -280,13 +347,20 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in ExportCatalog.ts:17</li>
+									<li>Defined in ExportCatalog.ts:42</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Discover all exported class from a specified directory</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>directoryCatalogPath: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -348,7 +422,7 @@
 						<a href="instancesfactory.html" class="tsd-kind-icon">Instances<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/iexportableclass.html" class="tsd-kind-icon">IExportable<wbr>Class</a>
+						<a href="../interfaces/autodescribed.html" class="tsd-kind-icon">Auto<wbr>Described</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#globalinstancesfactory" class="tsd-kind-icon">global<wbr>Instances<wbr>Factory</a>
