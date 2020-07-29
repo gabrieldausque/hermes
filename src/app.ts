@@ -37,7 +37,7 @@ const configurationObject = {
 };
 
 // load class from constructed catalog (Work in progress)
-globalInstancesFactory.loadExportedClassesFromDirectory('./services/');
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
 app.platform = new Platform(configurationObject);
 
 const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
