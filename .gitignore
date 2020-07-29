@@ -118,3 +118,5 @@ package-lock.json
 /examples/AConsoleChatApplication/lib/
 report*
 
+/junit.xml
+/cobertura.xml

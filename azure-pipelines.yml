@@ -23,6 +23,36 @@ steps:
     npm run buildCompositionPackage
   displayName: 'npm install and build Composition package'
 
+- script: |
+    $(Build.Repository.LocalPath)/src/services/topic/
+    npm install
+    cd $(Build.Repository.LocalPath)
+    npm run buildTopicPackage
+  displayName: 'npm install and build Topic Package'
+
+- task: Npm@1
+  inputs:
+    command: custom
+    customCommand: run test
+  displayName: Running tests
+  continueOnError: true
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/junit.xml'
+    mergeTestResults: true
+    testRunTitle: 'All tests results'
+  displayName: Publish tests results
+
+- task: PublishCodeCoverageResults@1
+  condition: succeededOrFailed()
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '**/cobertura.xml'
+  displayName: Publish code coverage
+
 - task: Npm@1
   displayName: 'Publish Composition to azuredevops Hermes/hermes feed'
   condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishComposition'],'true'))
@@ -31,13 +61,6 @@ steps:
     publishRegistry: useFeed
     publishFeed: Hermes/hermes
     workingDir: $(Build.Repository.LocalPath)/src/services/composition/
-
-- script: |
-    $(Build.Repository.LocalPath)/src/services/topic/
-    npm install
-    cd $(Build.Repository.LocalPath)
-    npm run buildTopicPackage
-  displayName: 'npm install and build Topic Package'
 
 - task: Npm@1
   displayName: 'Publish topic to azuredevops Hermes/hermes feed'

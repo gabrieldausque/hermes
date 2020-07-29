@@ -1,3 +1,8 @@
+// @ts-ignore
+import disableConsole from '../disablelog';
+disableConsole();
+
+
 import assert from 'assert';
 import app from '../../src/app';
 

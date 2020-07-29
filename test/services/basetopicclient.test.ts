@@ -1,7 +1,13 @@
+// @ts-ignore
+import disableConsole from '../disablelog';
+disableConsole();
+
 import assert from 'assert';
 import app from '../../src/app';
 import {MemoryTopicServiceClient} from "../../src/services/topic/clients/MemoryTopicServiceClient";
 import {TopicService} from "../../src/services/topic";
+
+
 
 describe('TopicService Tests', () => {
   it('should receive a message when subscribing to simple topic', (cb) => {

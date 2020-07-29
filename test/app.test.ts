@@ -1,3 +1,6 @@
+import disableConsole from './disablelog';
+disableConsole();
+
 import assert from 'assert';
 import { Server } from 'http';
 import url from 'url';

@@ -24,10 +24,11 @@
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "test": "npm run compile && npm run mocha",
+    "test": "npm run compile && npm run mocha && npm run coverage",
     "dev": "npm run compile && ts-node-dev --no-notify src/",
     "start": "npm run compile && node lib",
-    "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit",
+    "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json",
+    "coverage": "NODE_ENV=test ts-mocha \"test/**/*.ts\" --recursive --exit --reporter mocha-cobertura-reporter > cobertura.xml",
     "compile": "shx rm -rf lib/ && tsc && node_modules/.bin/ncp src/services/topic/browser/ public/lib/topic/",
     "docs": "npm run compile && npm run topicdocs && npm run compositiondocs",
     "topicdocs": "./node_modules/.bin/typedoc --options typedoc-topic-html.json src/services/topic && ./node_modules/.bin/typedoc --options typedoc-topic-md.json src/services/topic",
@@ -77,6 +78,9 @@
     "@types/chai": "^4.2.12",
     "@types/serve-favicon": "^2.5.0",
     "axios": "^0.19.2",
+    "mocha-junit-reporter": "^2.0.0",
+    "mocha-cobertura-reporter": "^1.0.4",
+    "mocha-multi-reporters": "^1.1.7",
     "mocha": "^7.1.1",
     "chai": "^4.2.0",
     "ncp": "^2.0.0",

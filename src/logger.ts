@@ -1,7 +1,7 @@
 import { createLogger, format, transports } from 'winston';
 
 // Configure the Winston logger. For the complete documentation see https://github.com/winstonjs/winston
-const logger = createLogger({
+const options = {
   // To see more detailed errors, change this to 'debug'
   level: 'info',
   format: format.combine(
@@ -11,6 +11,13 @@ const logger = createLogger({
   transports: [
     new transports.Console()
   ],
-});
+  silent:false
+}
+
+if(process.env.NODE_ENV === 'test') {
+  options.silent = true
+}
+
+const logger = createLogger();
 
 export default logger;

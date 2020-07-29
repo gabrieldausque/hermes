@@ -1,5 +1,9 @@
+// @ts-ignore
+import disableConsole from '../disablelog';
 import {expect} from 'chai';
 import { globalInstancesFactory, InstancesFactory } from '../../src/services/composition';
+
+disableConsole();
 
 describe('Composition Frameworks test', () => {
 
