@@ -18,7 +18,7 @@ export class InstancesFactory {
 
   /**
    * Create instance of a factory
-   * @param [directoryCatalogRoot=path.dirname(require.main.filename)] - The path of the current running application the catalogs directory root path
+   * @param directoryCatalogRoot=path.dirname(require.main.filename) The path of the current running application the catalogs directory root path
    */
   constructor(directoryCatalogRoot?:string) {
       if(!directoryCatalogRoot) {
@@ -31,9 +31,9 @@ export class InstancesFactory {
 
   /**
    * Discover classes from a specified directory
-   * @param directoryCatalogRoot - The path to the catalog to discover. Can be absolute path, if you want to discover a
+   * @param directoryCatalogRoot The path to the catalog to discover. Can be absolute path, if you want to discover a
    * catalog not under the default directory catalog root
-   * @param [isAbsolutePath=false] - must be set to true if the directoryCatalogRoot is an absolute path.
+   * @param isAbsolutePath must be set to true if the directoryCatalogRoot is an absolute path.
    */
   loadExportedClassesFromDirectory(directoryCatalogRoot:string, isAbsolutePath:boolean=false) {
       const catalog = new ExportCatalog(this);
@@ -48,9 +48,9 @@ export class InstancesFactory {
 
   /**
    * Create instance from a node module
-   * @param exportName - the export name to create from
-   * @param modulePath - the path to the module
-   * @param constructorArgs - args to be passed to the constructors
+   * @param exportName the export name to create from
+   * @param modulePath the path to the module
+   * @param constructorArgs args to be passed to the constructors
    */
   getInstanceFromModule(exportName:string, modulePath:string, ...constructorArgs:any):any {
      const serviceRealPath = path.resolve(this.directoryCatalogRoot, modulePath);
@@ -66,9 +66,9 @@ export class InstancesFactory {
 
   /**
    * Get an instance from a discovered catalog.
-   * @param contractType - the contract type that you want to get
-   * @param contractName - the contract name related to the contract type that you want to get
-   * @param constructorArgs - args to be passed to the constructors
+   * @param contractType the contract type that you want to get
+   * @param contractName the contract name related to the contract type that you want to get
+   * @param constructorArgs args to be passed to the constructors
    */
   getInstanceFromCatalogs(contractType:string, contractName:string, ...constructorArgs:any):any {
     let createdInstance = null;

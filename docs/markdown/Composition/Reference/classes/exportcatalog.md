@@ -40,9 +40,9 @@ Create new catalog instance
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`factoryOwner?` | [InstancesFactory](instancesfactory.md) |
+Name | Type | Description |
+------ | ------ | ------ |
+`factoryOwner?` | [InstancesFactory](instancesfactory.md) | the factory that will own the catalog, used for complex composition scenario  |
 
 **Returns:** *[ExportCatalog](exportcatalog.md)*
 
@@ -90,7 +90,7 @@ Add an AutoDescribed class in this catalog for the specified contract types and 
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`exportedClass` | [AutoDescribed](../interfaces/autodescribed.md) |   |
+`exportedClass` | [AutoDescribed](../interfaces/autodescribed.md) | exported class to add  |
 
 **Returns:** *void*
 
@@ -129,7 +129,7 @@ Name | Type | Description |
 ------ | ------ | ------ |
 `contractType` | string | the interface to get an instance for |
 `contractName` | string | the specific implementation label to get an instance for |
-`...constructorArgs` | any | - |
+`...constructorArgs` | any | the args the constructors needs  |
 
 **Returns:** *any*
 
@@ -166,6 +166,6 @@ Discover all exported class from a specified directory
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`directoryCatalogPath` | string |   |
+`directoryCatalogPath` | string | directory from which to load exported class catalog  |
 
 **Returns:** *void*

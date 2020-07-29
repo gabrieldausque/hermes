@@ -25,7 +25,7 @@ export class ExportCatalog {
 
   /**
    * Create new catalog instance
-   * @param [factoryOwner] - the factory that will own the catalog, used for complex composition scenario
+   * @param factoryOwner the factory that will own the catalog, used for complex composition scenario
    */
   constructor(factoryOwner?:InstancesFactory){
     this.exportedTypes = {};
@@ -37,7 +37,7 @@ export class ExportCatalog {
 
   /**
    * Discover all exported class from a specified directory
-   * @param directoryCatalogPath
+   * @param directoryCatalogPath directory from which to load exported class catalog
    */
   loadFromDirectory(directoryCatalogPath:string){
       fs.readdirSync(directoryCatalogPath).forEach((fileOrDirectoryName) => {
@@ -66,7 +66,7 @@ export class ExportCatalog {
 
   /**
    * Add an AutoDescribed class in this catalog for the specified contract types and names (can be multiple)
-   * @param exportedClass
+   * @param exportedClass exported class to add
    */
   addExportedType(exportedClass:AutoDescribed) {
     const classMetadata = exportedClass.metadata;
@@ -82,8 +82,8 @@ export class ExportCatalog {
 
   /**
    * Check if this catalog contains a specific export
-   * @param contractType - the contract type to test
-   * @param contractName - the contract name for the specified contract type to test
+   * @param contractType the contract type to test
+   * @param contractName the contract name for the specified contract type to test
    */
   hasExport(contractType: string, contractName: string):boolean {
     return typeof this.exportedTypes[contractType] !== 'undefined' && typeof this.exportedTypes[contractType][contractName] !== 'undefined';
@@ -91,9 +91,9 @@ export class ExportCatalog {
 
   /**
    * return an instance of the exported class corresponding to the specified contract type and name. Can be also a shared instance.
-   * @param contractType - the interface to get an instance for
-   * @param contractName - the specific implementation label to get an instance for
-   * @param [constructorArgs] - the args the constructors needs
+   * @param contractType the interface to get an instance for
+   * @param contractName the specific implementation label to get an instance for
+   * @param constructorArgs the args the constructors needs
    */
   getExport(contractType: string, contractName: string, ...constructorArgs:any) {
 
@@ -133,8 +133,8 @@ export class ExportCatalog {
 
   /**
    * Add a shared instance to the current catalog for all specified exported class
-   * @param exportedClass - the corresponding exported class
-   * @param createdInstance - the shared instance
+   * @param exportedClass the corresponding exported class
+   * @param createdInstance the shared instance
    */
   addSharedInstance(exportedClass: AutoDescribed, createdInstance: any) {
     exportedClass.metadata.forEach((metadata) => {

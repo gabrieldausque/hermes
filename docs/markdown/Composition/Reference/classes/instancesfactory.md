@@ -119,6 +119,6 @@ Discover classes from a specified directory
 Name | Type | Default | Description |
 ------ | ------ | ------ | ------ |
 `directoryCatalogRoot` | string | - | The path to the catalog to discover. Can be absolute path, if you want to discover a catalog not under the default directory catalog root |
-`isAbsolutePath` | boolean | false | - |
+`isAbsolutePath` | boolean | false | must be set to true if the directoryCatalogRoot is an absolute path.  |
 
 **Returns:** *void*
