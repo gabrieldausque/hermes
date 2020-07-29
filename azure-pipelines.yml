@@ -15,20 +15,10 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- script: |
-    npm install
-    cd $(Build.Repository.LocalPath)/src/services/composition/
-    npm install
-    cd $(Build.Repository.LocalPath)
-    npm run buildCompositionPackage
-  displayName: 'npm install and build Composition package'
-
-- script: |
-    $(Build.Repository.LocalPath)/src/services/topic/
-    npm install
-    cd $(Build.Repository.LocalPath)
-    npm run buildTopicPackage
-  displayName: 'npm install and build Topic Package'
+- task: Npm@1
+  inputs:
+    command: install
+  displayName: npm install before test
 
 - task: Npm@1
   inputs:
@@ -52,6 +42,21 @@ steps:
     codeCoverageTool: Cobertura
     summaryFileLocation: '**/cobertura.xml'
   displayName: Publish code coverage
+
+- script: |
+    npm install
+    cd $(Build.Repository.LocalPath)/src/services/composition/
+    npm install
+    cd $(Build.Repository.LocalPath)
+    npm run buildCompositionPackage
+  displayName: 'npm install and build Composition package'
+
+- script: |
+    $(Build.Repository.LocalPath)/src/services/topic/
+    npm install
+    cd $(Build.Repository.LocalPath)
+    npm run buildTopicPackage
+  displayName: 'npm install and build Topic Package'
 
 - task: Npm@1
   displayName: 'Publish Composition to azuredevops Hermes/hermes feed'
