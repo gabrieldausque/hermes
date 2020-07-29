@@ -18,7 +18,8 @@ export class InstancesFactory {
 
   /**
    * Create instance of a factory
-   * @param directoryCatalogRoot=path.dirname(require.main.filename) The path of the current running application the catalogs directory root path
+   * @param directoryCatalogRoot the path of the current running application the catalogs directory root path. Default to
+   * path.dirname(require.main.filename)
    */
   constructor(directoryCatalogRoot?:string) {
       if(!directoryCatalogRoot) {

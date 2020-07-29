@@ -38,9 +38,9 @@ Create instance of a factory
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`directoryCatalogRoot?` | string |
+Name | Type | Description |
+------ | ------ | ------ |
+`directoryCatalogRoot?` | string | the path of the current running application the catalogs directory root path. Default to path.dirname(require.main.filename)  |
 
 **Returns:** *[InstancesFactory](instancesfactory.md)*
 
@@ -70,7 +70,7 @@ The default root path from which to load catalogs.
 
 ▸ **getInstanceFromCatalogs**(`contractType`: string, `contractName`: string, ...`constructorArgs`: any): *any*
 
-Defined in InstancesFactory.ts:73
+Defined in InstancesFactory.ts:74
 
 Get an instance from a discovered catalog.
 
@@ -90,7 +90,7 @@ ___
 
 ▸ **getInstanceFromModule**(`exportName`: string, `modulePath`: string, ...`constructorArgs`: any): *any*
 
-Defined in InstancesFactory.ts:55
+Defined in InstancesFactory.ts:56
 
 Create instance from a node module
 
@@ -110,7 +110,7 @@ ___
 
 ▸ **loadExportedClassesFromDirectory**(`directoryCatalogRoot`: string, `isAbsolutePath`: boolean): *void*
 
-Defined in InstancesFactory.ts:38
+Defined in InstancesFactory.ts:39
 
 Discover classes from a specified directory
 

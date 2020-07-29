@@ -24,6 +24,6 @@
 
 • **globalInstancesFactory**: *[InstancesFactory](classes/instancesfactory.md)‹›* = new InstancesFactory()
 
-Defined in InstancesFactory.ts:88
+Defined in InstancesFactory.ts:89
 
 the global factory that can be used accross all objects of your running application
