@@ -40,7 +40,7 @@ steps:
   condition: succeededOrFailed()
   inputs:
     codeCoverageTool: Cobertura
-    summaryFileLocation: '**/cobertura.xml'
+    summaryFileLocation: '**/cobertura-coverage.xml'
   displayName: Publish code coverage
 
 - script: |

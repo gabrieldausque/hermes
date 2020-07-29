@@ -28,7 +28,7 @@
     "dev": "npm run compile && ts-node-dev --no-notify src/",
     "start": "npm run compile && node lib",
     "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json",
-    "coverage": "NODE_ENV=test ts-mocha \"test/**/*.ts\" --recursive --exit --reporter mocha-cobertura-reporter > cobertura.xml",
+    "coverage": "NODE_ENV=test nyc --reporter=cobertura ts-mocha \"test/**/*.ts\" --recursive --exit",
     "compile": "shx rm -rf lib/ && tsc && node_modules/.bin/ncp src/services/topic/browser/ public/lib/topic/",
     "docs": "npm run compile && npm run topicdocs && npm run compositiondocs",
     "topicdocs": "./node_modules/.bin/typedoc --options typedoc-topic-html.json src/services/topic && ./node_modules/.bin/typedoc --options typedoc-topic-md.json src/services/topic",
@@ -93,6 +93,7 @@
     "typedoc": "^0.17.4",
     "typedoc-plugin-markdown": "^2.2.17",
     "typedoc-plugin-markdown-pages": "^0.3.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "nyc": "^15.1.0"
   }
 }
