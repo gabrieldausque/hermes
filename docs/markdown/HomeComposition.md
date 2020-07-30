@@ -7,7 +7,10 @@
 
 The composition of the Hermes project introduce a standard factory pattern in a nodejs server that helps compose an
 application based on metadata worn by any class implementation, and that help developers focus on contract and not on
-implementation
+implementation.
+
+It allows you to develop an application using plugins, making easier the extension of your application by coding only the
+leaf element of your process chain, avoiding the need of any modifications of it.
 
 ## Installation
 
@@ -65,7 +68,7 @@ Replace terms in [] with the right value (don't forget the PAT value encode in b
 
 **<u>NB :</u>** the username to use is indicated in the [official tutorial](https://gdausquepro.visualstudio.com/Hermes/_packaging?_a=connect&feed=hermes)
 
-### Installation for Server side
+### Installation
 
 Run npm command to install dependencies:
 
@@ -73,7 +76,29 @@ Run npm command to install dependencies:
 npm install @hermes/composition --save
 ```
 
-TODO : write a simple way to use it
+Now to compose your application, you will need to load your "plugins" classes from a directory : 
+
+- by using the globalInstancesFactory, can be used as a global factory :
+
+``` ts
+import {globalInstancesFactory} from '@hermes/composition';
+
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
+
+const instance = globalInstancesFactory.getInstanceFromCatalogs('MyContract', 'implementation')
+
+```
+
+- by using your own InstancesFactory, on which you control the exposition scope :
+
+```
+import {InstancesFactory,globalInstancesFactory} from '@hermes/composition';
+
+const factory = new InstancesFactory();
+
+const instance = factory.getInstanceFromCatalogs('MyContract', 'implementation')
+
+```
 
 ## Resources :
 

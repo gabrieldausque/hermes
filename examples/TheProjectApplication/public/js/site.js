@@ -184,4 +184,12 @@ jQuery(document).ready((e) => {
     }, 1000);
   })
 
+  window.search = (query) => {
+    jQuery.get('/search', { keywords: query}).then((data) => {
+      console.log(data);
+    }).catch((error) => {
+      console.error(error);
+    })
+  }
+
 });

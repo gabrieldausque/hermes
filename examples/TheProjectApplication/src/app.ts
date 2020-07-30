@@ -28,9 +28,10 @@ const app: Application = express(feathers());
 // Load app configuration
 app.configure(configuration());
 
-//Initialize globalInstancesFactory
+// Initialize globalInstancesFactory
 globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/topicservice');
 globalInstancesFactory.loadExportedClassesFromDirectory('./services');
+globalInstancesFactory.loadExportedClassesFromDirectory('./plugins');
 
 const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
 app.topicService = globalInstancesFactory.getInstanceFromCatalogs("TopicService", "Default", topicConfiguration);

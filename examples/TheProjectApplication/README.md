@@ -3,12 +3,23 @@
 > This application is an application that allows users to create projects that can contains some 
 child molecules.
 > 
+>To demonstrate the usage of the topic service : 
+>
 > When creating project, two events occured :
 > - all users are notified of the creation of a new object
 > - a background service is informed of the creation of the project and add two random molecules to it
 >
 > The creator of the project is automatically informed when a molecule is added to the created project
 > Other users can follow additions of molecules of created project by other users.
+>
+> [How to integrate topic service](#topicservice)
+>
+> To demonstrate how we can compose a service with plugin :
+>
+> we have created a search service to make search on multiple web search engine
+> which will return the content of the search for all plugins
+>
+> [How to compose a search service](#composedsearch) 
 
 ## Composition of the Application
 
@@ -37,7 +48,7 @@ The following input are chosen :
 ><p><span style="color:green">?</span> Which testing framework do you prefer? <span style="color:blue">Mocha + assert </span></p>
 ><p><span style="color:green">?</span> This app uses authentication <span style="color:blue">No </span></p>
 
-Add the hermes repository, by following [this tutorial](/README#Installation for Server side), and install the @hermes/topicservice package.
+Add the hermes repository, by following [this tutorial](https://gdausquepro.visualstudio.com/Hermes/_wiki/wikis/Hermes%20-%20Code%20HowTo%20and%20Reference/6/HomeTopic), and install the @hermes/topicservice package.
 ``` bash
  npm install @hermes/topicservice --save
 ```
@@ -91,7 +102,7 @@ or
 npm run start
 ```
 
-### Integration of TopicService 
+### <a name="topicservice">Integration of TopicService</a> 
 
 #### In the feather app
 
@@ -320,6 +331,44 @@ To broadcast a message, just publish :
 ``` javascript
 topicClient.publish("#", " a message")
 ```
+### <a name="composeasearch"> How to Compose a search service using plugins ? </a>
+> usage of composition framework for a plugin extensible service
+
+In this example, we will create a search service to make search on multiple web search engine (We will use Qwant and DuckDuckgo api).
+
+#### Definitions
+
+We will consider a plugin as a class which implements a specific interface, a contract type, to execute a specific action, and that has a 
+unique label, a contract name, to identify it.
+
+#### Prerequire sites
+
+Having installed the @hermes/composition framework by following this tutorial : 
+
+
+
+#### Creation of the plugin
+
+In our app, we have created a directory plugins/search to contains interface and implementation of all search plugin we need
+
+
+
+#### In the feather app 
+
+After creating the service using standard featherjs way, we need to specify the configuration : 
+
+```
+{
+    ...
+      "search": {
+        "plugins": ["duckduckgo","qwant"]
+      }
+    ...
+}
+``` 
+
+As you can see, we have define a "search" section, with a "plugins" members, which will contains all plugin name for  
+
 
 
 
