@@ -343,17 +343,70 @@ unique label, a contract name, to identify it.
 
 #### Prerequire sites
 
-Having installed the @hermes/composition framework by following this tutorial : 
-
-
+Having installed the @hermes/composition framework by following [this tutorial](https://gdausquepro.visualstudio.com/Hermes/_wiki/wikis/Hermes%20-%20Code%20HowTo%20and%20Reference/854/HomeComposition) : 
 
 #### Creation of the plugin
 
 In our app, we have created a directory plugins/search to contains interface and implementation of all search plugin we need
 
+Here is the code for the interface : 
 
+``` ts
+
+export interface SearchPlugin {
+  search(query:string):Promise<string[]>;
+}
+
+```
+
+As you can see it has no specific element, and it only define the operations contract to be used in the service. It is framework independant
+
+Here is the code for one of the plugin, the duckduckgo, that will rely on an external framework (node-duckduckgo)
+
+``` ts
+
+import { SearchPlugin } from './SearchPlugin';
+import { duckIt } from 'node-duckduckgo';
+
+export class DuckDuckGo implements SearchPlugin {
+  public static metadata:any[] = [
+    {
+      contractType:'SearchPlugin',
+      contractName:'duckduckgo',
+      isShared:true
+    }
+  ];
+  async search(query: string): Promise<string[]> {
+    console.debug(`Duckduck will search "${query}"`);
+    const result = await duckIt(query, {format:'json', noHtml:true, skipDisambig:true});
+    return [result.data.AbstractText];
+  }
+}
+
+```
+
+it implements the above SearchPlugin interface, and expose through the static metadata array, one [ExportMetadata](https://gdausquepro.visualstudio.com/Hermes/_wiki/wikis/Hermes%20-%20Code%20HowTo%20and%20Reference/849/exportmetadata)
+that define a contractType and a contractName. Those two metadata will be used by the InstanceFactory of the composition engine to instantiate it.
 
 #### In the feather app 
+
+Before creating any service we need to load the exported class in the factory. Here we will use the globalInstancesFactory, as it is shared
+accross all the application scope : 
+
+in the app.ts file : 
+
+``` ts 
+import {globalInstancesFactory} from "@hermes/composition";
+...
+// Initialize globalInstancesFactory
+globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/topicservice');
+globalInstancesFactory.loadExportedClassesFromDirectory('./services');
+globalInstancesFactory.loadExportedClassesFromDirectory('./plugins');
+...
+
+```
+Those statements will ask the factory to inspect directory recursively to search for classes that exposes a static metadata property
+which will contains one or more ExportMetadata element. When reading it, it will store the class indexed by any couple contractType/contractName  
 
 After creating the service using standard featherjs way, we need to specify the configuration : 
 
@@ -367,7 +420,89 @@ After creating the service using standard featherjs way, we need to specify the 
 }
 ``` 
 
-As you can see, we have define a "search" section, with a "plugins" members, which will contains all plugin name for  
+As you can see, we have define a "search" section, with a "plugins" members, which will contains all plugin name to activate at runtime.
+Those plugins names will correspond to the contractName value defined in each SearchPlugin implementation.
+
+The configuration will be read and define during the app.configure(search) : 
+
+``` ts
+export default function (app: Application): void {
+  
+  // Define a plugins property initialized as an empty array
+  const options = {
+    paginate: app.get('paginate'),
+    plugins: []
+  };
+  
+  // Read the configuration and add plugins in it
+  const searchPlugins = app.get('search').plugins;
+  options.plugins = searchPlugins;
+
+  // Initialize our service with any options it requires
+  app.use('/search', new Search(options, app));
+
+  // Get our initialized service so that we can register hooks
+  const service = app.service('search');
+
+  service.hooks(hooks);
+}
+```
+
+In the constructor of the service, we will call the factory to instantiate one instance of each plugin to call : 
+
+``` ts
+...
+export class Search implements ServiceMethods<Data> {
+  app: Application;
+  options: ServiceOptions;
+  plugins: SearchPlugin[];
+
+  constructor (options: ServiceOptions = { plugins:[] }, app: Application) {
+    this.options = options;
+    this.app = app;
+    this.plugins = [];
+    for(const pluginName of options.plugins)
+    {
+      console.log(`Activate search plugin ${pluginName}`)
+      this.plugins.push(globalInstancesFactory.getInstanceFromCatalogs('SearchPlugin', pluginName));
+    }
+  }
+...
+}
+``` 
+
+the options of the service is expecting a plugins property, and by looping on it, it ask the factory to instantiate each plugin, specifying the contractType and the contractName
+
+And here it is, plugins are now loaded !
+
+If you want to deactivate or activate plugin, you only need to change configuration file.
+
+To call the plugins, in the service you have : 
+
+``` ts
+
+  async find (params?: Params): Promise<Data[] | Paginated<Data>> {
+    console.debug(params.query);
+    if(params && params.query && params.query.keywords){
+      const allSearch = [];
+      let values = [];
+      for(const sp of this.plugins) {
+        allSearch.push(sp.search(params.query.keywords))
+      }
+      await Promise.all(allSearch).then((searchResults) => {
+        for(const oneEngineSearchResult of searchResults) {
+          values = values.concat(oneEngineSearchResult);
+        }
+      });
+      return values;
+    }
+    throw new BadRequest('your request was empty. Please add query request')
+  }
+ 
+```
+  
+As you can see, the service only know the interface, the contract type, and call each method without knowing the underlying implementation.
+
 
 
 

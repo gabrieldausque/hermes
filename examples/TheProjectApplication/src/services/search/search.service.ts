@@ -12,11 +12,14 @@ declare module '../../declarations' {
 }
 
 export default function (app: Application): void {
+
+  // Define a plugins property initialized as an empty array
   const options = {
     paginate: app.get('paginate'),
     plugins: []
   };
 
+  // Read the configuration and add plugins in it
   const searchPlugins = app.get('search').plugins;
   options.plugins = searchPlugins;
 
