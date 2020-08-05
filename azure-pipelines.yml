@@ -45,14 +45,14 @@ steps:
 
 - script: |
     npm install
-    cd $(Build.Repository.LocalPath)/src/services/composition/
+    cd $(Build.Repository.LocalPath)/src/hermes_modules/composition/
     npm install
     cd $(Build.Repository.LocalPath)
     npm run buildCompositionPackage
   displayName: 'npm install and build Composition package'
 
 - script: |
-    $(Build.Repository.LocalPath)/src/services/topic/
+    $(Build.Repository.LocalPath)/src/hermes_modules/topic/
     npm install
     cd $(Build.Repository.LocalPath)
     npm run buildTopicPackage

@@ -2,8 +2,8 @@ import util from 'util';
 import {BackEndService} from '../backend/BackEndService';
 import {ProjectEntity} from '../../datas/entities/ProjectEntity';
 import {MoleculeEntity} from '../../datas/entities/MoleculeEntity';
-import {TopicMessage, TopicService, ITopicClient, MemoryTopicServiceClient} from "../topic";
-import {globalInstancesFactory} from "../composition/InstancesFactory";
+import {TopicMessage, TopicService, ITopicClient, MemoryTopicServiceClient} from '@hermes/topicservice';
+import {globalInstancesFactory} from '@hermes/composition';
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class MoleculeLoader {

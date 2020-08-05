@@ -1,4 +1,4 @@
-import {SocketIOTopicServiceClient, TopicService} from "../../../src/services/topic";
+import {SocketIOTopicServiceClient, TopicService} from "../../../src/hermes_modules/topic";
 
 export class ChatServer{
   private socketServer: any;

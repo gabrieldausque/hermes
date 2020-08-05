@@ -1,4 +1,4 @@
-import {TopicHandlerFunction, TopicMessage} from "..";
+import {TopicHandlerFunction, TopicMessage} from "../index";
 import Socket = SocketIOClient.Socket;
 
 export interface SocketIOTopicServiceClientProxyReadyFunction { (): void}

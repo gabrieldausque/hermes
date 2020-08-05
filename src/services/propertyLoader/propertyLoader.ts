@@ -1,4 +1,4 @@
-import {MemoryTopicServiceClient, TopicMessage, TopicService} from "../topic";
+import {MemoryTopicServiceClient, TopicMessage, TopicService} from '@hermes/topicservice';
 import {BackEndService} from "../backend/BackEndService";
 import {ProjectEntity} from "../../datas/entities/ProjectEntity";
 import {MoleculeEntity} from "../../datas/entities/MoleculeEntity";

@@ -1,3 +1,4 @@
+// @ts-ignore
 import disableConsole from './disablelog';
 disableConsole();
 
@@ -7,7 +8,7 @@ import url from 'url';
 import axios from 'axios';
 import * as path from 'path';
 
-import { globalInstancesFactory } from '../src/services/composition';
+import { globalInstancesFactory } from '@hermes/composition';
 
 globalInstancesFactory.directoryCatalogRoot = path.resolve(__dirname);
 globalInstancesFactory.loadExportedClassesFromDirectory('../src/DirectoryCatalog');

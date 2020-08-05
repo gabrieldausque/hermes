@@ -1,7 +1,6 @@
 import {BackEndService} from "../services/backend/BackEndService";
-import {TopicService} from "../services/topic";
-import {globalInstancesFactory} from "../services/composition/InstancesFactory";
-import {TopicServiceConfiguration} from "../services/topic/configuration/TopicServiceConfiguration";
+import {TopicService, TopicServiceConfiguration} from '@hermes/topicservice';
+import {globalInstancesFactory} from '@hermes/composition';
 
 interface PlatformConfiguration {
   topicService?:object,

@@ -1,7 +1,6 @@
 import { Id, NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
-import {TopicMessage} from "../topic/datas/TopicMessage";
-import {ITopicClient} from "../topic/interfaces/ITopicClient";
+import {TopicMessage, ITopicClient} from '@hermes/topicservice';
 
 type Data = TopicMessage | null;
 

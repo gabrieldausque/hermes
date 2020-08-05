@@ -111,7 +111,7 @@ $RECYCLE.BIN/
 
 /lib/
 packages/
-/src/services/topic/lib/
+/src/hermes_modules/topic/lib/
 *.tgz
 package-lock.json
 .~lock.topicservice-schemas.odg#

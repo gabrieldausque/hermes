@@ -3,8 +3,8 @@ import { ServiceAddons } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
 import { Logging } from './logging.class';
 import hooks from './logging.hooks';
-import {MemoryTopicServiceClient} from "../topic/clients/MemoryTopicServiceClient";
-import {globalInstancesFactory} from "../composition/InstancesFactory";
+import {MemoryTopicServiceClient} from '@hermes/topicservice';
+import {globalInstancesFactory} from '@hermes/composition';
 
 // Add this service to the service type index
 declare module '../../declarations' {
