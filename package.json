@@ -31,9 +31,9 @@
     "coverage": "NODE_ENV=test nyc --reporter=cobertura ts-mocha \"test/**/*.ts\" --recursive --exit",
     "compile": "shx rm -rf lib/ && tsc && node_modules/.bin/ncp src/hermes_modules/topic/browser/ public/lib/topic/",
     "docs": "npm run compile && npm run topicdocs && npm run compositiondocs",
-    "topicdocs": "./node_modules/.bin/typedoc --options typedoc-topic-html.json src/hermes_modules/topic && ./node_modules/.bin/typedoc --options typedoc-topic-md.json src/services/topic",
-    "compositiondocs": "./node_modules/.bin/typedoc --options typedoc-composition-html.json src/hermes_modules/composition && ./node_modules/.bin/typedoc --options typedoc-composition-md.json src/services/composition",
-    "buildTopicPackage": "shx rm -rf src/hermes_modules/topic/lib/ && tsc -p src/hermes_modules/topic && node_modules/.bin/ncp src/hermes_modules/topic/browser/ src/node_modules/topic/lib/browser",
+    "topicdocs": "./node_modules/.bin/typedoc --options typedoc-topic-html.json src/hermes_modules/topic && ./node_modules/.bin/typedoc --options typedoc-topic-md.json src/hermes_modules/topic",
+    "compositiondocs": "./node_modules/.bin/typedoc --options typedoc-composition-html.json src/hermes_modules/composition && ./node_modules/.bin/typedoc --options typedoc-composition-md.json src/hermes_modules/composition",
+    "buildTopicPackage": "shx rm -rf src/hermes_modules/topic/lib/ && tsc -p src/hermes_modules/topic && node_modules/.bin/ncp src/hermes_modules/topic/browser/ src/hermes_modules/topic/lib/browser",
     "buildCompositionPackage": "shx rm -rf src/hermes_modules/composition/lib/ && tsc -p src/hermes_modules/composition",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
