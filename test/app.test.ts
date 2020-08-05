@@ -16,7 +16,7 @@ globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/backend
 globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/moleculeloader');
 globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/propertyLoader');
 globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/runtimeLoadedService');
-globalInstancesFactory.loadExportedClassesFromDirectory('../src/services/topic');
+globalInstancesFactory.loadExportedClassesFromDirectory('../src/hermes_modules/topic');
 
 import app from '../src/app';
 
