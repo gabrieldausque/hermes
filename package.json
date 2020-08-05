@@ -33,9 +33,8 @@
     "docs": "npm run compile && npm run topicdocs && npm run compositiondocs",
     "topicdocs": "./node_modules/.bin/typedoc --options typedoc-topic-html.json src/hermes_modules/topic && ./node_modules/.bin/typedoc --options typedoc-topic-md.json src/services/topic",
     "compositiondocs": "./node_modules/.bin/typedoc --options typedoc-composition-html.json src/hermes_modules/composition && ./node_modules/.bin/typedoc --options typedoc-composition-md.json src/services/composition",
-    "build": "shx rm -rf src/hermes_modules/topic/lib/ && tsc -p src/services/topic && node_modules/.bin/ncp src/services/topic/browser/ src/services/topic/lib/browser",
-    "buildTopicPackage": "shx rm -rf src/hermes_modules/topic/lib/ && tsc -p src/services/topic && node_modules/.bin/ncp src/services/topic/browser/ src/services/topic/lib/browser",
-    "buildCompositionPackage": "shx rm -rf src/hermes_modules/composition/lib/ && tsc -p src/services/composition",
+    "buildTopicPackage": "shx rm -rf src/hermes_modules/topic/lib/ && tsc -p src/hermes_modules/topic && node_modules/.bin/ncp src/hermes_modules/topic/browser/ src/node_modules/topic/lib/browser",
+    "buildCompositionPackage": "shx rm -rf src/hermes_modules/composition/lib/ && tsc -p src/hermes_modules/composition",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
   },
