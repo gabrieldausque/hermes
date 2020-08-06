@@ -1,0 +1,21 @@
+{
+  "name": "@hermes/jobs",
+  "version": "0.0.1",
+  "description": "An abstraction for scheduling job (rate limit, queueing, etc ...)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hermes",
+    "job",
+    "queue",
+    "scheduler"
+  ],
+  "dependencies": {
+    "@hermes/composition": "^1.0.7",
+    "tmp": "^0.2.1"
+  },
+  "author": "gabrieldausque.pro@gmail.com",
+  "license": "ISC"
+}

@@ -120,3 +120,5 @@ report*
 
 /junit.xml
 /cobertura.xml
+/src/hermes_modules/composition/lib/
+/src/hermes_modules/jobs/lib/
