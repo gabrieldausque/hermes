@@ -6,7 +6,7 @@ disableConsole();
 import assert from 'assert';
 import app from '../../src/app';
 
-describe('\'logging\' service', () => {
+describe('Logging service', () => {
 
   after((done) => {
     app.jobManager.stop()
