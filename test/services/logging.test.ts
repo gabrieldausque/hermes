@@ -10,6 +10,7 @@ describe('Logging service', () => {
 
   after((done) => {
     app.jobManager.stop()
+    done();
   })
 
   it('registered the service', () => {

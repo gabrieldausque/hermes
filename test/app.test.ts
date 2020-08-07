@@ -37,6 +37,7 @@ describe('Feathers application tests', () => {
   });
 
   after((done) => {
+    app.jobManager.stop();
     server.close(done);
   });
 

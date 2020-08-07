@@ -3,7 +3,7 @@ import {EventEmitter} from 'events';
 export class Ticker extends EventEmitter {
 
   private intervalInMs: number;
-  private intervalId: number;
+  private intervalId: NodeJS.Timeout;
 
   constructor(intervalInMs:number = 100, startAtCreation:boolean = false) {
     super();
@@ -17,10 +17,11 @@ export class Ticker extends EventEmitter {
     const current = this;
     this.intervalId = setInterval(() => {
       current.emit('tick');
-    })
+    }, this.intervalInMs)
   }
 
   stop() {
+    console.log('stopping ticker');
     clearInterval(this.intervalId);
   }
 }

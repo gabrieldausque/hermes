@@ -39,7 +39,8 @@ const configurationObject = {
 
 // load class from constructed catalog (Work in progress)
 globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
-globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/');
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/topic');
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs');
 app.platform = new Platform(configurationObject);
 // TODO : add configuration of job Manager
 app.jobManager = new JobManager();
