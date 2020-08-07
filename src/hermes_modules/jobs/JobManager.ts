@@ -45,6 +45,20 @@ export class JobManager {
     // TODO : create queue if it doesn't exists
     return this.queues[queueName].push(actionPayload, context);
   }
+
+  start() {
+    for(const queueName in this.queues){
+      if(this.queues.hasOwnProperty(queueName))
+        this.queues[queueName].start();
+    }
+  }
+
+  stop() {
+    for(const queueName in this.queues){
+      if(this.queues.hasOwnProperty(queueName))
+        this.queues[queueName].stop();
+    }
+  }
 }
 
 export const globalJobManager = new JobManager();

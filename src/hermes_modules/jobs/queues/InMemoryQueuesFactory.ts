@@ -4,6 +4,6 @@ import { InMemoryQueue } from './InMemoryQueue';
 
 export class InMemoryQueuesFactory implements QueuesFactory {
   createQueue(queueName: string, queueOptions?: object): Queue {
-    return new InMemoryQueue();
+    return new InMemoryQueue(queueOptions);
   }
 }
