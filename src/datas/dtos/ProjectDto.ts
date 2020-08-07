@@ -6,12 +6,14 @@ export type NullableProjectDto = ProjectDto | null
 
 export class ProjectDto {
 
+  isLongTermJob: number;
+
   static createFromEntity(entity:NullableProject):NullableProjectDto {
     if(entity === null)
       return null;
     const newProject = new ProjectDto(entity.id, entity.name, entity.code, entity.description);
     entity.molecules.forEach((m) => {
-      let newMolecule = new MoleculeDto(m.name,m.description);
+      const newMolecule = new MoleculeDto(m.name,m.description);
       newMolecule.moleculeId = m.moleculeId;
       newProject.addMolecule(newMolecule);
     });
@@ -23,6 +25,7 @@ export class ProjectDto {
     this.name = name;
     this.description = description;
     this.molecules = [];
+    this.isLongTermJob = 0;
   }
   id:number|string;
   code:string;

@@ -20,4 +20,20 @@ export class Job extends EventEmitter {
     this.payload = payload;
     this.state = JobStates.waiting;
   }
+
+  async waitForCompletion(timeoutInMs?) {
+    const current = this;
+    const semaphore = new Promise((resolve, reject) => {
+      current.once('completed', () => {
+        resolve()
+      })
+      if(timeoutInMs && typeof timeoutInMs === 'number'){
+        setTimeout(() => {
+          reject(new Error(`Job with id ${timeoutInMs} timed out.`))
+        })
+      }
+    })
+    await semaphore
+    return;
+  }
 }

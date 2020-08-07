@@ -1,5 +1,7 @@
 import {MemoryStorage} from "./MemoryStorage";
 import {NullableProject, ProjectEntity} from "../../datas/entities/ProjectEntity";
+import util from "util";
+const setTimeoutPromise = util.promisify(setTimeout);
 
 export class BackEndService {
   public static metadata:any[] = [
@@ -20,8 +22,10 @@ export class BackEndService {
     return this.store.get(id);
   }
 
-  createProject(data: ProjectEntity):ProjectEntity {
-    return this.store.create(data.name, data.code, data.description);
+  async createProject(data: ProjectEntity):Promise<ProjectEntity> {
+    return await setTimeoutPromise(3000).then(() => {
+      return this.store.create(data.name, data.code, data.description);
+    })
   }
 
   updateProject(data: NullableProject) {

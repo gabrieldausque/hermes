@@ -106,18 +106,11 @@ export class InMemoryQueue extends Queue {
       }
     }
     return p().then((result) => {
-      job.result = result;
-      job.emit('done');
-      job.state = JobStates.done;
-      current.raiseJobSuccess(job,job.result);
+      current.raiseJobSuccess(job,result);
     }).catch((err) => {
-      job.emit('error', err);
-      job.err = err;
-      job.state = JobStates.error;
       current.raiseJobFailed(job, err);
     }).finally(() => {
-      const resultsOrErr = (job.err)?job.err:job.result
-      current.raiseJobCompleted(job, resultsOrErr);
+      current.raiseJobCompleted(job);
     });
   }
 

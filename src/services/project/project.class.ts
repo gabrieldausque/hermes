@@ -124,6 +124,11 @@ export class Project implements ServiceMethods<Data> {
         }
       }
     }
+    app.jobManager.createQueue('project#create');
+    const current = this;
+    app.jobManager.createWorker('project#create', async (project) => {
+      return current.app.platform.backend.createProject(project);
+    })
   }
 
   async find (params?: Params): Promise<Data[] | Paginated<Data>> {
@@ -136,10 +141,20 @@ export class Project implements ServiceMethods<Data> {
   }
 
   async create (data: Data, params?: Params): Promise<any> {
+
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    const project = this.app.platform.backend.createProject(ProjectEntity.loadFromDto(data));
+
+    let project = null;
+
+    if(data.isLongTermJob === 1) {
+      const job = this.app.jobManager.execute('project#create', ProjectEntity.loadFromDto(data));
+      await job.waitForCompletion();
+      project = job.result
+    } else {
+      project = await this.app.platform.backend.createProject(ProjectEntity.loadFromDto(data));
+    }
     const newProject = ProjectDto.createFromEntity(project);
     this.app.platform.topicService.publish("global.project_created", project).catch((error) => {
       console.error("error in create : " + error);
@@ -168,6 +183,7 @@ export class Project implements ServiceMethods<Data> {
     if(projectToDelete !== null){
       this.app.platform.backend.deleteProject(projectToDelete);
     }
-    return projectToDelete;
+    const toReturn = new ProjectDto(projectToDelete.id, projectToDelete.code, projectToDelete.name, projectToDelete.description);
+    return toReturn;
   }
 }

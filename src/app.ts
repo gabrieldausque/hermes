@@ -23,6 +23,7 @@ import {InstancesFactory,globalInstancesFactory} from '@hermes/composition';
 import {MemoryStorage} from "./services/backend/MemoryStorage";
 import {IExportedClass} from "./DirectoryCatalog/IExportedClass";
 import {Platform} from "./platform/Platform";
+import { JobManager } from './hermes_modules/jobs/JobManager';
 
 // Don't remove this comment. It's needed to format import lines nicely.
 const app: Application = express(feathers());
@@ -38,7 +39,10 @@ const configurationObject = {
 
 // load class from constructed catalog (Work in progress)
 globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/');
 app.platform = new Platform(configurationObject);
+// TODO : add configuration of job Manager
+app.jobManager = new JobManager();
 
 const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
 

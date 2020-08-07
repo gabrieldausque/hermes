@@ -42,7 +42,9 @@ function createProject(event){
       name:jQuery('#project-name').val(),
       code:jQuery('#project-code').val(),
       description:jQuery('#project-description').val(),
+      isLongTermJob:(jQuery('#project-longterm-job').is(':checked'))?1:0
     };
+    console.log(data);
     jQuery.ajax({
       url:'/project/',
       method:'POST',

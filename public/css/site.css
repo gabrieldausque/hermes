@@ -97,6 +97,10 @@ section {
   align-items: flex-start;
 }
 
+#project-longterm-job {
+  width:45px;
+}
+
 #create-project-form {
   width:100%;
 }
