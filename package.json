@@ -24,7 +24,7 @@
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "test": "npm run compile && npm run mocha && npm run coverage",
+    "test": "npm run mocha && npm run coverage",
     "dev": "npm run compile && ts-node-dev --no-notify src/",
     "start": "npm run compile && node lib",
     "debug": "npm run compile && node --inspect lib ",
@@ -34,7 +34,7 @@
     "docs": "npm run compile && npm run topicdocs && npm run compositiondocs",
     "topicdocs": "./node_modules/.bin/typedoc --options typedoc-topic-html.json src/hermes_modules/topic && ./node_modules/.bin/typedoc --options typedoc-topic-md.json src/hermes_modules/topic",
     "compositiondocs": "./node_modules/.bin/typedoc --options typedoc-composition-html.json src/hermes_modules/composition && ./node_modules/.bin/typedoc --options typedoc-composition-md.json src/hermes_modules/composition",
-    "buildPackages": "npm run buildTopicPackage && npm run buildCompositionPackage",
+    "buildPackages": "npm run buildTopicPackage && npm run buildCompositionPackage && npm run buildJobsPackage",
     "buildTopicPackage": "shx rm -rf src/hermes_modules/topic/lib/ && tsc -p src/hermes_modules/topic && node_modules/.bin/ncp src/hermes_modules/topic/browser/ src/hermes_modules/topic/lib/browser",
     "buildCompositionPackage": "shx rm -rf src/hermes_modules/composition/lib/ && tsc -p src/hermes_modules/composition",
     "buildJobsPackage": "shx rm -rf src/hermes_modules/jobs/lib/ && tsc -p src/hermes_modules/jobs",

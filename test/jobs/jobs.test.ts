@@ -73,11 +73,11 @@ describe('Job scheduling tests', () => {
     const actualValues = [];
     jm.stop()
     jm = new JobManager()
-    q = jm.createQueue('Test', { workerPoolSize:50 })
+    q = jm.createQueue('Test', { workerPoolSize:100 })
     jm.createWorker('Test', (value) => {
       actualValues.unshift(instance.returnValue(value));
     });
-    const numberOfJobs = 1000;
+    const numberOfJobs = 500;
     for(let jobCounter =0; jobCounter < numberOfJobs; jobCounter++) {
       jm.execute('Test', jobCounter);
       expectedValues.unshift(jobCounter);
