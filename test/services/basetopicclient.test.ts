@@ -3,7 +3,6 @@ import disableConsole from '../disablelog';
 disableConsole();
 
 import assert from 'assert';
-import app from '../../src/app';
 import {MemoryTopicServiceClient, TopicService} from '@hermes/topicservice';
 
 describe('TopicService Tests', () => {
