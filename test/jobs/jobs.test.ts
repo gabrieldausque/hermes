@@ -1,9 +1,7 @@
 import {expect} from 'chai';
-import { JobManager } from '../../src/hermes_modules/jobs/JobManager';
+import { Job, JobManager, Queue, InMemoryQueue } from '@hermes/jobs';
 // @ts-ignore
 import {TestClass} from './TestClass';
-import { Queue } from '../../src/hermes_modules/jobs/queues/Queue';
-import { InMemoryQueue } from '../../src/hermes_modules/jobs/queues/InMemoryQueue';
 
 describe('Job scheduling tests', () => {
 
@@ -88,7 +86,7 @@ describe('Job scheduling tests', () => {
     q.on('success', (job, result) => {
       // console.log(`Values : ${actualValues}`);
       // console.log(`Waiting : ${Array.from((q as InMemoryQueue).getAllWaitingJob(), (j) => j.id)}`);
-      console.log(`Running : ${Array.from((q as InMemoryQueue).getAllRunningJob(), (j) => j.id)}`);
+      console.log(`Running : ${Array.from((q as InMemoryQueue).getAllRunningJob(), (j:Job) => j.id)}`);
       if(actualValues.length === numberOfJobs){
         if(!testDone) {
           testDone = true;

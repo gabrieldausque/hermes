@@ -3,8 +3,8 @@ import { BullQueueConfiguration } from './configuration/BullQueueConfiguration';
 import { BullQueue } from './BullQueue';
 
 export class BullQueuesFactory implements QueuesFactory{
-  static metadata: [ {
-    contractType: 'QueueFactory',
+  public static metadata:any[] = [ {
+    contractType: 'QueuesFactory',
     contractName: 'Bull',
     isShared: true
   }];

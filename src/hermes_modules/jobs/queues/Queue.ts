@@ -1,6 +1,6 @@
 import { Job } from '../jobs/Job';
 import {EventEmitter} from 'events';
-import { JobStates } from '../jobs/JobState';
+import { JobStates } from '../jobs/JobStates';
 import { ProcessingOptions } from './ProcessingOptions';
 import { Action } from './Action';
 

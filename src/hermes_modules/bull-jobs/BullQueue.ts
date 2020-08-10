@@ -49,9 +49,11 @@ export class BullQueue extends Queue {
   }
 
   start(): void {
+    // Do nothing;
   }
 
   stop(): void {
+    this.innerQueue.close()
   }
 
 }

@@ -2,7 +2,7 @@ import { Queue } from './Queue';
 import { Job } from '../jobs/Job';
 import fs from 'fs';
 import { Ticker } from '../helpers/Ticker';
-import { JobStates } from '../jobs/JobState';
+import { JobStates } from '../jobs/JobStates';
 
 export class InMemoryQueue extends Queue {
   static nextId:number = 0;

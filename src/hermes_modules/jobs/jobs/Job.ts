@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { JobStates } from './JobState';
+import { JobStates } from './JobStates';
 
 export class Job extends EventEmitter {
   // TODO : replace by guid

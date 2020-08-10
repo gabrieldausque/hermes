@@ -2,5 +2,6 @@
   "reporterEnabled": "list, mocha-junit-reporter",
   "mochaJunitReporterReporterOptions": {
     "mochaFile": "junit.xml"
-  }
+  },
+  "exclude": ["jobs/bull-jobs*"]
 }

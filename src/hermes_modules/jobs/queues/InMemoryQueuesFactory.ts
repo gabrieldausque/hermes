@@ -3,8 +3,8 @@ import { Queue } from './Queue';
 import { InMemoryQueue } from './InMemoryQueue';
 
 export class InMemoryQueuesFactory implements QueuesFactory {
-  static metadata: [ {
-    contractType: 'QueueFactory',
+  public static metadata:any[] = [ {
+    contractType: 'QueuesFactory',
     contractName: 'Default',
     isShared: true
   }];
