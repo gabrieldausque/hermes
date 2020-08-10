@@ -48,15 +48,15 @@ steps:
     cd $(Build.Repository.LocalPath)/src/hermes_modules/composition/
     npm install
     cd $(Build.Repository.LocalPath)
-    npm run buildCompositionPackage
-  displayName: 'npm install and build Composition package'
+    npm run compileCompositionPackage
+  displayName: 'npm install and compile Composition package'
 
 - script: |
     $(Build.Repository.LocalPath)/src/hermes_modules/topic/
     npm install
     cd $(Build.Repository.LocalPath)
-    npm run buildTopicPackage
-  displayName: 'npm install and build Topic Package'
+    npm run compileTopicPackage
+  displayName: 'npm install and compile Topic Package'
 
 - task: Npm@1
   displayName: 'Publish Composition to azuredevops Hermes/hermes feed'
@@ -65,7 +65,7 @@ steps:
     command: publish
     publishRegistry: useFeed
     publishFeed: Hermes/hermes
-    workingDir: $(Build.Repository.LocalPath)/src/services/composition/
+    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/composition/
 
 - task: Npm@1
   displayName: 'Publish topic to azuredevops Hermes/hermes feed'
@@ -74,6 +74,6 @@ steps:
     command: publish
     publishRegistry: useFeed
     publishFeed: Hermes/hermes
-    workingDir: $(Build.Repository.LocalPath)/src/services/topic/
+    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/topic/
 
 
