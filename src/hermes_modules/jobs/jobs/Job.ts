@@ -36,4 +36,25 @@ export class Job extends EventEmitter {
     await semaphore
     return;
   }
+
+  raiseErrorEvent(err: any) {
+    this.err = err;
+    this.state = JobStates.error;
+    this.emit('error', err);
+  }
+
+  raiseCompletedEvent() {
+    const resultsOrErr = (this.err)?this.err:this.result
+    this.emit('completed', resultsOrErr);
+  }
+
+  raiseProgressEvent(completionPercentage:number, completionMessage?:string) {
+    this.emit('progress', { percentage:completionPercentage, message:completionMessage});
+  }
+
+  raiseSuccessEvent(result: any) {
+    this.result = result;
+    this.state = JobStates.done;
+    this.emit('done');
+  }
 }

@@ -1,0 +1,19 @@
+{
+  "name": "@hermes/bull-jobs",
+  "version": "0.0.1",
+  "description": "plugin for @hermes/jobs integrating Bull framework",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [
+    "hermes",
+    "job",
+    "bull"
+  ],
+  "dependencies": {
+    "@hermes/jobs": "^0.0.1",
+    "bull": "^3.16.0",
+    "@types/bull": "^3.14.0"
+  },
+  "author": "gabrieldausque.pro@gmail.com",
+  "license": "ISC"
+}
