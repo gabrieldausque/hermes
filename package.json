@@ -38,7 +38,6 @@
     "compileTopicPackage": "shx rm -rf src/hermes_modules/topic/lib/ && tsc -p src/hermes_modules/topic && node_modules/.bin/ncp src/hermes_modules/topic/browser/ src/hermes_modules/topic/lib/browser",
     "compileCompositionPackage": "shx rm -rf src/hermes_modules/composition/lib/ && tsc -p src/hermes_modules/composition",
     "compileJobsPackage": "shx rm -rf src/hermes_modules/jobs/lib/ && tsc -p src/hermes_modules/jobs",
-    "buildPackages":
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
   },
@@ -59,7 +58,8 @@
     "@feathersjs/transport-commons": "^4.5.2",
     "@hermes/composition": "file:src/hermes_modules/composition",
     "@hermes/topicservice": "file:src/hermes_modules/topic",
-    "@hermes/jobs": "file:src/hermes_modules/topic",
+    "@hermes/jobs": "file:src/hermes_modules/jobs",
+    "@hermes/bull-jobs": "file:src/hermes_modules/bull-jobs",
     "@types/node": "^13.11.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
