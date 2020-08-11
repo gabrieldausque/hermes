@@ -55,8 +55,14 @@ export class JobManager {
 
   stop() {
     for(const queueName in this.queues){
-      if(this.queues.hasOwnProperty(queueName))
-        this.queues[queueName].stop();
+      if(this.queues.hasOwnProperty(queueName)) {
+        try {
+          if(this.queues.hasOwnProperty(queueName))
+            this.queues[queueName].stop();
+        }catch(err) {
+          console.error(err)
+        }
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ import { Action } from './Action';
 
 export abstract class Queue extends EventEmitter {
   public readonly isQueue:boolean = true;
-  protected action: any;
+  protected action: Action;
   protected jobs: Job[];
   protected paused: boolean;
   protected configuration: any;
@@ -55,5 +55,12 @@ export abstract class Queue extends EventEmitter {
     this.emit('completed', job);
   }
 
+  raiseQueueError(err) {
+    this.emit('error', err);
+  }
+
+  raiseReady() {
+    this.emit('ready');
+  }
 
 }

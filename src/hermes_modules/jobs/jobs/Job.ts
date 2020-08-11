@@ -41,6 +41,7 @@ export class Job extends EventEmitter {
     this.err = err;
     this.state = JobStates.error;
     this.emit('error', err);
+    this.raiseCompletedEvent();
   }
 
   raiseCompletedEvent() {
@@ -56,5 +57,6 @@ export class Job extends EventEmitter {
     this.result = result;
     this.state = JobStates.done;
     this.emit('done');
+    this.raiseCompletedEvent();
   }
 }

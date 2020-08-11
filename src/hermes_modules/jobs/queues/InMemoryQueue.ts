@@ -45,7 +45,7 @@ export class InMemoryQueue extends Queue {
     return this.workerPoolSize - this.runningJobs.length;
   }
 
-  push(actionPayload: any, context?:any): Job {
+  push(actionPayload: any, jobOptions?:any): Job {
     const job = new Job(this.action, actionPayload);
     this.waitingJobs.unshift(job);
     return job;
@@ -98,7 +98,7 @@ export class InMemoryQueue extends Queue {
     job.state = JobStates.running
     const current = this;
     const p = async () => {
-      const resultOrPromise = this.action(job.payload);
+      const resultOrPromise = this.action(job.payload, job);
       if(resultOrPromise instanceof Promise) {
         return await resultOrPromise
       } else {
