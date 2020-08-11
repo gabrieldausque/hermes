@@ -11,14 +11,16 @@ export class Job extends EventEmitter {
   public payload: any;
   public err: any;
   public state: number;
+  public jobOptions: { [p: string]: any };
 
-  constructor(toExecute:any, payload?) {
+  constructor(toExecute: any, payload?, jobOptions?: { [p: string]: any }) {
     super();
     this.id = Job.nextId.toString();
     Job.nextId++;
     this.toExecute = toExecute;
     this.payload = payload;
     this.state = JobStates.waiting;
+    this.jobOptions = jobOptions;
   }
 
   async waitForCompletion(timeoutInMs?) {
@@ -29,6 +31,7 @@ export class Job extends EventEmitter {
       })
       if(timeoutInMs && typeof timeoutInMs === 'number'){
         setTimeout(() => {
+          current.state = JobStates.timedOut;
           reject(new Error(`Job with id ${timeoutInMs} timed out.`))
         })
       }
@@ -37,11 +40,16 @@ export class Job extends EventEmitter {
     return;
   }
 
-  raiseErrorEvent(err: any) {
+  raiseFailedEvent(err: any) {
     this.err = err;
     this.state = JobStates.error;
-    this.emit('error', err);
-    this.raiseCompletedEvent();
+    try {
+      this.emit('failed', err );
+    }catch(err) {
+      console.error(err);
+    }finally {
+      this.raiseCompletedEvent();
+    }
   }
 
   raiseCompletedEvent() {

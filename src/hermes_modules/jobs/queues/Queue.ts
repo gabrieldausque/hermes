@@ -46,7 +46,7 @@ export abstract class Queue extends EventEmitter {
   }
 
   raiseJobFailed(job:Job, err) {
-    job.raiseErrorEvent(err);
+    job.raiseFailedEvent(err);
     this.emit('failed', job, err);
   }
 

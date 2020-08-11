@@ -46,7 +46,7 @@ export class InMemoryQueue extends Queue {
   }
 
   push(actionPayload: any, jobOptions?:any): Job {
-    const job = new Job(this.action, actionPayload);
+    const job = new Job(this.action, actionPayload, jobOptions);
     this.waitingJobs.unshift(job);
     return job;
   }

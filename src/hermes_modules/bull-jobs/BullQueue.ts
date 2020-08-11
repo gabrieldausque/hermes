@@ -3,6 +3,7 @@ import { Job } from '@hermes/jobs/jobs/Job';
 import { BullQueueConfiguration } from './configuration/BullQueueConfiguration';
 import InnerQueue from 'bull';
 import { BullJob } from './BullJob';
+import { BullValueTypeBox } from './BullValueTypeBox';
 
 export class BullQueue extends Queue {
 
@@ -13,42 +14,57 @@ export class BullQueue extends Queue {
   constructor(configuration?:BullQueueConfiguration) {
     super(configuration);
     this.runningJobs = [];
+
     this.innerQueue = new InnerQueue(configuration.name, configuration.redisUrl, configuration.bullQueueOptions);
     const current = this;
     this.innerQueue.on('error', (err) => {
+      console.log(err);
       current.raiseQueueError(err);
     });
     this.innerQueue.client.on('ready', () => {
       current.raiseReady();
-    })
+    });
     this.innerQueue.on('completed', (job, result) => {
-      const outerJob = current.runningJobs.find((j) => {
-        return j.id === job.id.toString();
-      })
-      if(outerJob)
-      {
-        this.runningJobs.splice(this.runningJobs.indexOf(outerJob), 1);
-        outerJob.raiseSuccessEvent(result);
+      try {
+        const outerJob = current.runningJobs.find((j) => {
+          return j.id === job.id.toString();
+        })
+        if(outerJob)
+        {
+          this.runningJobs.splice(this.runningJobs.indexOf(outerJob), 1);
+          outerJob.raiseSuccessEvent(result);
+        }
+      } catch(ex) {
+        console.log(ex);
       }
-    })
+
+    });
     this.namedAction = {};
   }
 
   private async executeJob(bullJob) {
     let action;
-    if(bullJob.name && bullJob.name === '*'){
+    if(bullJob.name && (bullJob.name !== '__default__')){
       action = this.namedAction[bullJob.name];
     } else {
       action = this.action;
     }
     // TODO : check action is valid
     const currentJob = this.runningJobs.find((j) => j.id === bullJob.id.toString());
-    const resultOrPromise = action(bullJob.data, currentJob);
-    if(resultOrPromise instanceof Promise) {
-      return await resultOrPromise
-    } else {
-      return resultOrPromise;
+    let payload = bullJob.data;
+    if(typeof payload.boxedValue !== 'undefined'){
+      payload = (payload as BullValueTypeBox).boxedValue;
     }
+    let resultOrPromise:any;
+    try {
+      resultOrPromise = action(payload, currentJob);
+      if(resultOrPromise instanceof Promise) {
+        resultOrPromise =  await resultOrPromise;
+      }
+    }catch(err) {
+      currentJob.raiseFailedEvent(err);
+    }
+    return resultOrPromise;
   }
 
   onJobToProcess(action: any, processingOptions?: any) {
@@ -64,20 +80,30 @@ export class BullQueue extends Queue {
     }
   }
 
-  push(actionPayload: any, jobOptions: { [p: string]: any }): Job {
+  push(actionPayloadOrJob: any, jobOptions: { [p: string]: any }): Job {
     let jobToReturn:BullJob;
+    const current = this;
+    if(actionPayloadOrJob instanceof BullJob){
+      jobToReturn = actionPayloadOrJob;
+    }
+
     if(jobOptions && jobOptions.name) {
-      jobToReturn = new BullJob(this.namedAction[jobOptions.name], actionPayload)
-      this.innerQueue.add(jobOptions.name, actionPayload).then((bullJob) => {
+      if(!jobToReturn)
+        jobToReturn = new BullJob(this.namedAction[jobOptions.name], actionPayloadOrJob, jobOptions);
+      this.innerQueue.add(jobOptions.name, jobToReturn.getPayload()).then((bullJob) => {
         jobToReturn.setInnerJob(bullJob);
       });
     } else {
-      jobToReturn = new BullJob(this.action, actionPayload);
-      this.innerQueue.add(actionPayload).then((bullJob) => {
+      if(!jobToReturn)
+        jobToReturn = new BullJob(this.action, actionPayloadOrJob);
+
+      this.innerQueue.add(jobToReturn.getPayload()).then((bullJob) => {
         jobToReturn.setInnerJob(bullJob);
+      }).catch((err) => {
+        current.raiseQueueError(err);
       });
     }
-    if(jobToReturn)
+    if(jobToReturn && (this.runningJobs.indexOf(jobToReturn) < 0))
       this.runningJobs.unshift(jobToReturn);
     return jobToReturn;
   }

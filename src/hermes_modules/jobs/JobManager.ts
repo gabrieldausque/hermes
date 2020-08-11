@@ -4,8 +4,12 @@ import { QueuesFactory } from './queues/QueuesFactory';
 import { InMemoryQueuesFactory } from './queues/InMemoryQueuesFactory';
 import { Queue } from './queues/Queue';
 import { Job } from './jobs/Job';
+import { Action } from './queues';
 
 export let instancesFactory = globalInstancesFactory;
+
+
+
 
 export class JobManager {
 
@@ -34,7 +38,7 @@ export class JobManager {
     return this.queues[queueName];
   }
 
-  createWorker(queueName: string, action: any):void {
+  createWorker(queueName: string, action: Action):void {
     if(!(typeof action === 'function'))
       throw new Error('action parameter must be a function. Please correct')
     // TODO : create queue if it doesn't exists
