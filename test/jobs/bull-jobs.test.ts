@@ -220,7 +220,8 @@ describe('Job Scheduling using Bull', () => {
     })
     for(let counter=0;counter<4;counter++){
       expected.push(counter)
-      jobs.push(jm.execute('Test', counter).waitForCompletion());
+      const job = jm.execute('Test', counter);
+      jobs.push(job.waitForCompletion());
     }
     await Promise.all(jobs);
     expect(actuals).to.be.eql(expected);
