@@ -80,7 +80,6 @@ describe('Job scheduling tests', () => {
       jm.execute('Test', jobCounter);
       expectedValues.unshift(jobCounter);
     }
-    console.log(expectedValues);
     jm.start();
     let testDone = false;
     q.on('success', (job, result) => {
