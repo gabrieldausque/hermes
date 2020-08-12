@@ -71,4 +71,4 @@ export class JobManager {
   }
 }
 
-export const globalJobManager = new JobManager();
+export let globalJobManager = new JobManager();

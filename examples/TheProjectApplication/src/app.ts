@@ -29,7 +29,8 @@ const app: Application = express(feathers());
 app.configure(configuration());
 
 // Initialize globalInstancesFactory
-globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/topicservice');
+globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/topicservice/lib');
+globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/bull-jobs/lib');
 globalInstancesFactory.loadExportedClassesFromDirectory('./services');
 globalInstancesFactory.loadExportedClassesFromDirectory('./plugins');
 

@@ -17,5 +17,6 @@
   },
   "search": {
     "plugins": ["duckduckgo","qwant"]
-  }
+  },
+  ""
 }
