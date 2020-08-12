@@ -42,9 +42,7 @@ app.topicService = globalInstancesFactory.getInstanceFromCatalogs("TopicService"
 app.backend = globalInstancesFactory.getInstanceFromCatalogs("BackEndService","Default");
 app.moleculeLoader = new MoleculeLoader();
 const jobManagerConfiguration:JobManagerConfiguration = app.get("jobManager");
-console.log(jobManagerConfiguration);
 setGlobalJobManager(new JobManager(jobManagerConfiguration));
-const globalJobManager = getGlobalJobManager();
 
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());

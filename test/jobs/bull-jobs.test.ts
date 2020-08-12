@@ -1,12 +1,11 @@
 import {expect} from 'chai';
-import { InMemoryQueue, instancesFactory, Job, JobManager, JobStates, Queue } from '@hermes/jobs';
+import { InMemoryQueue, getJobManagerInstancesFactory, Job, JobManager, JobStates, Queue } from '@hermes/jobs';
 // @ts-ignore
 import { TestClass } from './TestClass';
-import { BullQueue } from '@hermes/bull-jobs/BullQueue';
-import { create } from 'domain';
+import { BullQueue } from '@hermes/bull-jobs';
 import * as util from 'util';
 
-instancesFactory.loadExportedClassesFromDirectory(__dirname + '/../plugins');
+getJobManagerInstancesFactory().loadExportedClassesFromDirectory(__dirname + '/../plugins');
 const sleep = util.promisify(setTimeout);
 
 
@@ -15,7 +14,6 @@ describe('Job Scheduling using Bull', () => {
   let q:Queue = null;
 
   const createJmAndQ = (() => {
-    const i = instancesFactory;
     jm = new JobManager({
       queuesFactoryExportName:'Bull',
       defaultQueueConfiguration:{

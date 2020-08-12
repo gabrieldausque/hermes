@@ -6,12 +6,15 @@ import { Queue } from './queues/Queue';
 import { Job } from './jobs/Job';
 import { Action } from './queues';
 
-export let instancesFactory;
+let instancesFactory;
 export function setJobManagerInstancesFactory(factory:InstancesFactory){
   instancesFactory = factory;
   instancesFactory.loadExportedClassesFromDirectory(__dirname);
 }
 setJobManagerInstancesFactory(globalInstancesFactory);
+export function getJobManagerInstancesFactory():InstancesFactory{
+  return instancesFactory;
+}
 
 export class JobManager {
 
@@ -86,7 +89,7 @@ export class JobManager {
   }
 }
 
-export let globalJobManager:JobManager = new JobManager();
+let globalJobManager:JobManager = new JobManager();
 export function setGlobalJobManager(jobManager:JobManager) {
   globalJobManager = jobManager;
 }

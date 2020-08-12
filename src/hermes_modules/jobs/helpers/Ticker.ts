@@ -21,7 +21,6 @@ export class Ticker extends EventEmitter {
   }
 
   stop() {
-    console.log('stopping ticker');
     clearInterval(this.intervalId);
   }
 }

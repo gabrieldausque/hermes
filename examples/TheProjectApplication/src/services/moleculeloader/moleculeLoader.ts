@@ -4,7 +4,7 @@ import {ProjectEntity} from "../../datas/entities/ProjectEntity";
 import {MoleculeEntity} from "../../datas/entities/MoleculeEntity";
 import {TopicMessage, ITopicClient, TopicService, MemoryTopicServiceClient} from "@hermes/topicservice";
 import {globalInstancesFactory} from "@hermes/composition";
-import {globalJobManager} from '@hermes/jobs';
+import {getGlobalJobsManager} from '@hermes/jobs';
 
 const setTimeoutPromise = util.promisify(setTimeout);
 
