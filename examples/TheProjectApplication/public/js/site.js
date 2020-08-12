@@ -42,6 +42,7 @@ function createProject(event){
       name:jQuery('#project-name').val(),
       code:jQuery('#project-code').val(),
       description:jQuery('#project-description').val(),
+      needLongProcess:(jQuery('#project-longprocess-job').is(':checked'))?1:0
     };
     jQuery.ajax({
       url:'/project/',

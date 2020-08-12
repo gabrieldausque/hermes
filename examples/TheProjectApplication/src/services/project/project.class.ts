@@ -2,10 +2,14 @@ import { Id, NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/f
 import { Application } from '../../declarations';
 import {NullableProjectDto, ProjectDto} from "../../datas/dtos/ProjectDto";
 import {ProjectEntity} from '../../datas/entities/ProjectEntity';
+import { getGlobalJobManager, JobStates } from '@hermes/jobs';
+import { GeneralError, NotAcceptable, NotFound } from '@feathersjs/errors';
 
 type Data = NullableProjectDto | null;
 
+const jobManager = getGlobalJobManager();
 
+// tslint:disable-next-line:no-empty-interface
 interface ServiceOptions {}
 
 export class Project implements ServiceMethods<Data> {
@@ -123,6 +127,20 @@ export class Project implements ServiceMethods<Data> {
         }
       }
     }
+    const current = this;
+    jobManager.createQueue('project#create');
+    jobManager.createQueue('project#update');
+    jobManager.createQueue('project#get');
+    jobManager.createWorker('project#create', async (payload:ProjectDto, job) => {
+      console.debug(`Executing ${job.id} from queue project#create`);
+      return current.app.backend.createProject(ProjectEntity.loadFromDto(payload));
+    });
+    jobManager.createWorker('project#update', async (payload:ProjectDto, job) => {
+      return current.app.backend.updateProject(ProjectEntity.loadFromDto(payload));
+    });
+    jobManager.createWorker('project#update', async (payload:ProjectDto, job) => {
+      return current.app.backend.getProject(payload.id.toString());
+    });
   }
 
   async find (params?: Params): Promise<Data[] | Paginated<Data>> {
@@ -130,7 +148,18 @@ export class Project implements ServiceMethods<Data> {
   }
 
   async get (id: Id, params?: Params): Promise<Data> {
-    const project = this.app.backend.getProject(id.toString());
+    let project:ProjectEntity;
+    if(params.query.longProcess) {
+      const job = jobManager.execute('project#get', id);
+      await job.waitForCompletion();
+      if(job.state === JobStates.done) {
+        project = job.result;
+      } else {
+        throw new NotFound(job.err)
+      }
+    } else {
+      project = this.app.backend.getProject(id.toString());
+    }
     return ProjectDto.createFromEntity(project);
   }
 
@@ -138,7 +167,18 @@ export class Project implements ServiceMethods<Data> {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    let project = this.app.backend.createProject(ProjectEntity.loadFromDto(data));
+    let project:ProjectEntity;
+    if(data.needLongProcess) {
+      const job = jobManager.execute('project#create', data)
+      await job.waitForCompletion();
+      if(job.state === JobStates.done) {
+        project = job.result;
+      } else {
+        throw new GeneralError(job.err);
+      }
+    } else {
+      project = this.app.backend.createProject(ProjectEntity.loadFromDto(data));
+    }
     const newProject = ProjectDto.createFromEntity(project);
     this.app.topicService.publish("global.project_created", project).catch((error) => {
       console.error("error in create : " + error);
@@ -149,10 +189,18 @@ export class Project implements ServiceMethods<Data> {
   async update (id: NullableId, data: Data, params?: Params): Promise<Data> {
     const project = await this.get(id.toString(), params);
     if(project === null)
-      this.create(data, params);
+      await this.create(data, params);
     else
     {
-      this.app.backend.updateProject(ProjectEntity.loadFromDto(data));
+      if(data.needLongProcess) {
+        const job = jobManager.execute('project#update', data);
+        await job.waitForCompletion();
+        if(job.result !== JobStates.done) {
+          throw new GeneralError(job.err)
+        }
+      } else {
+        this.app.backend.updateProject(ProjectEntity.loadFromDto(data));
+      }
     }
     return data;
   }
@@ -167,6 +215,6 @@ export class Project implements ServiceMethods<Data> {
     if(projectToDelete !== null){
       this.app.backend.deleteProject(projectToDelete);
     }
-    return projectToDelete;
+    return ProjectDto.createFromEntity(projectToDelete);
   }
 }

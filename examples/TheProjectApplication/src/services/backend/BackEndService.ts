@@ -15,7 +15,6 @@ export class BackEndService {
   }
   store:MemoryStorage;
 
-  //usecase
   getProject(id: string):NullableProject {
     return this.store.get(id);
   }
