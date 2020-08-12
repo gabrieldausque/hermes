@@ -86,7 +86,7 @@ describe('Job scheduling tests', () => {
     q.on('success', (job, result) => {
       // console.log(`Values : ${actualValues}`);
       // console.log(`Waiting : ${Array.from((q as InMemoryQueue).getAllWaitingJob(), (j) => j.id)}`);
-      console.log(`Running : ${Array.from((q as InMemoryQueue).getAllRunningJob(), (j:Job) => j.id)}`);
+      // console.log(`Running : ${Array.from((q as InMemoryQueue).getAllRunningJob(), (j:Job) => j.id)}`);
       if(actualValues.length === numberOfJobs){
         if(!testDone) {
           testDone = true;
