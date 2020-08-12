@@ -18,5 +18,7 @@
   "search": {
     "plugins": ["duckduckgo","qwant"]
   },
-  ""
+  "jobManager": {
+    "QueuesFactoryExportName":"Bull"
+  }
 }

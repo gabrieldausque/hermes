@@ -46,7 +46,7 @@
     "@feathersjs/transport-commons": "^4.5.2",
     "@hermes/composition": "^1.0.7",
     "@hermes/topicservice": "^1.0.22",
-    "@hermes/jobs": "^1.0.1",
+    "@hermes/jobs": "^1.0.2",
     "@hermes/bull-jobs": "^0.0.1",
     "node-duckduckgo": "^2.0.12",
     "qwant-api": "^0.5.0",

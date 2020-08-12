@@ -122,3 +122,4 @@ report*
 /cobertura.xml
 /src/hermes_modules/composition/lib/
 /src/hermes_modules/jobs/lib/
+/src/hermes_modules/bull-jobs/lib/
