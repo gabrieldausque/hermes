@@ -1,4 +1,4 @@
-import { Queue } from '@hermes/jobs/queues/Queue';
+import { Queue } from '@hermes/jobs';
 import { Job } from '@hermes/jobs/jobs/Job';
 import { BullQueueConfiguration } from './configuration/BullQueueConfiguration';
 import InnerQueue from 'bull';

@@ -60,19 +60,20 @@ steps:
   displayName: Publish code coverage
 
 - script: |
-    npm install
-    cd $(Build.Repository.LocalPath)/src/hermes_modules/composition/
-    npm install
-    cd $(Build.Repository.LocalPath)
     npm run compileCompositionPackage
   displayName: 'npm install and compile Composition package'
 
 - script: |
-    $(Build.Repository.LocalPath)/src/hermes_modules/topic/
-    npm install
-    cd $(Build.Repository.LocalPath)
     npm run compileTopicPackage
   displayName: 'npm install and compile Topic Package'
+
+- script: |
+    npm run compileJobsPackage
+  displayName: 'npm install and compile Jobs Package'
+
+- script: |
+    npm run compileJobsPackage
+  displayName: 'npm install and compile Jobs Package'
 
 - task: Npm@1
   displayName: 'Publish Composition to azuredevops Hermes/hermes feed'
