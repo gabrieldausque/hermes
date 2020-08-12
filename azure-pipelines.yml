@@ -27,7 +27,7 @@ steps:
 
 - script: |
     sudo apt install -y redis-tools
-    redis-cli -h redis ping
+    redis-cli -h localhost ping
   displayName: Test redis connection
 
 - task: Npm@1
