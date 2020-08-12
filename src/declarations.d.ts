@@ -1,6 +1,6 @@
 import { Application as ExpressFeathers } from '@feathersjs/express';
 import {Platform} from "./platform/Platform";
-import { JobManager } from './hermes_modules/jobs/JobManager';
+import { JobManager } from '@hermes/jobs';
 
 // A mapping of service names to types. Will be extended in service files.
 export interface ServiceTypes {}

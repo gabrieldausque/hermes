@@ -14,7 +14,6 @@ export class BullQueue extends Queue {
   constructor(configuration?:BullQueueConfiguration) {
     super(configuration);
     this.runningJobs = [];
-
     this.innerQueue = new InnerQueue(configuration.name, configuration.redisUrl, configuration.bullQueueOptions);
     const current = this;
     this.innerQueue.on('error', (err) => {
@@ -25,26 +24,28 @@ export class BullQueue extends Queue {
       current.raiseReady();
     });
     this.innerQueue.on('completed', (job, result) => {
+      const outerJob = current.runningJobs.find((j) => {
+        return j.id === job.id.toString();
+      });
       try {
-        const outerJob = current.runningJobs.find((j) => {
-          return j.id === job.id.toString();
-        })
         if(outerJob)
         {
-          this.runningJobs.splice(this.runningJobs.indexOf(outerJob), 1);
-          outerJob.raiseSuccessEvent(result);
+          current.runningJobs.splice(current.runningJobs.indexOf(outerJob), 1);
+          current.raiseJobSuccess(outerJob, result);
         }
-      } catch(ex) {
-        console.log(ex);
+      } catch(err) {
+        console.error(err);
+        if(outerJob) {
+          current.raiseJobFailed(outerJob, result)
+        }
       }
-
     });
     this.namedAction = {};
   }
 
   private async executeJob(bullJob) {
     let action;
-    if(bullJob.name && (bullJob.name !== '__default__')){
+    if(bullJob.name && (bullJob.name !== '__default__')) {
       action = this.namedAction[bullJob.name];
     } else {
       action = this.action;

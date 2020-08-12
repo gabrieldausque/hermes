@@ -17,7 +17,21 @@ describe('Job Scheduling using Bull', () => {
   const createJmAndQ = (() => {
     const i = instancesFactory;
     jm = new JobManager({
-      QueuesFactoryExportName:'Bull'
+      queuesFactoryExportName:'Bull',
+      defaultQueueConfiguration:{
+        redisUrl:"redis://localhost:6379",
+        bullQueueOptions: {
+          redis:{
+            host:"localhost",
+            port:"6379",
+            retryStrategy: (times) => {
+              return new Error('No connection ! Please start docker container ...');
+            },
+            maxRetriesPerRequest: 2,
+            connectTimeout:250
+          }
+        }
+      }
     });
     q = jm.createQueue('Test', {
       redisUrl:"redis://localhost:6379",
@@ -51,7 +65,7 @@ describe('Job Scheduling using Bull', () => {
 
   it('Should raise error event if no connection on redis', (done) => {
     jm = new JobManager({
-      QueuesFactoryExportName:'Bull'
+      queuesFactoryExportName:'Bull'
     });
     const q2 = jm.createQueue('Error', {
       redisUrl:"redis://localhost:590",
@@ -77,7 +91,7 @@ describe('Job Scheduling using Bull', () => {
 
   it('Should connect to another port', (done) => {
     jm = new JobManager({
-      QueuesFactoryExportName:'Bull'
+      queuesFactoryExportName:'Bull'
     });
     const q2 = jm.createQueue('Error', {
       redisUrl:"redis://localhost:6380",
@@ -99,6 +113,15 @@ describe('Job Scheduling using Bull', () => {
       done();
     });
   })
+
+  it('Should had defaulted configuration for queue if no configuration has been passed and defaultQueueConfiguration is set', async () => {
+    createJmAndQ();
+    const q3 = jm.createQueue('Defaulted');
+    const redisClient = await (q3 as BullQueue).innerQueue.client;
+    expect(redisClient.options.connectTimeout).to.be.equal(250);
+    expect(redisClient.options.maxRetriesPerRequest).to.be.equal(2);
+  })
+
 
   it('Should execute a job and get result when job is done for string result', (done) => {
     createJmAndQ();

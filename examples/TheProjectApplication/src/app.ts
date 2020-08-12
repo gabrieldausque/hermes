@@ -45,25 +45,6 @@ const jobManagerConfiguration:JobManagerConfiguration = app.get("jobManager");
 console.log(jobManagerConfiguration);
 setGlobalJobManager(new JobManager(jobManagerConfiguration));
 const globalJobManager = getGlobalJobManager();
-const testQueue = globalJobManager.createQueue('Test', {
-  redisUrl:"redis://localhost:6379",
-  bullQueueOptions: {
-    redis:{
-      host:"localhost",
-      port:"6379",
-      retryStrategy: (times) => {
-        return new Error('No connection ! Please start docker container ...');
-      },
-      maxRetriesPerRequest: 0,
-      connectTimeout:50,
-    }
-  }
-});
-console.debug(`New Queue is BullQueue ? ${testQueue instanceof BullQueue}`)
-testQueue.on('ready', () => {
-  console.log('Redis connexion done !')
-})
-
 
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());

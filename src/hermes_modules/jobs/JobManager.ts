@@ -6,29 +6,51 @@ import { Queue } from './queues/Queue';
 import { Job } from './jobs/Job';
 import { Action } from './queues';
 
+export let instancesFactory;
+export function setJobManagerInstancesFactory(factory:InstancesFactory){
+  instancesFactory = factory;
+  instancesFactory.loadExportedClassesFromDirectory(__dirname);
+}
+setJobManagerInstancesFactory(globalInstancesFactory);
+
 export class JobManager {
 
   private queuesFactory: QueuesFactory;
   private readonly queues: { [queueName:string] : Queue };
+  private defaultQueueConfiguration: any;
 
   constructor(configuration?:JobManagerConfiguration) {
     this.queues = {}
-    if(configuration && configuration.QueuesFactoryExportName) {
-      this.queuesFactory = instancesFactory.getInstanceFromCatalogs('QueuesFactory', configuration.QueuesFactoryExportName)
+    const contractType = 'QueuesFactory'
+    if(configuration) {
+      if (configuration.queuesFactoryExportName) {
+        this.queuesFactory = instancesFactory.getInstanceFromCatalogs(contractType, configuration.queuesFactoryExportName)
+      } else {
+        this.queuesFactory = instancesFactory.getInstanceFromCatalogs(contractType,'Default', );
+      }
+      if (configuration.defaultQueueConfiguration) {
+        this.defaultQueueConfiguration = configuration.defaultQueueConfiguration;
+      }
     } else {
-      this.queuesFactory = new InMemoryQueuesFactory();
+      this.queuesFactory = instancesFactory.getInstanceFromCatalogs(contractType,'Default', );
     }
-
-    // TODO : create queues based on configuration property
   }
 
   queueExists(queueName:string):boolean {
     return this.queues[queueName] instanceof Queue;
   }
 
+  getQueue(queueName) {
+    if(!this.queueExists(queueName)) {
+      this.createQueue(queueName);
+    }
+    return this.queues[queueName];
+  }
+
   createQueue(queueName: string, queueOptions?:object):Queue {
-    if(!this.queues[queueName]) {
-      this.queues[queueName] = this.queuesFactory.createQueue(queueName, queueOptions)
+    if(!this.queueExists(queueName)) {
+      const options = (queueOptions)?queueOptions:this.defaultQueueConfiguration;
+      this.queues[queueName] = this.queuesFactory.createQueue(queueName, options);
     }
     return this.queues[queueName];
   }
@@ -36,19 +58,17 @@ export class JobManager {
   createWorker(queueName: string, action: Action):void {
     if(!(typeof action === 'function'))
       throw new Error('action parameter must be a function. Please correct')
-    // TODO : create queue if it doesn't exists
-    this.queues[queueName].onJobToProcess(action);
+    this.getQueue(queueName).onJobToProcess(action);
   }
 
   execute(queueName: string, actionPayload:any = null, context?:any):Job {
-    // TODO : create queue if it doesn't exists
-    return this.queues[queueName].push(actionPayload, context);
+    return this.getQueue(queueName).push(actionPayload, context);
   }
 
   start() {
     for(const queueName in this.queues){
       if(this.queues.hasOwnProperty(queueName))
-        this.queues[queueName].start();
+        this.getQueue(queueName).start();
     }
   }
 
@@ -64,11 +84,6 @@ export class JobManager {
       }
     }
   }
-}
-
-export let instancesFactory = globalInstancesFactory;
-export function setJobManagerInstancesFactory(factory:InstancesFactory){
-  instancesFactory = factory;
 }
 
 export let globalJobManager:JobManager = new JobManager();

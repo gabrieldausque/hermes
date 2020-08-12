@@ -23,7 +23,7 @@ import {InstancesFactory,globalInstancesFactory} from '@hermes/composition';
 import {MemoryStorage} from "./services/backend/MemoryStorage";
 import {IExportedClass} from "./DirectoryCatalog/IExportedClass";
 import {Platform} from "./platform/Platform";
-import { JobManager } from './hermes_modules/jobs/JobManager';
+import { JobManager } from '@hermes/jobs';
 
 // Don't remove this comment. It's needed to format import lines nicely.
 const app: Application = express(feathers());

@@ -1,3 +1,4 @@
 export interface JobManagerConfiguration {
-  QueuesFactoryExportName:string
+  defaultQueueConfiguration?: any;
+  queuesFactoryExportName:string
 }

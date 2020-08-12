@@ -7,6 +7,10 @@ export class InMemoryQueuesFactory implements QueuesFactory {
     contractType: 'QueuesFactory',
     contractName: 'Default',
     isShared: true
+  },{
+    contractType: 'QueuesFactory',
+    contractName: 'InMemory',
+    isShared: true
   }];
 
   createQueue(queueName: string, queueOptions?: object): Queue {
