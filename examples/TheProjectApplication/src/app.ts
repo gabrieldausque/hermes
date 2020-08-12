@@ -21,7 +21,9 @@ import {BackEndService} from "./services/backend/BackEndService";
 import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
 import {TopicServiceConfiguration} from "@hermes/topicservice/lib/configuration/TopicServiceConfiguration";
 import {globalInstancesFactory} from "@hermes/composition";
-import { globalJobManager, setGlobalJobManager, JobManagerConfiguration, JobManager } from '@hermes/jobs';
+import { setGlobalJobManager, JobManagerConfiguration, JobManager, InMemoryQueue } from '@hermes/jobs';
+import { BullQueue } from '@hermes/bull-jobs';
+import { getGlobalJobManager } from '@hermes/jobs/lib/JobManager';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
@@ -40,7 +42,28 @@ app.topicService = globalInstancesFactory.getInstanceFromCatalogs("TopicService"
 app.backend = globalInstancesFactory.getInstanceFromCatalogs("BackEndService","Default");
 app.moleculeLoader = new MoleculeLoader();
 const jobManagerConfiguration:JobManagerConfiguration = app.get("jobManager");
+console.log(jobManagerConfiguration);
 setGlobalJobManager(new JobManager(jobManagerConfiguration));
+const globalJobManager = getGlobalJobManager();
+const testQueue = globalJobManager.createQueue('Test', {
+  redisUrl:"redis://localhost:6379",
+  bullQueueOptions: {
+    redis:{
+      host:"localhost",
+      port:"6379",
+      retryStrategy: (times) => {
+        return new Error('No connection ! Please start docker container ...');
+      },
+      maxRetriesPerRequest: 0,
+      connectTimeout:50,
+    }
+  }
+});
+console.debug(`New Queue is BullQueue ? ${testQueue instanceof BullQueue}`)
+testQueue.on('ready', () => {
+  console.log('Redis connexion done !')
+})
+
 
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());

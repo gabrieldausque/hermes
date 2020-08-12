@@ -71,8 +71,11 @@ export function setJobManagerInstancesFactory(factory:InstancesFactory){
   instancesFactory = factory;
 }
 
-export let globalJobManager = new JobManager();
+export let globalJobManager:JobManager = new JobManager();
 export function setGlobalJobManager(jobManager:JobManager) {
   globalJobManager = jobManager;
+}
+export function getGlobalJobManager():JobManager {
+  return globalJobManager;
 }
 
