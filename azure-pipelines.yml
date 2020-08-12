@@ -6,14 +6,29 @@
 trigger:
 - master
 
+resources:
+ containers:
+   - container: redis
+     image: redis
+     ports: 
+     - 6379
+
 pool:
   vmImage: 'ubuntu-latest'
+
+services:
+  redis: redis
 
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
+
+- script: |
+    apt install -y redis-tools
+    redis-cli -h redis ping
+  displayName: Test redis connection
 
 - task: Npm@1
   inputs:
