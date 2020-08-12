@@ -1,15 +1,10 @@
 import { JobManagerConfiguration } from './JobManagerConfiguration';
-import { globalInstancesFactory } from '@hermes/composition';
+import { globalInstancesFactory, InstancesFactory } from '@hermes/composition';
 import { QueuesFactory } from './queues/QueuesFactory';
 import { InMemoryQueuesFactory } from './queues/InMemoryQueuesFactory';
 import { Queue } from './queues/Queue';
 import { Job } from './jobs/Job';
 import { Action } from './queues';
-
-export let instancesFactory = globalInstancesFactory;
-
-
-
 
 export class JobManager {
 
@@ -71,4 +66,13 @@ export class JobManager {
   }
 }
 
+export let instancesFactory = globalInstancesFactory;
+export function setJobManagerInstancesFactory(factory:InstancesFactory){
+  instancesFactory = factory;
+}
+
 export let globalJobManager = new JobManager();
+export function setGlobalJobManager(jobManager:JobManager) {
+  globalJobManager = jobManager;
+}
+

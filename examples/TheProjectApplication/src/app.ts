@@ -21,6 +21,7 @@ import {BackEndService} from "./services/backend/BackEndService";
 import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
 import {TopicServiceConfiguration} from "@hermes/topicservice/lib/configuration/TopicServiceConfiguration";
 import {globalInstancesFactory} from "@hermes/composition";
+import { JobManagerConfiguration } from '@hermes/jobs';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
@@ -38,7 +39,7 @@ const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.l
 app.topicService = globalInstancesFactory.getInstanceFromCatalogs("TopicService", "Default", topicConfiguration);
 app.backend = globalInstancesFactory.getInstanceFromCatalogs("BackEndService","Default");
 app.moleculeLoader = new MoleculeLoader();
-
+const jobManagerConfiguration:JobManagerConfiguration = app.get("jobManagerConfiguration");
 
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());
