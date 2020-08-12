@@ -73,10 +73,10 @@ steps:
 
 - script: |
     npm run compileJobsPackage
-  displayName: 'npm install and compile Jobs Package'
+  displayName: 'npm install and compile Bull-Jobs Package'
 
 - task: Npm@1
-  displayName: 'Publish Composition to azuredevops Hermes/hermes feed'
+  displayName: 'Publish Composition to Azure Dev ops Hermes/hermes feed'
   condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishComposition'],'true'))
   inputs:
     command: publish
@@ -85,12 +85,30 @@ steps:
     workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/composition/
 
 - task: Npm@1
-  displayName: 'Publish topic to azuredevops Hermes/hermes feed'
+  displayName: 'Publish topic to Azure Dev ops Hermes/hermes feed'
   condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishTopic'],'true'))
   inputs:
     command: publish
     publishRegistry: useFeed
     publishFeed: Hermes/hermes
     workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/topic/
+
+- task: Npm@1
+  displayName: 'Publish Jobs to Azure Dev ops Hermes/hermes feed'
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishJobs'],'true'))
+  inputs:
+    command: publish
+    publishRegistry: useFeed
+    publishFeed: Hermes/hermes
+    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/jobs/
+
+- task: Npm@1
+  displayName: 'Publish Bull Jobs to Azure Dev ops Hermes/hermes feed'
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishBullJobs'],'true'))
+  inputs:
+    command: publish
+    publishRegistry: useFeed
+    publishFeed: Hermes/hermes
+    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/bull-jobs/
 
 
