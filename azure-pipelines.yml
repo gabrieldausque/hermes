@@ -72,7 +72,7 @@ steps:
   displayName: 'npm install and compile Jobs Package'
 
 - script: |
-    npm run compileJobsPackage
+    npm run compileBullJobsPackage
   displayName: 'npm install and compile Bull-Jobs Package'
 
 - task: Npm@1

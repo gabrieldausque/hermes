@@ -11,6 +11,6 @@
   "exclude": [
     "test",
     "examples",
-    "src/hermes_modules/topic/lib"
+    "src/hermes_modules/**/lib"
   ]
 }
