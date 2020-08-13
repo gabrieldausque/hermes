@@ -42,7 +42,7 @@ export class BullQueue extends Queue {
     this.namedAction = {};
   }
 
-  private async executeJob(bullJob) {
+  private async executeJob(bullJob:InnerQueue.Job<any>) {
     let action;
     if(bullJob.name && (bullJob.name !== '__default__')) {
       action = this.namedAction[bullJob.name];
@@ -54,7 +54,7 @@ export class BullQueue extends Queue {
     // manage cluster config, and job that was not sent through the current process
     let currentJob = this.runningJobs.find((j) => j.id === bullJob.id.toString());
     if(!currentJob) {
-      currentJob = new BullJob(action, bullJob.data, bullJob.options)
+      currentJob = new BullJob(action, bullJob.data, bullJob.opts);
       currentJob.setInnerJob(bullJob);
       this.runningJobs.push(currentJob);
     }
@@ -98,7 +98,7 @@ export class BullQueue extends Queue {
     if(jobOptions && jobOptions.name) {
       if(!jobToReturn)
         jobToReturn = new BullJob(this.namedAction[jobOptions.name], actionPayloadOrJob, jobOptions);
-      this.innerQueue.add(jobOptions.name, jobToReturn.getPayload()).then((bullJob) => {
+      this.innerQueue.add(jobOptions.name, jobToReturn.getPayload()).then((bullJob: InnerQueue.Job<any>) => {
         jobToReturn.setInnerJob(bullJob);
       });
     } else {
