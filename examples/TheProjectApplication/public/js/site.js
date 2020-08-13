@@ -11,7 +11,10 @@ function validateCreateProjectForm() {
   return isValid;
 }
 
-const socket = io(window.location.href);
+const socket = io(window.location.href, {
+  transports: ['websocket'],
+  upgrade: false
+});
 const app = feathers();
 app.configure(feathers.socketio(socket));
 const topicClient = new SocketIOTopicServiceClientProxy(socket, () => {

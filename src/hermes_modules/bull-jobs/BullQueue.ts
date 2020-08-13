@@ -49,13 +49,21 @@ export class BullQueue extends Queue {
     } else {
       action = this.action;
     }
-    // TODO : check action is valid
-    const currentJob = this.runningJobs.find((j) => j.id === bullJob.id.toString());
     let payload = bullJob.data;
+
+    // manage cluster config, and job that was not sent through the current process
+    let currentJob = this.runningJobs.find((j) => j.id === bullJob.id.toString());
+    if(!currentJob) {
+      currentJob = new BullJob(action, bullJob.data, bullJob.options)
+      currentJob.setInnerJob(bullJob);
+      this.runningJobs.push(currentJob);
+    }
+
     if(typeof payload.boxedValue !== 'undefined'){
       payload = (payload as BullValueTypeBox).boxedValue;
     }
     let resultOrPromise:any;
+
     try {
       resultOrPromise = action(payload, currentJob);
       if(resultOrPromise instanceof Promise) {
