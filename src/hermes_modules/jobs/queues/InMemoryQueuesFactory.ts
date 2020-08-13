@@ -14,7 +14,7 @@ export class InMemoryQueuesFactory implements QueuesFactory {
   }];
 
   createQueue(queueName: string, queueOptions?: object): Queue {
-    return new InMemoryQueue(queueOptions);
+    return new InMemoryQueue(queueName, queueOptions);
   }
 
 }

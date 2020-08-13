@@ -10,9 +10,11 @@ export abstract class Queue extends EventEmitter {
   protected jobs: Job[];
   protected paused: boolean;
   protected configuration: any;
+  protected name: string;
 
-  protected constructor(configuration?:any) {
+  protected constructor(name:string, configuration?:any) {
     super()
+    this.name = name;
     this.jobs = [];
     this.paused = false;
     this.configuration = configuration;
@@ -20,6 +22,14 @@ export abstract class Queue extends EventEmitter {
 
   onJobToProcess(action: Action, processingOptions?:ProcessingOptions) {
     this.action = action;
+  }
+
+  getConfiguration() {
+    return this.configuration;
+  }
+
+  getName() {
+    return this.name;
   }
 
   abstract push(actionPayload: any, jobOptions:{[propName:string]:any}) : Job;

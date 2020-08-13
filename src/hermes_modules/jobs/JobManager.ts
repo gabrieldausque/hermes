@@ -50,6 +50,16 @@ export class JobManager {
     return this.queues[queueName];
   }
 
+  getQueues() {
+    const queues = [];
+    for(const queueName in this.queues){
+      if(this.queues.hasOwnProperty(queueName)) {
+        queues.push(this.queues[queueName]);
+      }
+    }
+    return queues
+  }
+
   createQueue(queueName: string, queueOptions?:object):Queue {
     if(!this.queueExists(queueName)) {
       const options = (queueOptions)?queueOptions:this.defaultQueueConfiguration;

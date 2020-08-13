@@ -1,5 +1,4 @@
-import { Queue } from '@hermes/jobs';
-import { Job } from '@hermes/jobs/jobs/Job';
+import { Queue, Job } from '@hermes/jobs';
 import { BullQueueConfiguration } from './configuration/BullQueueConfiguration';
 import InnerQueue from 'bull';
 import { BullJob } from './BullJob';
@@ -11,8 +10,8 @@ export class BullQueue extends Queue {
   private readonly namedAction: {};
   private readonly runningJobs: BullJob[];
 
-  constructor(configuration?:BullQueueConfiguration) {
-    super(configuration);
+  constructor(name:string, configuration?:BullQueueConfiguration) {
+    super(name, configuration);
     this.runningJobs = [];
     this.innerQueue = new InnerQueue(configuration.name, configuration.redisUrl, configuration.bullQueueOptions);
     const current = this;

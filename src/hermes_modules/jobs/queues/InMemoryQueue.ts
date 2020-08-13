@@ -16,9 +16,8 @@ export class InMemoryQueue extends Queue {
   private bindedOnTick: any;
   private ticker: Ticker;
 
-  constructor(configuration?) {
-    super();
-
+  constructor(name, configuration?) {
+    super(name, configuration);
     this.id = InMemoryQueue.nextId;
     InMemoryQueue.nextId++;
     this.waitingJobs = [];

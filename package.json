@@ -36,7 +36,7 @@
     "compositionDocs": "./node_modules/.bin/typedoc --options typedoc-composition-html.json src/hermes_modules/composition && ./node_modules/.bin/typedoc --options typedoc-composition-md.json src/hermes_modules/composition",
     "jobsDocs": "./node_modules/.bin/typedoc --options typedoc-jobs-html.json src/hermes_modules/jobs && ./node_modules/.bin/typedoc --options typedoc-jobs-md.json src/hermes_modules/jobs",
     "bulljobsDocs": "./node_modules/.bin/typedoc --options typedoc-bulljobs-html.json src/hermes_modules/bull-jobs && ./node_modules/.bin/typedoc --options typedoc-bulljobs-md.json src/hermes_modules/bull-jobs",
-    "compilePackages": "npm run compileTopicPackage && npm run compileCompositionPackage && npm run compileJobsPackage && npm run compileBullJobsPackage",
+    "compilePackages": "npm run compileCompositionPackage && npm run compileTopicPackage && npm run compileJobsPackage && npm run compileBullJobsPackage",
     "compileTopicPackage": "shx rm -rf src/hermes_modules/topic/lib/ && tsc -p src/hermes_modules/topic && node_modules/.bin/ncp src/hermes_modules/topic/browser/ src/hermes_modules/topic/lib/browser",
     "compileCompositionPackage": "shx rm -rf src/hermes_modules/composition/lib/ && tsc -p src/hermes_modules/composition",
     "compileJobsPackage": "shx rm -rf src/hermes_modules/jobs/lib/ && tsc -p src/hermes_modules/jobs",

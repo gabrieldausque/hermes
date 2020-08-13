@@ -10,7 +10,7 @@ export class BullQueuesFactory implements QueuesFactory{
   }];
 
   createQueue(queueName: string, queueOptions?:BullQueueConfiguration): Queue {
-    return new BullQueue({
+    return new BullQueue(queueName, {
       name:queueName,
       redisUrl: queueOptions.redisUrl,
       bullQueueOptions:queueOptions.bullQueueOptions

@@ -21,9 +21,8 @@ import {BackEndService} from "./services/backend/BackEndService";
 import {MoleculeLoader} from "./services/moleculeloader/moleculeLoader";
 import {TopicServiceConfiguration} from "@hermes/topicservice/lib/configuration/TopicServiceConfiguration";
 import {globalInstancesFactory} from "@hermes/composition";
-import { setGlobalJobManager, JobManagerConfiguration, JobManager, InMemoryQueue } from '@hermes/jobs';
-import { BullQueue } from '@hermes/bull-jobs';
-import { getGlobalJobManager } from '@hermes/jobs/lib/JobManager';
+import { setGlobalJobManager, JobManagerConfiguration, JobManager, getGlobalJobManager } from '@hermes/jobs';
+import Arena from 'bull-arena'
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
@@ -78,5 +77,14 @@ app.use(express.notFound());
 app.use(express.errorHandler({ logger } as any));
 
 app.hooks(appHooks);
+
+// Enable Arena for queue monitoring of Bull
+if(jobManagerConfiguration.queuesFactoryExportName === 'Bull') {
+  const arenaConfig = {
+    queues:[]
+  };
+  for(const queue of getGlobalJobManager())
+}
+
 
 export default app;
