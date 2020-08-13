@@ -108,6 +108,14 @@ export class BullQueue extends Queue {
     return jobToReturn;
   }
 
+  getHost() {
+    return this.innerQueue.client.host
+  }
+
+  getPort() {
+    return this.innerQueue.client.port
+  }
+
   start(): void {
     // Do nothing;
   }

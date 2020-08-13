@@ -2,12 +2,11 @@ import { Id, NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/f
 import { Application } from '../../declarations';
 import {NullableProjectDto, ProjectDto} from "../../datas/dtos/ProjectDto";
 import {ProjectEntity} from '../../datas/entities/ProjectEntity';
-import { getGlobalJobManager, JobStates } from '@hermes/jobs';
+import { getGlobalJobManager, JobManager, JobStates } from '@hermes/jobs';
 import { GeneralError, NotAcceptable, NotFound } from '@feathersjs/errors';
 
 type Data = NullableProjectDto | null;
 
-const jobManager = getGlobalJobManager();
 
 // tslint:disable-next-line:no-empty-interface
 interface ServiceOptions {}
@@ -16,6 +15,7 @@ export class Project implements ServiceMethods<Data> {
   app: Application;
   options: ServiceOptions;
   docs:any;
+  private jobManager: JobManager;
   constructor (options: ServiceOptions = {}, app: Application) {
     this.options = options;
     this.app = app;
@@ -128,17 +128,18 @@ export class Project implements ServiceMethods<Data> {
       }
     }
     const current = this;
-    jobManager.createQueue('project#create');
-    jobManager.createQueue('project#update');
-    jobManager.createQueue('project#get');
-    jobManager.createWorker('project#create', async (payload:ProjectDto, job) => {
+    this.jobManager = getGlobalJobManager();
+    this.jobManager.createQueue('project#create');
+    this.jobManager.createQueue('project#update');
+    this.jobManager.createQueue('project#get');
+    this.jobManager.createWorker('project#create', async (payload:ProjectDto, job) => {
       console.debug(`Executing ${job.id} from queue project#create`);
       return current.app.backend.createProject(ProjectEntity.loadFromDto(payload));
     });
-    jobManager.createWorker('project#update', async (payload:ProjectDto, job) => {
+    this.jobManager.createWorker('project#update', async (payload:ProjectDto, job) => {
       return current.app.backend.updateProject(ProjectEntity.loadFromDto(payload));
     });
-    jobManager.createWorker('project#update', async (payload:ProjectDto, job) => {
+    this.jobManager.createWorker('project#get', async (payload:ProjectDto, job) => {
       return current.app.backend.getProject(payload.id.toString());
     });
   }
@@ -150,7 +151,8 @@ export class Project implements ServiceMethods<Data> {
   async get (id: Id, params?: Params): Promise<Data> {
     let project:ProjectEntity;
     if(params.query.longProcess) {
-      const job = jobManager.execute('project#get', id);
+
+      const job = this.jobManager.execute('project#get', id);
       await job.waitForCompletion();
       if(job.state === JobStates.done) {
         project = job.result;
@@ -169,7 +171,7 @@ export class Project implements ServiceMethods<Data> {
     }
     let project:ProjectEntity;
     if(data.needLongProcess) {
-      const job = jobManager.execute('project#create', data)
+      const job = this.jobManager.execute('project#create', data)
       await job.waitForCompletion();
       if(job.state === JobStates.done) {
         project = job.result;
@@ -193,7 +195,7 @@ export class Project implements ServiceMethods<Data> {
     else
     {
       if(data.needLongProcess) {
-        const job = jobManager.execute('project#update', data);
+        const job = this.jobManager.execute('project#update', data);
         await job.waitForCompletion();
         if(job.result !== JobStates.done) {
           throw new GeneralError(job.err)

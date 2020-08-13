@@ -45,7 +45,7 @@ describe('Job Scheduling using Bull', () => {
         }
       }
     });
-    (q as BullQueue).innerQueue.empty().then(() => {
+    (q as unknown as BullQueue).innerQueue.empty().then(() => {
       // do nothing
     });
     jm.start();
@@ -106,7 +106,7 @@ describe('Job Scheduling using Bull', () => {
       }
     });
     q2.once('ready', () => {
-      expect((q2 as BullQueue).innerQueue.client.options.port).to.be.equal(6380);
+      expect((q2 as unknown as BullQueue).innerQueue.client.options.port).to.be.equal(6380);
       q2.stop();
       done();
     });
@@ -115,7 +115,7 @@ describe('Job Scheduling using Bull', () => {
   it('Should had defaulted configuration for queue if no configuration has been passed and defaultQueueConfiguration is set', async () => {
     createJmAndQ();
     const q3 = jm.createQueue('Defaulted');
-    const redisClient = await (q3 as BullQueue).innerQueue.client;
+    const redisClient = await (q3 as unknown as BullQueue).innerQueue.client;
     expect(redisClient.options.connectTimeout).to.be.equal(250);
     expect(redisClient.options.maxRetriesPerRequest).to.be.equal(2);
   })

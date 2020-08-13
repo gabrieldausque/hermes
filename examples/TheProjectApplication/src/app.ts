@@ -23,6 +23,8 @@ import {TopicServiceConfiguration} from "@hermes/topicservice/lib/configuration/
 import {globalInstancesFactory} from "@hermes/composition";
 import { setGlobalJobManager, JobManagerConfiguration, JobManager, getGlobalJobManager } from '@hermes/jobs';
 import Arena from 'bull-arena'
+import { BullQueue } from '@hermes/bull-jobs';
+import assert from 'assert';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
@@ -83,7 +85,24 @@ if(jobManagerConfiguration.queuesFactoryExportName === 'Bull') {
   const arenaConfig = {
     queues:[]
   };
-  for(const queue of getGlobalJobManager())
+  const jobManager = getGlobalJobManager();
+  for(const queue of jobManager.getQueues()) {
+    const bullQueue = queue as BullQueue
+    arenaConfig.queues.push({
+      name:bullQueue.getName(),
+      hostId:bullQueue.getName().split('#')[0],
+      redis: {
+        port: bullQueue.getPort(),
+        host: bullQueue.getHost()
+      }
+    })
+  }
+  const arenaModule = Arena(arenaConfig, {
+    basePath:'/arena',
+    disableListen: true,
+    useCdn: false
+  })
+  app.use('/', arenaModule);
 }
 
 
