@@ -69,41 +69,44 @@ app.configure(socketio((io) => {
 app.configure(middleware);
 // Set up our services (see `services/index.js`)
 app.configure(services);
-// Set up event channels (see channels.js)
-app.configure(channels);
-
-
-
-// Configure a middleware for 404s and the error handler
-app.use(express.notFound());
-app.use(express.errorHandler({ logger } as any));
-
-app.hooks(appHooks);
 
 // Enable Arena for queue monitoring of Bull
 if(jobManagerConfiguration.queuesFactoryExportName === 'Bull') {
   const arenaConfig = {
+    Bull: require('bull'),
     queues:[]
   };
   const jobManager = getGlobalJobManager();
   for(const queue of jobManager.getQueues()) {
     const bullQueue = queue as BullQueue
+    // @ts-ignore
+    // @ts-ignore
     arenaConfig.queues.push({
       name:bullQueue.getName(),
       hostId:bullQueue.getName().split('#')[0],
       redis: {
+        // @ts-ignore
         port: bullQueue.getPort(),
+        // @ts-ignore
         host: bullQueue.getHost()
       }
     })
   }
   const arenaModule = Arena(arenaConfig, {
-    basePath:'/arena',
+    basePath:'/jobs',
     disableListen: true,
     useCdn: false
   })
   app.use('/', arenaModule);
 }
 
+// Set up event channels (see channels.js)
+app.configure(channels);
+
+// Configure a middleware for 404s and the error handler
+app.use(express.notFound());
+app.use(express.errorHandler({ logger } as any));
+
+app.hooks(appHooks);
 
 export default app;

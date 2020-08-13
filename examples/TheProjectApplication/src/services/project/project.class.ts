@@ -4,6 +4,9 @@ import {NullableProjectDto, ProjectDto} from "../../datas/dtos/ProjectDto";
 import {ProjectEntity} from '../../datas/entities/ProjectEntity';
 import { getGlobalJobManager, JobManager, JobStates } from '@hermes/jobs';
 import { GeneralError, NotAcceptable, NotFound } from '@feathersjs/errors';
+import util from 'util';
+
+const sleep = util.promisify(setTimeout);
 
 type Data = NullableProjectDto | null;
 
@@ -134,6 +137,7 @@ export class Project implements ServiceMethods<Data> {
     this.jobManager.createQueue('project#get');
     this.jobManager.createWorker('project#create', async (payload:ProjectDto, job) => {
       console.debug(`Executing ${job.id} from queue project#create`);
+      await sleep(3000);
       return current.app.backend.createProject(ProjectEntity.loadFromDto(payload));
     });
     this.jobManager.createWorker('project#update', async (payload:ProjectDto, job) => {

@@ -43,6 +43,7 @@ globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_mod
 globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs');
 app.platform = new Platform(configurationObject);
 // TODO : add configuration of job Manager
+// @ts-ignore
 app.jobManager = new JobManager();
 
 const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
