@@ -8,7 +8,7 @@
   },
   "cluster": {
     "workers": 2,
-    "isActive": true
+    "isActive": false
   },
   "topicService":{
     "host":"http://localhost:3030",

@@ -17,8 +17,19 @@ export class TopicServiceConfiguration {
    */
   public standAlone:boolean;
 
+  /**
+   * indicate number of local workers, needed when using node cluster mode
+   */
+  public localWorkers: number;
+
+  /**
+   * List of all available ports for local TopicService used for local cluster
+   */
+  public localWorkersPorts: number[]
+
   constructor() {
     this.clusterNodes = [];
+    this.localWorkersPorts = [];
     this.standAlone = true;
   }
 
@@ -59,6 +70,19 @@ export class TopicServiceConfiguration {
 
         if(topicServiceConfiguration.standAlone === false) {
           configurationToReturn.standAlone = topicServiceConfiguration.standAlone;
+        }
+
+        if(topicServiceConfiguration.localWorkers && topicServiceConfiguration.localWorkers > 1) {
+          configurationToReturn.localWorkers = topicServiceConfiguration.localWorkers;
+          if(Array.isArray(topicServiceConfiguration.localWorkersPorts)) {
+            for(const port of topicServiceConfiguration.localWorkersPorts) {
+              if(typeof port === 'number') {
+                configurationToReturn.localWorkersPorts.push(port);
+              }
+            }
+          }
+        } else {
+          configurationToReturn.localWorkers = 1;
         }
 
         if(Array.isArray(topicServiceConfiguration.clusterNodes)) {

@@ -5,6 +5,7 @@ import {TopicServiceConfiguration} from "./configuration/TopicServiceConfigurati
 import {SocketIOTopicServiceClientProxy} from "./clients/SocketIOTopicServiceClientProxy";
 import Socket = SocketIOClient.Socket;
 import {isString} from "util";
+import cluster from 'cluster';
 /**
  * The topic service that represents the hub on which all message will be send across
  */
@@ -29,9 +30,14 @@ export class TopicService {
    */
   private config: TopicServiceConfiguration;
   /**
-   *
+   * Distant cluster nodes client
    */
   private clusterClient: SocketIOTopicServiceClientProxy;
+
+  /**
+   *
+   */
+  private localNodeClusterClient: SocketIOTopicServiceClientProxy;
 
   /**
    *
@@ -95,61 +101,81 @@ export class TopicService {
    */
   public async initializeCluster(previousHost?:string) {
     console.log("Initialize cluster");
-    if(this.config && !this.config.standAlone) {
-      // get random peer to connect to :
-      let peerHost:string = '';
-      if(isString(previousHost))
-      {
-        peerHost = this.config.getRandomHost([previousHost]);
-      } else {
-        peerHost = this.config.getRandomHost();
-      }
-      console.log("Trying to connect to " + peerHost);
-      let socket:Socket;
-      try {
-        const currentService = this;
-        const socketId = uuid();
-         socket = require('socket.io-client')(peerHost, {
-           reconnection: false
-         });
-         socket.on('connect', (socket) => {
-           console.log("connection to" + peerHost + " done.");
-         });
-         socket.on('connect_error', (error) => {
-           console.log("Error while connecting to server " + peerHost + " : " + error);
-           console.log("socketId : " + socketId);
-           console.log("Waiting 5s before retrying ....");
-           const waiting = new Promise(resolve => setTimeout(resolve, 5000));
-           waiting.then(() => {
-             currentService.initializeCluster(peerHost);
-           })
-         });
-         socket.on('connect_timeout', () => {
-           console.log("Timeout while connecting to server " + peerHost + " : ");
-           currentService.initializeCluster(peerHost);
-         });
-         socket.on('disconnect', (reason) => {
-           console.log("Server " + peerHost + " disconnected because : " + reason);
-           console.log("Waiting 5s before retrying ....");
-           const waiting = new Promise(resolve => setTimeout(resolve, 5000));
-           waiting.then(() => {
-             currentService.initializeCluster(peerHost);
-           })
-         });
-        this.clusterClient = new SocketIOTopicServiceClientProxy(socket, () => {
-          console.log('Subscribing to all event from other cluster node : ' + peerHost);
-          currentService.clusterClient.subscribe('#', (topic, topicMessage) => {
-            if(topicMessage.publishedOnServer !== currentService.serverId){
-              currentService.publish(topic, topicMessage).catch((error) => console.error('Error while forwarding message from cluster : \n' + error));
-            }
+    if(this.config) {
+      if(!this.config.standAlone) {
+        // get random peer to connect to :
+        let peerHost:string = '';
+        if(isString(previousHost))
+        {
+          peerHost = this.config.getRandomHost([previousHost]);
+        } else {
+          peerHost = this.config.getRandomHost();
+        }
+        console.log("Trying to connect to " + peerHost);
+        let socket:Socket;
+        try {
+          const currentService = this;
+          const socketId = uuid();
+          socket = require('socket.io-client')(peerHost, {
+            reconnection: false
+          });
+          socket.on('connect', (socket) => {
+            console.log("connection to" + peerHost + " done.");
+          });
+          socket.on('connect_error', (error) => {
+            console.log("Error while connecting to server " + peerHost + " : " + error);
+            console.log("socketId : " + socketId);
+            console.log("Waiting 5s before retrying ....");
+            const waiting = new Promise(resolve => setTimeout(resolve, 5000));
+            waiting.then(() => {
+              currentService.initializeCluster(peerHost);
+            })
+          });
+          socket.on('connect_timeout', () => {
+            console.log("Timeout while connecting to server " + peerHost + " : ");
+            currentService.initializeCluster(peerHost);
+          });
+          socket.on('disconnect', (reason) => {
+            console.log("Server " + peerHost + " disconnected because : " + reason);
+            console.log("Waiting 5s before retrying ....");
+            const waiting = new Promise(resolve => setTimeout(resolve, 5000));
+            waiting.then(() => {
+              currentService.initializeCluster(peerHost);
+            })
+          });
+          this.clusterClient = new SocketIOTopicServiceClientProxy(socket, () => {
+            console.log('Subscribing to all event from other cluster node : ' + peerHost);
+            currentService.clusterClient.subscribe('#', (topic, topicMessage) => {
+              if(topicMessage.publishedOnServer !== currentService.serverId){
+                currentService.publish(topic, topicMessage).catch((error) => console.error('Error while forwarding message from cluster : \n' + error));
+              }
+            })
           })
-        })
-      } catch(error) {
-        console.log("Error while connecting :" + error)
+        } catch(error) {
+          console.log("Error while connecting :" + error)
+        }
+      }
+
+      if(!cluster.isMaster && this.config.localWorkers && this.config.localWorkers > 1) {
+
+        // TODO : open the listening socket io server for local ring
+        // find the right port to use :
+        //random take a port in the array.
+        // try to create the socket.io server
+        // on error address in use, retry with a new port
+        if(Array.isArray(this.config.localWorkersPorts)){
+
+        }
+        // get a random port different than the local one
+        // create a topic client, try to connect
+        // if error, retry on another port
+        // if not forward all messages not with the local id to the currentService
+        // TODO : connect to other topic service process to ensure all notifications are getted
       }
     } else {
       console.warn("No configuration for cluster or server is configured as a standalone server. Starting standalone node");
     }
   }
+
 }
 
