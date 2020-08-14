@@ -17,19 +17,8 @@ export class TopicServiceConfiguration {
    */
   public standAlone:boolean;
 
-  /**
-   * indicate number of local workers, active the nodejs cluster mode
-   */
-  public localWorkers: number;
-
-  /**
-   * List of all available ports for local TopicService used for nodejs cluster mode
-   */
-  public localWorkersPorts: number[]
-
   constructor() {
     this.clusterNodes = [];
-    this.localWorkersPorts = [];
     this.standAlone = true;
   }
 
@@ -58,20 +47,6 @@ export class TopicServiceConfiguration {
     return peerHost;
   }
 
-  getRandomNodejsClusterPort(excludedPorts?: number[]) {
-    if(!Array.isArray(excludedPorts)){
-      excludedPorts = [];
-    }
-    let port:number = 0;
-    while(!port){
-      const randomPort = this.localWorkersPorts[Math.floor(Math.random()* this.localWorkersPorts.length)];
-      if (excludedPorts.indexOf(randomPort) < 0) {
-        port = randomPort;
-      }
-    }
-    return port;
-  }
-
   /**
    * Load a topic service configuration from a json object
    * @param topicServiceConfiguration
@@ -85,19 +60,6 @@ export class TopicServiceConfiguration {
 
         if(topicServiceConfiguration.standAlone === false) {
           configurationToReturn.standAlone = topicServiceConfiguration.standAlone;
-        }
-
-        if(topicServiceConfiguration.localWorkers && topicServiceConfiguration.localWorkers > 1) {
-          configurationToReturn.localWorkers = topicServiceConfiguration.localWorkers;
-          if(Array.isArray(topicServiceConfiguration.localWorkersPorts)) {
-            for(const port of topicServiceConfiguration.localWorkersPorts) {
-              if(typeof port === 'number') {
-                configurationToReturn.localWorkersPorts.push(port);
-              }
-            }
-          }
-        } else {
-          configurationToReturn.localWorkers = 1;
         }
 
         if(Array.isArray(topicServiceConfiguration.clusterNodes)) {

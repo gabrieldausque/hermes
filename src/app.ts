@@ -34,6 +34,13 @@ const config = configuration();
 app.configure(config);
 
 const clusterConfig = app.get("cluster");
+
+// load class from constructed catalog (Work in progress)
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/topic');
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs');
+let topicService:TopicService;
+
 if(clusterConfig &&
   clusterConfig.isActive &&
   typeof clusterConfig.workers === 'number' &&
@@ -42,30 +49,18 @@ if(clusterConfig &&
   for(let workerIndex=0; workerIndex < clusterConfig.workers; workerIndex++) {
     cluster.fork();
   }
+  topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
 } else {
   const configurationObject = {
     topicService: app.get('topicService'),
     platform: app.get('platform')
   };
+  topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
 
-  // load class from constructed catalog (Work in progress)
-  globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
-  globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/topic');
-  globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs');
   app.platform = new Platform(configurationObject);
   // TODO : add configuration of job Manager
   // @ts-ignore
   app.jobManager = new JobManager();
-
-  const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
-  if(!cluster.isMaster && clusterConfig.isActive &&
-    typeof clusterConfig.workers === 'number' &&
-    clusterConfig.workers > 1) {
-    topicService.initializeNodeJSCluster().then(() => {
-      // do nothing
-    }).catch((err) => console.error(err));
-  }
-
 
   // Enable security, CORS, compression, favicon and body parsing
   app.use(helmet());
@@ -100,7 +95,7 @@ if(clusterConfig &&
       const hub = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
       console.debug('is TopicService Shared ? ' + (hub === topicService));
       const topicClient = new SocketIOTopicServiceClient(hub, socket);
-      console.log("Connecting new client " + topicClient.topicClientId);
+      console.log(`Connecting new client ${topicClient.topicClientId} on ${cluster.isWorker?'worker':''} process ${process.pid}`);
     });
     app.platform.topicService.initializeCluster().catch((error) => console.error(error));
   }));
