@@ -57,7 +57,6 @@ export class TopicService {
             for(const receiverId in cluster.workers) {
               const receiver = cluster.workers[receiverId]
               if(receiverId !== sender.id.toString()){
-                console.debug(`Forwarding message from worker ${sender.id} to ${receiver.id}.`)
                 receiver.send(msg);
               }
             }
@@ -69,7 +68,6 @@ export class TopicService {
         if(msg.cmd === 'publishTopicMessage'){
           try {
             if(msg.topicMessage.publishedOnServer !== current.serverId){
-              console.debug(`Publishing message from master ${process.ppid} to ${process.pid}.`)
               const topicMessage = TopicMessage.deserialize(msg.topicMessage);
               await current.publish(msg.topicMessage.fromTopic, topicMessage);
             }
