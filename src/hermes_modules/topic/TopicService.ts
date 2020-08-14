@@ -168,6 +168,7 @@ export class TopicService {
   }
 
   public async initializeNodeJSCluster(previousPort?:number) {
+    console.log('trying to initialize NodeJS cluster');
     if(this.config.localWorkers && this.config.localWorkers > 1 && !cluster.isMaster) {
       console.log('Nodejs cluster mode activated, start creation of local ring')
       // TODO : open the listening socket io server for local ring
@@ -178,7 +179,6 @@ export class TopicService {
       if(!Array.isArray(this.config.localWorkersPorts) || this.config.localWorkersPorts.length < this.config.localWorkers){
         throw new Error(`No ports defined. Needs at least ${this.config.localWorkers} ports in localWorkersPort configuration field. Please correct`)
       }
-
 
       let port:number;
       let server:Server;
@@ -195,45 +195,49 @@ export class TopicService {
         })
       }
       try {
-        if(!this.localNodeJSCluster)
-        {
+        if(!this.localNodeJSCluster) {
+          console.log(`Listening on local ring for port ${port}`)
           server.listen(port, "localhost");
+          console.log(`Listening Ok on port ${port} for process ${process.pid} with parent ${process.ppid}`);
           this.localNodeJSCluster = server;
         }
-        const clientPort = this.config.getRandomNodejsClusterPort([port]);
-        const peerHost = `http://localhost:${port}`;
-        const socketId = uuid();
-        const clientSocket = require('socket.io-client')(peerHost, {
-          reconnection: false
-        });
-        clientSocket.on('connect', (socket) => {
-          console.log(`connection to ${peerHost} done"`);
-        });
-        clientSocket.on('connect_error', async (error) => {
-          console.warn(`Error while connecting to server ${peerHost} : ${error}`);
-          console.warn(`socketId : ${socketId}`);
-          console.warn("Waiting 5s before retrying ....");
-          await sleep(5000);
-          await current.initializeNodeJSCluster(clientPort);
-        });
-        clientSocket.on('connect_timeout', () => {
-          console.warn("Timeout while connecting to server " + peerHost + " : ");
-          current.initializeNodeJSCluster(clientPort);
-        });
-        clientSocket.on('disconnect', async (reason) => {
-          console.log(`Server ${peerHost} disconnected because : ${reason}`);
-          console.log("Waiting 5s before retrying ....");
-          await sleep(5000)
-          await current.initializeCluster(peerHost);
-        });
-        this.localNodeClusterClient = new SocketIOTopicServiceClientProxy(clientSocket, () => {
-          console.log(`Subscribing to all event from other cluster node ${peerHost}`);
-          current.clusterClient.subscribe('#', (topic, topicMessage) => {
-            if(topicMessage.publishedOnServer !== current.serverId){
-              current.publish(topic, topicMessage).catch((error) => console.error(`Error while forwarding message from local nodejs cluster : \n ${error}`));
-            }
+
+        if(!this.localNodeClusterClient) {
+          const clientPort = this.config.getRandomNodejsClusterPort([port]);
+          const peerHost = `http://localhost:${clientPort}`;
+          const socketId = uuid();
+          const clientSocket = require('socket.io-client')(peerHost, {
+            reconnection: false
+          });
+          clientSocket.on('connect', (socket) => {
+            console.log(`connection to ${peerHost} done"`);
+          });
+          clientSocket.on('connect_error', async (error) => {
+            console.warn(`Error while connecting to server ${peerHost} : ${error}`);
+            console.warn(`socketId : ${socketId}`);
+            console.warn("Waiting 5s before retrying ....");
+            await sleep(5000);
+            await current.initializeNodeJSCluster(clientPort);
+          });
+          clientSocket.on('connect_timeout', () => {
+            console.warn("Timeout while connecting to server " + peerHost + " : ");
+            current.initializeNodeJSCluster(clientPort);
+          });
+          clientSocket.on('disconnect', async (reason) => {
+            console.log(`Server ${peerHost} disconnected because : ${reason}`);
+            console.log("Waiting 5s before retrying ....");
+            await sleep(5000)
+            await current.initializeCluster(peerHost);
+          });
+          this.localNodeClusterClient = new SocketIOTopicServiceClientProxy(clientSocket, () => {
+            console.log(`Subscribing to all event from other cluster node ${peerHost}`);
+            current.clusterClient.subscribe('#', (topic, topicMessage) => {
+              if (topicMessage.publishedOnServer !== current.serverId) {
+                current.publish(topic, topicMessage).catch((error) => console.error(`Error while forwarding message from local nodejs cluster : \n ${error}`));
+              }
+            })
           })
-        })
+        }
       }catch(err) {
         // TODO : test on error type ...
         console.warn(`Port ${port} already in use, change port and retry after 1 second.`)

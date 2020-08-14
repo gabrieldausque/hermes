@@ -24,7 +24,7 @@
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "test": "npm run mocha && npm run coverage",
+    "test": "NODE_ENV=test npm run mocha && npm run coverage",
     "dev": "npm run compile && ts-node-dev --no-notify src/",
     "start": "npm run compile && node lib",
     "debug": "npm run compile && node --inspect lib ",

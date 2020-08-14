@@ -24,6 +24,7 @@ import {MemoryStorage} from "./services/backend/MemoryStorage";
 import {IExportedClass} from "./DirectoryCatalog/IExportedClass";
 import {Platform} from "./platform/Platform";
 import { JobManager } from '@hermes/jobs';
+import cluster from "cluster";
 
 // Don't remove this comment. It's needed to format import lines nicely.
 const app: Application = express(feathers());
@@ -32,70 +33,91 @@ const app: Application = express(feathers());
 const config = configuration();
 app.configure(config);
 
-const configurationObject = {
-  topicService: app.get('topicService'),
-  platform: app.get('platform')
-};
-
-// load class from constructed catalog (Work in progress)
-globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
-globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/topic');
-globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs');
-app.platform = new Platform(configurationObject);
-// TODO : add configuration of job Manager
-// @ts-ignore
-app.jobManager = new JobManager();
-
-const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
-
-// Enable security, CORS, compression, favicon and body parsing
-app.use(helmet());
-app.use(cors());
-app.use(compress());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
-// Host the public folder
-app.use('/', express.static(app.get('public')));
-
-// Set up Plugins and providers
-app.configure(express.rest());
-
-app.configure(swagger({
-  openApiVersion:3,
-  specs:{
-    uiIndex: true,
-    info: {
-      title: 'Hermes POC Service',
-      description: 'The hermes POC service swagger',
-      version:'0.0.1'
-    }
+const clusterConfig = app.get("cluster");
+if(clusterConfig &&
+  clusterConfig.isActive &&
+  typeof clusterConfig.workers === 'number' &&
+  clusterConfig.workers > 1 &&
+  cluster.isMaster) {
+  for(let workerIndex=0; workerIndex < clusterConfig.workers; workerIndex++) {
+    cluster.fork();
   }
-}));
+} else {
+  const configurationObject = {
+    topicService: app.get('topicService'),
+    platform: app.get('platform')
+  };
 
-app.configure(socketio((io) => {
-  console.log('Socket.Io server created and listening on ');
-  io.on('connection', (socket) => {
-    const hub = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
-    console.debug('is TopicService Shared ? ' + (hub === topicService));
-    const topicClient = new SocketIOTopicServiceClient(hub, socket);
-    console.log("Connecting new client " + topicClient.topicClientId);
-  });
-  app.platform.topicService.initializeCluster().catch((error) => console.error(error));
-}));
-// Configure other middleware (see `middleware/index.js`)
-app.configure(middleware);
-// Set up our services (see `services/index.js`)
-app.configure(services);
-// Set up event channels (see channels.js)
-app.configure(channels);
+  // load class from constructed catalog (Work in progress)
+  globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
+  globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/topic');
+  globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs');
+  app.platform = new Platform(configurationObject);
+  // TODO : add configuration of job Manager
+  // @ts-ignore
+  app.jobManager = new JobManager();
+
+  const topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
+  if(!cluster.isMaster && clusterConfig.isActive &&
+    typeof clusterConfig.workers === 'number' &&
+    clusterConfig.workers > 1) {
+    topicService.initializeNodeJSCluster().then(() => {
+      // do nothing
+    }).catch((err) => console.error(err));
+  }
+
+
+  // Enable security, CORS, compression, favicon and body parsing
+  app.use(helmet());
+  app.use(cors());
+  app.use(compress());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
+  // Host the public folder
+  app.use('/', express.static(app.get('public')));
+
+  // Set up Plugins and providers
+  app.configure(express.rest());
+
+  app.configure(swagger({
+    openApiVersion:3,
+    specs:{
+      uiIndex: true,
+      info: {
+        title: 'Hermes POC Service',
+        description: 'The hermes POC service swagger',
+        version:'0.0.1'
+      }
+    }
+  }));
+
+  app.configure(socketio({
+    transports: ['websocket']
+  }, (io) => {
+    console.log('Socket.Io server created and listening on ');
+    io.on('connection', (socket) => {
+      const hub = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
+      console.debug('is TopicService Shared ? ' + (hub === topicService));
+      const topicClient = new SocketIOTopicServiceClient(hub, socket);
+      console.log("Connecting new client " + topicClient.topicClientId);
+    });
+    app.platform.topicService.initializeCluster().catch((error) => console.error(error));
+  }));
+  // Configure other middleware (see `middleware/index.js`)
+  app.configure(middleware);
+  // Set up our services (see `services/index.js`)
+  app.configure(services);
+  // Set up event channels (see channels.js)
+  app.configure(channels);
 
 
 
-// Configure a middleware for 404s and the error handler
-app.use(express.notFound());
-app.use(express.errorHandler({ logger } as any));
+  // Configure a middleware for 404s and the error handler
+  app.use(express.notFound());
+  app.use(express.errorHandler({ logger } as any));
 
-app.hooks(appHooks);
+  app.hooks(appHooks);
+}
 
 export default app;
