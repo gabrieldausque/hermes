@@ -4,6 +4,7 @@ import {ProjectEntity} from "../../datas/entities/ProjectEntity";
 import {MoleculeEntity} from "../../datas/entities/MoleculeEntity";
 import {TopicMessage, ITopicClient, TopicService, MemoryTopicServiceClient} from "@hermes/topicservice";
 import {globalInstancesFactory} from "@hermes/composition";
+import { uuid } from 'uuidv4';
 
 const setTimeoutPromise = util.promisify(setTimeout);
 
@@ -20,6 +21,8 @@ export class MoleculeLoader {
   }
 
   private async loadMolecules(topicTriggered:string, topicMessage:TopicMessage) {
+    if(topicMessage.isForwardedByCluster)
+      return;
     const content = topicMessage.content as ProjectEntity;
     const project:ProjectEntity = this.backendService.getProject(content.id.toString());
     if(project) {
@@ -31,7 +34,8 @@ export class MoleculeLoader {
 
   private addRandomMolecule(project:ProjectEntity){
       const moleculeIndex = project.molecules.length + 1;
-      project.addMolecule(new MoleculeEntity('molecule-' + moleculeIndex,'molecule ' + moleculeIndex  +  ' of the project'));
+      const moleculeUuid = uuid();
+      project.addMolecule(new MoleculeEntity(`molecule-${moleculeIndex}-${moleculeUuid}` ,`molecule ${moleculeIndex}-${moleculeUuid} of the project`));
       this.backendService.updateProject(project);
       this.topicClient.publish(project.id + '.molecule_loaded', project).then(() => {}).catch((error) => console.log('on error : ' + error));
   }
@@ -39,7 +43,7 @@ export class MoleculeLoader {
   private async addMolecule(topicTriggered:string, topicMessage:TopicMessage) {
     const projectId = topicMessage.content;
     const currentProject = this.backendService.getProject(projectId);
-    if(currentProject !== null){
+    if(currentProject){
       this.addRandomMolecule(currentProject);
     } else if(topicMessage.publishedOnServer === this.topicService.serverId) {
       this.topicClient.publish(topicMessage.senderId + ".errors", {

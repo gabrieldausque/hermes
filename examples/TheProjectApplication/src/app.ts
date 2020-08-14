@@ -24,10 +24,19 @@ import {globalInstancesFactory} from "@hermes/composition";
 import { setGlobalJobManager, JobManagerConfiguration, JobManager, getGlobalJobManager } from '@hermes/jobs';
 import Arena from 'bull-arena'
 import { BullQueue } from '@hermes/bull-jobs';
+
+// Load all lazy loaded class
+globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/topicservice/lib');
+globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/bull-jobs/lib');
+globalInstancesFactory.loadExportedClassesFromDirectory('./services');
+globalInstancesFactory.loadExportedClassesFromDirectory('./plugins');
+
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const app: Application = express(feathers());
 app.configure(configuration());
+
+const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
 
 // Load app configuration
 const clusterConfig = app.get("cluster");
@@ -35,14 +44,11 @@ if(clusterConfig && clusterConfig.isActive && typeof clusterConfig.workers === '
   for(let workerIndex=0; workerIndex < clusterConfig.workers; workerIndex++) {
     cluster.fork();
   }
+  // Needs to be created also in the cluster master, after the forks, to be able to forward message to other process
+  // all forwarded messages will be marked as forwarded
+  app.topicService = globalInstancesFactory.getInstanceFromCatalogs("TopicService", "Default", topicConfiguration);
 } else {
   // Initialize globalInstancesFactory
-  globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/topicservice/lib');
-  globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/bull-jobs/lib');
-  globalInstancesFactory.loadExportedClassesFromDirectory('./services');
-  globalInstancesFactory.loadExportedClassesFromDirectory('./plugins');
-
-  const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
   app.topicService = globalInstancesFactory.getInstanceFromCatalogs("TopicService", "Default", topicConfiguration);
   app.backend = globalInstancesFactory.getInstanceFromCatalogs("BackEndService","Default");
   app.moleculeLoader = new MoleculeLoader();
@@ -67,7 +73,7 @@ if(clusterConfig && clusterConfig.isActive && typeof clusterConfig.workers === '
     console.log('Socket.Io server created and listening on ');
     io.on('connection', (socket) => {
       const topicClient = new SocketIOTopicServiceClient(app.topicService, socket);
-      console.log("Connecting new client " + topicClient.topicClientId);
+      console.log(`Connecting new client ${topicClient.topicClientId} on process ${process.pid} with parentId ${process.ppid}`);
     });
     app.topicService.initializeCluster().catch((error) => console.error(error));
   }));

@@ -183,7 +183,7 @@ export class Project implements ServiceMethods<Data> {
         throw new GeneralError(job.err);
       }
     } else {
-      project = this.app.backend.createProject(ProjectEntity.loadFromDto(data));
+      project = await this.app.backend.createProject(ProjectEntity.loadFromDto(data));
     }
     const newProject = ProjectDto.createFromEntity(project);
     this.app.topicService.publish("global.project_created", project).catch((error) => {

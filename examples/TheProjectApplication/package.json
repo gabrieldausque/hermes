@@ -45,7 +45,7 @@
     "@feathersjs/socketio": "^4.5.2",
     "@feathersjs/transport-commons": "^4.5.2",
     "@hermes/composition": "^1.0.8",
-    "@hermes/topicservice": "^1.0.24",
+    "@hermes/topicservice": "^1.0.27",
     "@hermes/jobs": "^1.0.7",
     "@hermes/bull-jobs": "^1.0.5",
     "node-duckduckgo": "^2.0.12",

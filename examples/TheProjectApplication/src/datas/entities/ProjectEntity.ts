@@ -26,7 +26,7 @@ export class ProjectEntity implements IProjectEntity {
     project.id = dto.id;
     if(Array.isArray(dto.molecules)){
       dto.molecules.forEach((m) => {
-        let newMolecule = new MoleculeEntity(m.name, m.description);
+        const newMolecule = new MoleculeEntity(m.name, m.description);
         newMolecule.moleculeId = m.moleculeId;
         project.addMolecule(newMolecule);
       });
@@ -41,5 +41,15 @@ export class ProjectEntity implements IProjectEntity {
     }
     this.molecules.push(molecule);
   }
+
+  static deserialize(plainObjectProjectEntity:ProjectEntity):ProjectEntity{
+    const p = new ProjectEntity(plainObjectProjectEntity.name, plainObjectProjectEntity.code, plainObjectProjectEntity.description);
+    p.id = plainObjectProjectEntity.id;
+    for(const m of plainObjectProjectEntity.molecules){
+      p.addMolecule(MoleculeEntity.deserialize(m))
+    }
+    return p;
+  }
+
 }
 export type NullableProject = ProjectEntity | null;
