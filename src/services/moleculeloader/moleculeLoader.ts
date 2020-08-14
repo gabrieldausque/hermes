@@ -27,6 +27,8 @@ export class MoleculeLoader {
   }
 
   private async loadMolecules(topicTriggered:string, topicMessage:TopicMessage) {
+    if(topicMessage.isForwardedByCluster)
+      return;
     const content = topicMessage.content as ProjectEntity;
     const project:ProjectEntity = this.backendService.getProject(content.id.toString());
     if(project) {
@@ -47,7 +49,7 @@ export class MoleculeLoader {
   private async addMolecule(topicTriggered:string, topicMessage:TopicMessage) {
     const projectId = topicMessage.content;
     const currentProject = this.backendService.getProject(projectId);
-    if(currentProject !== null){
+    if(currentProject){
       this.addRandomMolecule(currentProject);
     } else if(topicMessage.publishedOnServer === this.topicService.serverId) {
       this.topicClient.publish(topicMessage.senderId + ".errors", {

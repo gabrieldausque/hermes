@@ -14,18 +14,31 @@ export class BackEndService {
     }
   ];
   private topicClient: MemoryTopicServiceClient;
+  private readonly topicService: TopicService;
 
   constructor(){
     this.store = new MemoryStorage();
-    this.topicClient = new MemoryTopicServiceClient(globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default'));
+    this.topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default')
+    this.topicClient = new MemoryTopicServiceClient(this.topicService);
     this.topicClient.subscribe('global.project_created', ((topic, topicMessage) => {
-      this.store.create(topicMessage.content.name, topicMessage.content.code, topicMessage.content.description);
+      if(!topicMessage.isForwardedByCluster)
+        return;
+      const p = ProjectEntity.deserialize(topicMessage.content);
+      this.store.add(p);
     }), this);
     this.topicClient.subscribe('*.molecule_loaded', (topic, topicMessage ) => {
-      this.store.update(topicMessage.content);
+      if(!topicMessage.isForwardedByCluster)
+        return;
+      console.log(`other worker molecule ${process.pid}`);
+      const p = ProjectEntity.deserialize(topicMessage.content);
+      this.store.update(p);
     }, this);
     this.topicClient.subscribe('#.property_added', (topic, topicMessage) => {
-      this.store.update(topicMessage.content);
+      if(!topicMessage.isForwardedByCluster)
+        return;
+      console.log(`other worker property ${process.pid}`);
+      const p = ProjectEntity.deserialize(topicMessage.content);
+      this.store.update(p);
     }, this)
   }
   store:MemoryStorage;

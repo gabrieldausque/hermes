@@ -35,6 +35,8 @@ export class PropertyLoader {
   }
 
   private onMoleculeLoaded(topic,topicMessage:TopicMessage) {
+    if(topicMessage.isForwardedByCluster)
+      return;
     const projectId:string = topicMessage.content.id.toString();
     const project:ProjectEntity = this.backendService.getProject(projectId);
     if(project) {

@@ -69,6 +69,7 @@ export class TopicService {
           try {
             if(msg.topicMessage.publishedOnServer !== current.serverId){
               const topicMessage = TopicMessage.deserialize(msg.topicMessage);
+              topicMessage.isForwardedByCluster = true;
               await current.publish(msg.topicMessage.fromTopic, topicMessage);
             }
           }catch(err) {
@@ -185,6 +186,7 @@ export class TopicService {
             console.log('Subscribing to all event from other cluster node : ' + peerHost);
             currentService.clusterClient.subscribe('#', (topic, topicMessage) => {
               if(topicMessage.publishedOnServer !== currentService.serverId){
+                topicMessage.isForwardedByCluster = true;
                 currentService.publish(topic, topicMessage).catch((error) => console.error('Error while forwarding message from cluster : \n' + error));
               }
             })

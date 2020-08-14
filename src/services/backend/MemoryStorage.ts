@@ -1,5 +1,5 @@
 import {NullableProject, ProjectEntity} from "../../datas/entities/ProjectEntity";
-
+import cluster from 'cluster';
 export class MemoryStorage {
   constructor(){
     this.innerStorage = [];
@@ -18,6 +18,7 @@ export class MemoryStorage {
     return newProject
   }
   add(project:ProjectEntity):void{
+    console.log(`add from process ${process.pid}  which is ${cluster.isWorker?'worker':'master'}`);
     if(!this.innerStorage.find(value => {
       return value.id === project.id;
     })) {
@@ -25,8 +26,11 @@ export class MemoryStorage {
     }
   }
   update(project:ProjectEntity):void{
-    this.delete(project);
-    this.add(project);
+    // console.log(`update from process ${process.pid}  which is ${cluster.isWorker?'worker':'master'}`);
+    if(this.exists(project)){
+      const index = this.innerStorage.indexOf(this.innerStorage.find((p) => p.id === project.id));
+      this.innerStorage.splice(index,1, project);
+    }
   }
 
   private exists(projectOrId: ProjectEntity|string):boolean {
@@ -46,4 +50,5 @@ export class MemoryStorage {
   all():ProjectEntity[] {
     return this.innerStorage;
   }
+
 }

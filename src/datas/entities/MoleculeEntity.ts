@@ -17,4 +17,10 @@ export class MoleculeEntity implements IMoleculeEntity{
     this.otherProperties.push(otherProperty);
   }
 
+  static deserialize(plainObjectMolecule:MoleculeEntity):MoleculeEntity {
+    const m = new MoleculeEntity(plainObjectMolecule.name, plainObjectMolecule.description)
+    m.moleculeId = plainObjectMolecule.moleculeId;
+    m.otherProperties.push(plainObjectMolecule.otherProperties);
+    return m;
+  }
 }

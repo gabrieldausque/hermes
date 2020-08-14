@@ -29,6 +29,11 @@ export class TopicMessage{
   public publishedOnServer: string;
 
   /**
+   * Indicate if this message is a forward from another node of a distant (TopicService implementation) or local cluster (NodeJS)
+   */
+  public isForwardedByCluster: boolean;
+
+  /**
    * Create a new message
    * @param content the content that will be send across the {@link TopicService}
    * @param senderId the {@link ITopicClient} id
@@ -37,6 +42,7 @@ export class TopicMessage{
     this.createdAt = Date.now();
     this.senderId = senderId;
     this.content = content;
+    this.isForwardedByCluster = false;
   }
 
   /**
@@ -48,6 +54,7 @@ export class TopicMessage{
     clone.publishedOnServer = this.publishedOnServer;
     clone.listenedTopic = this.listenedTopic;
     clone.fromTopic = this.fromTopic;
+    clone.isForwardedByCluster = this.isForwardedByCluster;
     return clone;
   }
 
@@ -57,6 +64,7 @@ export class TopicMessage{
     deserializedMessage.publishedOnServer = topicMessage.publishedOnServer;
     deserializedMessage.listenedTopic = topicMessage.listenedTopic;
     deserializedMessage.fromTopic = topicMessage.fromTopic;
+    deserializedMessage.isForwardedByCluster = topicMessage.isForwardedByCluster;
     return deserializedMessage;
   }
 }
