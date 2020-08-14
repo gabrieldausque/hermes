@@ -24,6 +24,9 @@ export class BackEndService {
     this.topicClient.subscribe('*.molecule_loaded', (topic, topicMessage ) => {
       this.store.update(topicMessage.content);
     }, this);
+    this.topicClient.subscribe('#.property_added', (topic, topicMessage) => {
+      this.store.update(topicMessage.content);
+    }, this)
   }
   store:MemoryStorage;
 

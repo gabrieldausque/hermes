@@ -3,6 +3,7 @@ import {BackEndService} from "../backend/BackEndService";
 import {ProjectEntity} from "../../datas/entities/ProjectEntity";
 import {MoleculeEntity} from "../../datas/entities/MoleculeEntity";
 import util from "util";
+import { uuid } from 'uuidv4';
 const setTimeoutPromise = util.promisify(setTimeout);
 
 export class PropertyLoader {
@@ -39,9 +40,10 @@ export class PropertyLoader {
     if(project) {
       const currentService = this;
       const lastMolecule:MoleculeEntity = project.molecules[project.molecules.length-1];
+      const propId = uuid();
       setTimeoutPromise(3000, lastMolecule).then((m) => {
         m.addProperty({
-          aNewProperty:'ValueOfTheNewProperty'
+          aNewProperty:propId
         });
         currentService.topicClient.publish(projectId + '.' + lastMolecule.moleculeId + '.property_added', project).catch((error) => {
           console.error('Error during molecule property added : ' + error);
