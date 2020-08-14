@@ -13,17 +13,17 @@ export class TopicServiceConfiguration {
   public clusterNodes:string[];
 
   /**
-   * indicate if the cluster needs to be initialized
+   * indicate if a cluster with distant process needs to be initialized
    */
   public standAlone:boolean;
 
   /**
-   * indicate number of local workers, needed when using node cluster mode
+   * indicate number of local workers, active the nodejs cluster mode
    */
   public localWorkers: number;
 
   /**
-   * List of all available ports for local TopicService used for local cluster
+   * List of all available ports for local TopicService used for nodejs cluster mode
    */
   public localWorkersPorts: number[]
 
@@ -42,19 +42,34 @@ export class TopicServiceConfiguration {
 
   /**
    * Get a random host from current configuration excluding a list of host
-   * @param excludeHosts The list of host to exclude from the list of host to obtain from
+   * @param excludedHosts The list of host to exclude from the list of host to obtain from
    */
-  getRandomHost(excludeHosts?: string[]) {
-    if(!Array.isArray(excludeHosts)){
-      excludeHosts = [];
+  getRandomHost(excludedHosts?: string[]) {
+    if(!Array.isArray(excludedHosts)){
+      excludedHosts = [];
     }
-    const peerHost:string = '';
+    let peerHost:string = '';
     while(!peerHost){
       const randomHost:string = this.clusterNodes[Math.floor(Math.random() * this.clusterNodes.length)];
-      if(randomHost !== this.host && excludeHosts.indexOf(randomHost) < 0){
-        return randomHost
+      if(randomHost !== this.host && excludedHosts.indexOf(randomHost) < 0){
+        peerHost = randomHost
       }
     }
+    return peerHost;
+  }
+
+  getRandomNodejsClusterPort(excludedPorts?: number[]) {
+    if(!Array.isArray(excludedPorts)){
+      excludedPorts = [];
+    }
+    let port:number = 0;
+    while(!port){
+      const randomPort = this.localWorkersPorts[Math.floor(Math.random()* this.localWorkersPorts.length)];
+      if (excludedPorts.indexOf(randomPort) < 0) {
+        port = randomPort;
+      }
+    }
+    return port;
   }
 
   /**
