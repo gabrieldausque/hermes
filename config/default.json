@@ -24,7 +24,7 @@
   },
   "topicService":{
     "host":"http://localhost:3030",
-    "standAlone": false,
+    "standAlone": true,
     "clusterNodes":[
       "http://localhost:3031",
       "http://localhost:3030"
