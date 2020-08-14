@@ -1,6 +1,6 @@
 {
   "port":3030,
-  "topicservice":{
+  "topicService":{
     "host":"http://localhost:3030",
     "standAlone": false,
     "clusterNodes":[

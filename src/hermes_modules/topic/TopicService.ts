@@ -157,9 +157,30 @@ export class TopicService {
         try {
           const currentService = this;
           const socketId = uuid();
-          socket = require('socket.io-client')(peerHost, {
-            reconnection: false
-          });
+          if(cluster.isMaster ) {
+            let nbWorker = 0;
+            for(const workerId in cluster.workers){
+              nbWorker++;
+            }
+            if(nbWorker > 0) {
+              socket = require('socket.io-client')(peerHost, {
+                transports: ['websocket'],
+                reconnection: false,
+                upgrade: false
+              });
+            } else {
+              socket = require('socket.io-client')(peerHost, {
+                reconnection: false
+              })
+            }
+          } else if(cluster.isWorker) {
+            socket = require('socket.io-client')(peerHost, {
+              transports: ['websocket'],
+              reconnection: false,
+              upgrade: false
+            });
+          }
+
           socket.on('connect', (socket) => {
             console.log("connection to" + peerHost + " done.");
           });
