@@ -26,7 +26,9 @@ export class TopicServiceConfiguration {
    * Validate the current configuration
    */
   validate() {
-    return this.host && Array.isArray(this.clusterNodes) && (this.clusterNodes.length > 0);
+    return this.host &&
+      Array.isArray(this.clusterNodes)
+      && (this.clusterNodes.length > 1);
   }
 
   /**
@@ -38,8 +40,24 @@ export class TopicServiceConfiguration {
       excludedHosts = [];
     }
     let peerHost:string = '';
+    let availableHosts = [];
+    availableHosts = availableHosts.concat(this.clusterNodes);
+    if(availableHosts.indexOf(this.host) >= 0)
+      availableHosts.splice(availableHosts.indexOf(this.host),1);
+    for(const excludedHost of excludedHosts) {
+      if(availableHosts.indexOf(excludedHost) >= 0) {
+        availableHosts.splice(availableHosts.indexOf(excludedHost),1)
+      }
+    }
+    //No available hosts ! return previous host if available
+    if(availableHosts.length === 0) {
+      if(excludedHosts.length > 0)
+        return excludedHosts[0];
+      else
+        return '';
+    }
     while(!peerHost){
-      const randomHost:string = this.clusterNodes[Math.floor(Math.random() * this.clusterNodes.length)];
+      const randomHost:string = availableHosts[Math.floor(Math.random() * availableHosts.length)];
       if(randomHost !== this.host && excludedHosts.indexOf(randomHost) < 0){
         peerHost = randomHost
       }

@@ -163,14 +163,13 @@ export class TopicService {
           socket.on('connect', (socket) => {
             console.log("connection to" + peerHost + " done.");
           });
-          socket.on('connect_error', (error) => {
+          socket.on('connect_error', async (error) => {
             console.log("Error while connecting to server " + peerHost + " : " + error);
             console.log("socketId : " + socketId);
             console.log("Waiting 5s before retrying ....");
-            const waiting = new Promise(resolve => setTimeout(resolve, 5000));
-            waiting.then(() => {
-              currentService.initializeCluster(peerHost);
-            })
+            await sleep(5000);
+            console.log("retrying ...")
+            await currentService.initializeCluster(peerHost);
           });
           socket.on('connect_timeout', () => {
             console.log("Timeout while connecting to server " + peerHost + " : ");

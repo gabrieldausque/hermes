@@ -17,7 +17,7 @@ import middleware from './middleware';
 import services from './services';
 import appHooks from './app.hooks';
 import channels from './channels';
-import {TopicService} from '@hermes/topicservice';
+import { TopicService, TopicServiceConfiguration } from '@hermes/topicservice';
 import {SocketIOTopicServiceClient} from '@hermes/topicservice';
 import {InstancesFactory,globalInstancesFactory} from '@hermes/composition';
 import {MemoryStorage} from "./services/backend/MemoryStorage";
@@ -32,6 +32,7 @@ const app: Application = express(feathers());
 // Load app configuration
 const config = configuration();
 app.configure(config);
+const topicConfiguration:TopicServiceConfiguration = TopicServiceConfiguration.load(app.get("topicService"));
 
 const clusterConfig = app.get("cluster");
 
@@ -49,13 +50,13 @@ if(clusterConfig &&
   for(let workerIndex=0; workerIndex < clusterConfig.workers; workerIndex++) {
     cluster.fork();
   }
-  topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
+  topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default', topicConfiguration);
 } else {
   const configurationObject = {
     topicService: app.get('topicService'),
     platform: app.get('platform')
   };
-  topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default');
+  topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default', topicConfiguration);
 
   app.platform = new Platform(configurationObject);
   // TODO : add configuration of job Manager
