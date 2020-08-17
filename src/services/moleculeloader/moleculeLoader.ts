@@ -47,6 +47,8 @@ export class MoleculeLoader {
   }
 
   private async addMolecule(topicTriggered:string, topicMessage:TopicMessage) {
+    if(topicMessage.isForwardedByCluster)
+      return;
     const projectId = topicMessage.content;
     const currentProject = this.backendService.getProject(projectId);
     if(currentProject){

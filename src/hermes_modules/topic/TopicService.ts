@@ -38,6 +38,16 @@ export class TopicService {
    */
   private clusterClient: SocketIOTopicServiceClientProxy;
 
+
+  /**
+   * The date of the last purge
+   */
+  private lastPurge:Date
+  /**
+   * The buffer for message already send
+   */
+  private forwardedMessageIds: { id:string, date:Date }[];
+
   /**
    *
    * @param config The configuration used to initialize a TopicService cluster and other configuration parameters
@@ -48,38 +58,74 @@ export class TopicService {
     }
     this.serverId = 'server_' + uuid();
     this.clients = [];
+    this.forwardedMessageIds = [];
+    this.lastPurge = new Date();
+    this.initializeNodeJsClusterMode();
+  }
+
+  public isMessageAlreadyForwarded(messageId:string) {
+    return this.forwardedMessageIds.findIndex((m) => m.id === messageId) >= 0;
+  }
+
+  public addForwardedMessages(message:TopicMessage) {
+    message.isForwardedByCluster = true;
+    this.forwardedMessageIds.push({
+      id: message.id,
+      date: new Date()
+    })
+  }
+
+  public purgeForwardedMessages(){
+    let m:{id:string, date:Date};
+    let cache = ([]).concat(this.forwardedMessageIds);
+    for(m of cache){
+      if((this.lastPurge.getTime() - m.date.getTime())/1000 >= 30) {
+        this.forwardedMessageIds.splice(this.forwardedMessageIds.indexOf(m),1)
+      } else {
+        break;
+      }
+    }
+    this.lastPurge = new Date();
     const current = this;
-    if(cluster.isMaster) {
-      for(const workerId in cluster.workers) {
+    setTimeout(current.purgeForwardedMessages.bind(current),30000);
+  }
+
+  public initializeNodeJsClusterMode() {
+    const current = this;
+    if (cluster.isMaster) {
+      for (const workerId in cluster.workers) {
         const sender = cluster.workers[workerId];
         sender.on('message', (msg) => {
-          if(msg.cmd === 'publishTopicMessage'){
-            for(const receiverId in cluster.workers) {
-              const receiver = cluster.workers[receiverId]
-              if(receiverId !== sender.id.toString()){
+          const topicMessage = TopicMessage.deserialize(msg.topicMessage)
+          if (msg.cmd === 'publishTopicMessage' && !this.isMessageAlreadyForwarded(topicMessage.id)) {
+            for (const receiverId in cluster.workers) {
+              const receiver = cluster.workers[receiverId];
+              if (receiverId !== sender.id.toString()) {
                 receiver.send(msg);
               }
             }
           }
-        })
+        });
       }
-    } else if(cluster.isWorker) {
+    } else if (cluster.isWorker) {
       process.on('message', async (msg) => {
-        if(msg.cmd === 'publishTopicMessage'){
+        if (msg.cmd === 'publishTopicMessage') {
           try {
-            if(msg.topicMessage.publishedOnServer !== current.serverId){
+            if (msg.topicMessage.publishedOnServer !== current.serverId) {
               const topicMessage = TopicMessage.deserialize(msg.topicMessage);
-              topicMessage.isForwardedByCluster = true;
-              await current.publish(msg.topicMessage.fromTopic, topicMessage);
+              if(!this.isMessageAlreadyForwarded(topicMessage.id)){
+                await current.publish(msg.topicMessage.fromTopic, topicMessage);
+              }
             }
-          }catch(err) {
-            console.error("Error on forwarding message :")
+          } catch (err) {
+            console.error('Error on forwarding message :');
             console.error(msg.topicMessage);
             console.error(err);
           }
         }
-      })
+      });
     }
+    this.purgeForwardedMessages();
   }
 
   /**
@@ -95,6 +141,7 @@ export class TopicService {
     if(!toSend.fromTopic) {
       toSend.fromTopic = topic;
     }
+
     for(const clientIndex in this.clients){
       const client = this.clients[clientIndex];
       if(client.isListeningTo(topic)){
@@ -105,8 +152,10 @@ export class TopicService {
         client.topicTriggered(topic, messageCopy).catch((error) => console.log('got error : ' + error));
       }
     }
-    if(cluster.isWorker && toSend.publishedOnServer === this.serverId) {
+
+    if(cluster.isWorker && !this.isMessageAlreadyForwarded(toSend.id)) {
       const messageCopy = toSend.clone();
+      this.addForwardedMessages(messageCopy);
       process.send({
         cmd: 'publishTopicMessage',
         topicMessage: messageCopy
@@ -202,11 +251,12 @@ export class TopicService {
             await sleep(5000)
             await currentService.initializeCluster(peerHost);
           });
+
           this.clusterClient = new SocketIOTopicServiceClientProxy(socket, () => {
             console.log('Subscribing to all event from other cluster node : ' + peerHost);
             currentService.clusterClient.subscribe('#', (topic, topicMessage) => {
-              if(topicMessage.publishedOnServer !== currentService.serverId){
-                topicMessage.isForwardedByCluster = true;
+              if(!currentService.isMessageAlreadyForwarded(topicMessage.id)){
+                currentService.addForwardedMessages(topicMessage);
                 currentService.publish(topic, topicMessage).catch((error) => console.error('Error while forwarding message from cluster : \n' + error));
               }
             })

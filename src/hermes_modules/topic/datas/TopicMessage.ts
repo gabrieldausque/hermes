@@ -1,6 +1,8 @@
 /**
  * Represents a message with a content and metadata describing the context of the current message
  */
+import { uuid } from 'uuidv4';
+
 export class TopicMessage{
   /**
    * The content of the message
@@ -34,11 +36,17 @@ export class TopicMessage{
   public isForwardedByCluster: boolean;
 
   /**
+   * The id of the message
+   */
+  public id: string;
+
+  /**
    * Create a new message
    * @param content the content that will be send across the {@link TopicService}
    * @param senderId the {@link ITopicClient} id
    */
   constructor(content:any, senderId:string){
+    this.id = uuid();
     this.createdAt = Date.now();
     this.senderId = senderId;
     this.content = content;
@@ -55,6 +63,7 @@ export class TopicMessage{
     clone.listenedTopic = this.listenedTopic;
     clone.fromTopic = this.fromTopic;
     clone.isForwardedByCluster = this.isForwardedByCluster;
+    clone.id = this.id;
     return clone;
   }
 
@@ -65,6 +74,7 @@ export class TopicMessage{
     deserializedMessage.listenedTopic = topicMessage.listenedTopic;
     deserializedMessage.fromTopic = topicMessage.fromTopic;
     deserializedMessage.isForwardedByCluster = topicMessage.isForwardedByCluster;
+    deserializedMessage.id = topicMessage.id;
     return deserializedMessage;
   }
 }

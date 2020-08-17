@@ -104,6 +104,7 @@ function displayMolecules(topicMessage) {
 function subscribeToMoleculePropertyAdded(topicMessage) {
   topicClient.subscribe(topicMessage.content.id + '.*.property_added', (topic, topicMessage) => {
     window.setTimeout(() => {
+      console.log(topicMessage);
       displayMolecules(topicMessage);
     }, 2000);
   }).catch((error) => {
