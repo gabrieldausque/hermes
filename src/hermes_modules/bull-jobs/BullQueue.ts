@@ -117,11 +117,11 @@ export class BullQueue extends Queue {
   }
 
   getHost() {
-    return this.innerQueue.client.host
+    return this.innerQueue.client.options.host
   }
 
   getPort() {
-    return this.innerQueue.client.port
+    return this.innerQueue.client.options.port
   }
 
   start(): void {

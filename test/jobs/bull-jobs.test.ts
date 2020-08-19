@@ -35,7 +35,7 @@ describe('Job Scheduling using Bull', () => {
       redisUrl:"redis://localhost:6379",
       bullQueueOptions: {
         redis:{
-          host:"localhost",
+          host:"127.0.0.1",
           port:"6379",
           retryStrategy: (times) => {
             return new Error('No connection ! Please start docker container ...');
@@ -246,6 +246,11 @@ describe('Job Scheduling using Bull', () => {
     }
     await Promise.all(jobs);
     expect(actuals).to.be.eql(expected);
+  })
+
+  it('Should return the right host name', async() => {
+    createJmAndQ();
+    expect((q as BullQueue).getHost()).to.be.eql('127.0.0.1');
   })
 
 })
