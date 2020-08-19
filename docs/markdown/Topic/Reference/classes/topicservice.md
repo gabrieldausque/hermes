@@ -19,14 +19,20 @@ The topic service that represents the hub on which all message will be send acro
 * [clients](topicservice.md#private-clients)
 * [clusterClient](topicservice.md#private-clusterclient)
 * [config](topicservice.md#private-config)
+* [forwardedMessageIds](topicservice.md#private-forwardedmessageids)
+* [lastPurge](topicservice.md#private-lastpurge)
 * [serverId](topicservice.md#serverid)
 * [metadata](topicservice.md#static-metadata)
 
 ### Methods
 
 * [addClient](topicservice.md#addclient)
+* [addForwardedMessages](topicservice.md#addforwardedmessages)
 * [initializeCluster](topicservice.md#initializecluster)
+* [initializeNodeJsClusterMode](topicservice.md#initializenodejsclustermode)
+* [isMessageAlreadyForwarded](topicservice.md#ismessagealreadyforwarded)
 * [publish](topicservice.md#publish)
+* [purgeForwardedMessages](topicservice.md#purgeforwardedmessages)
 * [removeClient](topicservice.md#removeclient)
 
 ## Constructors
@@ -35,7 +41,7 @@ The topic service that represents the hub on which all message will be send acro
 
 \+ **new TopicService**(`config?`: [TopicServiceConfiguration](topicserviceconfiguration.md)): *[TopicService](topicservice.md)*
 
-Defined in TopicService.ts:34
+Defined in TopicService.ts:49
 
 **Parameters:**
 
@@ -51,7 +57,7 @@ Name | Type | Description |
 
 • **clients**: *[ITopicClient](../interfaces/itopicclient.md)[]*
 
-Defined in TopicService.ts:26
+Defined in TopicService.ts:31
 
 The list of [ITopicClient](../interfaces/itopicclient.md) that are using this topic service instance
 
@@ -61,7 +67,9 @@ ___
 
 • **clusterClient**: *[SocketIOTopicServiceClientProxy](socketiotopicserviceclientproxy.md)*
 
-Defined in TopicService.ts:34
+Defined in TopicService.ts:39
+
+Distant cluster nodes client
 
 ___
 
@@ -69,9 +77,29 @@ ___
 
 • **config**: *[TopicServiceConfiguration](topicserviceconfiguration.md)*
 
-Defined in TopicService.ts:30
+Defined in TopicService.ts:35
 
 The service configuration. Used for cluster.
+
+___
+
+### `Private` forwardedMessageIds
+
+• **forwardedMessageIds**: *object[]*
+
+Defined in TopicService.ts:49
+
+The buffer for message already send
+
+___
+
+### `Private` lastPurge
+
+• **lastPurge**: *Date*
+
+Defined in TopicService.ts:45
+
+The date of the last purge
 
 ___
 
@@ -79,7 +107,7 @@ ___
 
 • **serverId**: *string*
 
-Defined in TopicService.ts:22
+Defined in TopicService.ts:27
 
 The id of the server. Used pattern : server_ + uuid (v4)
 
@@ -95,7 +123,7 @@ ___
     }
   ]
 
-Defined in TopicService.ts:12
+Defined in TopicService.ts:17
 
 ## Methods
 
@@ -103,7 +131,7 @@ Defined in TopicService.ts:12
 
 ▸ **addClient**(`newClient`: [ITopicClient](../interfaces/itopicclient.md)): *void*
 
-Defined in TopicService.ts:74
+Defined in TopicService.ts:170
 
 Add a [ITopicClient](../interfaces/itopicclient.md) to listen to message send on this [TopicService](topicservice.md) instance
 
@@ -117,11 +145,27 @@ Name | Type | Description |
 
 ___
 
+###  addForwardedMessages
+
+▸ **addForwardedMessages**(`message`: [TopicMessage](topicmessage.md)): *void*
+
+Defined in TopicService.ts:70
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | [TopicMessage](topicmessage.md) |
+
+**Returns:** *void*
+
+___
+
 ###  initializeCluster
 
 ▸ **initializeCluster**(`previousHost?`: string): *Promise‹void›*
 
-Defined in TopicService.ts:96
+Defined in TopicService.ts:192
 
 Initialize the cluster configuration
 
@@ -135,11 +179,37 @@ Name | Type | Description |
 
 ___
 
+###  initializeNodeJsClusterMode
+
+▸ **initializeNodeJsClusterMode**(): *void*
+
+Defined in TopicService.ts:93
+
+**Returns:** *void*
+
+___
+
+###  isMessageAlreadyForwarded
+
+▸ **isMessageAlreadyForwarded**(`messageId`: string): *boolean*
+
+Defined in TopicService.ts:66
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`messageId` | string |
+
+**Returns:** *boolean*
+
+___
+
 ###  publish
 
 ▸ **publish**(`topic`: string, `topicMessage`: [TopicMessage](topicmessage.md) | any): *Promise‹void›*
 
-Defined in TopicService.ts:53
+Defined in TopicService.ts:136
 
 Publish a [TopicMessage](topicmessage.md) for all [ITopicClient](../interfaces/itopicclient.md) that are listening to the corresponding topic
 
@@ -154,11 +224,21 @@ Name | Type | Description |
 
 ___
 
+###  purgeForwardedMessages
+
+▸ **purgeForwardedMessages**(): *void*
+
+Defined in TopicService.ts:78
+
+**Returns:** *void*
+
+___
+
 ###  removeClient
 
 ▸ **removeClient**(`clientToDelete`: [ITopicClient](../interfaces/itopicclient.md)): *void*
 
-Defined in TopicService.ts:85
+Defined in TopicService.ts:181
 
 Remove a [ITopicClient](../interfaces/itopicclient.md) from the listening clients
 

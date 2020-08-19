@@ -64,15 +64,15 @@ ___
 
 Defined in configuration/TopicServiceConfiguration.ts:18
 
-indicate if the cluster needs to be initialized
+indicate if a cluster with distant process needs to be initialized
 
 ## Methods
 
 ###  getRandomHost
 
-▸ **getRandomHost**(`excludeHosts?`: string[]): *string*
+▸ **getRandomHost**(`excludedHosts?`: string[]): *string*
 
-Defined in configuration/TopicServiceConfiguration.ts:36
+Defined in configuration/TopicServiceConfiguration.ts:38
 
 Get a random host from current configuration excluding a list of host
 
@@ -80,7 +80,7 @@ Get a random host from current configuration excluding a list of host
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`excludeHosts?` | string[] | The list of host to exclude from the list of host to obtain from  |
+`excludedHosts?` | string[] | The list of host to exclude from the list of host to obtain from  |
 
 **Returns:** *string*
 
@@ -102,7 +102,7 @@ ___
 
 ▸ **load**(`topicServiceConfiguration`: any): *[TopicServiceConfiguration](topicserviceconfiguration.md)‹›*
 
-Defined in configuration/TopicServiceConfiguration.ts:53
+Defined in configuration/TopicServiceConfiguration.ts:72
 
 Load a topic service configuration from a json object
 
