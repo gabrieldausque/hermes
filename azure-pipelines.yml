@@ -40,7 +40,8 @@ steps:
 - script: |
     node_modules/ts-mocha/bin/ts-mocha --version
     export NODE_ENV=test
-    node_modules/ts-mocha/bin/ts-mocha "test/**/*.ts" --recursive --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json
+    echo NODE_ENV set to $NODE_ENV
+    node_modules/ts-mocha/bin/ts-mocha "test/**/*.ts" --full-trace --recursive --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json --exit
   displayName: try mocha without npm
 
 - task: Npm@1
