@@ -40,7 +40,7 @@ steps:
   inputs:
     command: custom
     customCommand: run test
-    verbose: true
+    verbose: false
   displayName: Running tests
   continueOnError: true
 

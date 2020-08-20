@@ -28,7 +28,7 @@
     "dev": "npm run compile && ts-node-dev --no-notify src/",
     "start": "npm run compile && node lib",
     "debug": "npm run compile && node --inspect lib ",
-    "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit",
+    "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json",
     "coverage": "NODE_ENV=test nyc --reporter=cobertura ts-mocha \"test/**/*.ts\" --recursive --exit",
     "compile": "shx rm -rf lib/ && tsc && node_modules/.bin/ncp src/hermes_modules/topic/browser/ public/lib/topic/ && npm run compilePackages",
     "docs": "npm run compile && npm run topicDocs && npm run compositionDocs && npm run jobsDocs && npm run bulljobsDocs",
