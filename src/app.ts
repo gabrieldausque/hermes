@@ -39,7 +39,7 @@ const clusterConfig = app.get("cluster");
 // load class from constructed catalog (Work in progress)
 globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
 globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/topic');
-globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs');
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs/queues');
 let topicService:TopicService;
 
 if(clusterConfig &&
