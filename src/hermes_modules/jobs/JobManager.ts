@@ -17,7 +17,7 @@ let instancesFactory;
  */
 export function setJobManagerInstancesFactory(factory:InstancesFactory){
   instancesFactory = factory;
-  instancesFactory.loadExportedClassesFromDirectory(__dirname);
+  instancesFactory.loadExportedClassesFromDirectory(`${__dirname}/queues`);
 }
 
 setJobManagerInstancesFactory(globalInstancesFactory);
