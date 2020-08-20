@@ -1,6 +1,6 @@
 {
   "name": "@hermes/jobs",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "An abstraction for scheduling job (rate limit, queueing, etc ...)",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,7 +14,8 @@
     "scheduler"
   ],
   "dependencies": {
-    "@hermes/composition": "^1.0.7",
+    "@hermes/composition": "^1.0.8",
+    "uuid": "^8.3.0",
     "tmp": "^0.2.1"
   },
   "author": "gabrieldausque.pro@gmail.com",

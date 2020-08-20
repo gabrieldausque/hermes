@@ -9,6 +9,7 @@ import cluster from 'cluster';
 import { SocketIOTopicServiceClient } from './clients/SocketIOTopicServiceClient';
 import util from 'util'
 import { Server } from 'http';
+import Timeout = NodeJS.Timeout;
 const sleep = util.promisify(setTimeout);
 /**
  * The topic service that represents the hub on which all message will be send across
@@ -49,6 +50,11 @@ export class TopicService {
   private forwardedMessageIds: { id:string, date:Date }[];
 
   /**
+   * The timeout reference for the forwardedMessage purge
+   */
+  private forwardedMessagesPurgeTimer:Timeout
+
+  /**
    *
    * @param config The configuration used to initialize a TopicService cluster and other configuration parameters
    */
@@ -73,21 +79,32 @@ export class TopicService {
       id: message.id,
       date: new Date()
     })
+    this.purgeForwardedMessages();
   }
+
 
   public purgeForwardedMessages(){
     let m:{id:string, date:Date};
     let cache = ([]).concat(this.forwardedMessageIds);
-    for(m of cache){
-      if((this.lastPurge.getTime() - m.date.getTime())/1000 >= 30) {
-        this.forwardedMessageIds.splice(this.forwardedMessageIds.indexOf(m),1)
-      } else {
-        break;
+    if(cache.length > 0) {
+      for(m of cache){
+        if((this.lastPurge.getTime() - m.date.getTime())/1000 >= 30) {
+          this.forwardedMessageIds.splice(this.forwardedMessageIds.indexOf(m),1)
+        } else {
+          break;
+        }
       }
+      this.lastPurge = new Date();
+      const current = this;
+      if(!this.forwardedMessagesPurgeTimer) {
+        this.forwardedMessagesPurgeTimer = setTimeout(() => {
+          current.forwardedMessagesPurgeTimer = null;
+          current.purgeForwardedMessages();
+        },30000);
+      }
+    } else {
+      this.forwardedMessagesPurgeTimer = null;
     }
-    this.lastPurge = new Date();
-    const current = this;
-    setTimeout(current.purgeForwardedMessages.bind(current),30000);
   }
 
   public initializeNodeJsClusterMode() {

@@ -1,5 +1,8 @@
 {
   "cluster": {
     "isActive": false
+  },
+  "topicService":{
+    "standAlone": true
   }
 }

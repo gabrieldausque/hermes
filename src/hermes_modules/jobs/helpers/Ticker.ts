@@ -14,6 +14,7 @@ export class Ticker extends EventEmitter {
   }
 
   start() {
+
     const current = this;
     this.intervalId = setInterval(() => {
       current.emit('tick');

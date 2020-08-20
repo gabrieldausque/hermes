@@ -4,7 +4,8 @@ import app from '../src/app';
 describe('Test', () => {
 
   after((done) => {
-    app.jobManager.stop();
+    const a = app;
+    a.jobManager.stop();
     done();
   })
 

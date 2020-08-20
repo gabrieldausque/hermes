@@ -173,6 +173,7 @@ let globalJobManager:JobManager = new JobManager();
  * @param jobManager
  */
 export function setGlobalJobManager(jobManager:JobManager) {
+  globalJobManager.stop();
   globalJobManager = jobManager;
 }
 
