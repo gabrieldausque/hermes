@@ -39,7 +39,7 @@ steps:
 
 - script: |
     node_modules/ts-mocha/bin/ts-mocha --version
-    NODE_ENV=test node_modules/ts-mocha/bin/ts-mocha "test/**/*.ts" --recursive --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json
+    NODE_ENV=test node_modules/ts-mocha/bin/ts-mocha inspect "test/**/*.ts" --recursive --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json
   displayName: try mocha without npm
 
 - task: Npm@1
