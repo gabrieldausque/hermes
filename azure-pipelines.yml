@@ -37,13 +37,6 @@ steps:
     command: install
   displayName: npm install before test
 
-- script: |
-    node_modules/ts-mocha/bin/ts-mocha --version
-    export NODE_ENV=test
-    echo NODE_ENV set to $NODE_ENV
-    node_modules/ts-mocha/bin/ts-mocha "test/**/*.test.ts" --full-trace --recursive --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json --exit
-  displayName: try mocha without npm
-
 - task: Npm@1
   inputs:
     command: custom
