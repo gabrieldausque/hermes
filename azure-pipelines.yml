@@ -30,6 +30,7 @@ steps:
     sudo apt install -y redis-tools
     redis-cli -h localhost ping
   displayName: Test redis connection
+  enabled: false
 
 - task: Npm@1
   inputs:
@@ -37,7 +38,7 @@ steps:
   displayName: npm install before test
 
 - script: |
-    NODE_ENV=test node_modules/bin/ts-mocha "test/**/*.ts" --recursive --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json
+    NODE_ENV=test node_modules/ts-mocha/bin/ts-mocha "test/**/*.ts" --recursive --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json
   displayName: try mocha without npm
 
 - task: Npm@1
