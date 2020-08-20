@@ -1,9 +1,5 @@
-// @ts-ignore
-import disableConsole from '../disablelog';
 import {expect} from 'chai';
 import { globalInstancesFactory, InstancesFactory } from '@hermes/composition';
-
-disableConsole();
 
 describe('Composition Frameworks test', () => {
 
