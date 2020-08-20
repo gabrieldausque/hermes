@@ -2,6 +2,8 @@
 
 # Class: Ticker
 
+A timer that raise a 'tick' event for the specified period
+
 ## Hierarchy
 
 * EventEmitter
@@ -49,14 +51,16 @@
 
 *Overrides void*
 
-Defined in src/hermes_modules/jobs/helpers/Ticker.ts:6
+Defined in src/hermes_modules/jobs/helpers/Ticker.ts:16
+
+Create a new Ticker
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`intervalInMs` | number | 100 |
-`startAtCreation` | boolean | false |
+Name | Type | Default | Description |
+------ | ------ | ------ | ------ |
+`intervalInMs` | number | 100 | The period in ms |
+`startAtCreation` | boolean | false | Indicate if the Ticker will start at creation  |
 
 **Returns:** *[Ticker](ticker.md)*
 
@@ -66,7 +70,9 @@ Name | Type | Default |
 
 • **intervalId**: *Timeout*
 
-Defined in src/hermes_modules/jobs/helpers/Ticker.ts:6
+Defined in src/hermes_modules/jobs/helpers/Ticker.ts:16
+
+The interval Id currently activated
 
 ___
 
@@ -74,7 +80,9 @@ ___
 
 • **intervalInMs**: *number*
 
-Defined in src/hermes_modules/jobs/helpers/Ticker.ts:5
+Defined in src/hermes_modules/jobs/helpers/Ticker.ts:11
+
+The interval of the timer
 
 ___
 
@@ -407,7 +415,9 @@ ___
 
 ▸ **start**(): *void*
 
-Defined in src/hermes_modules/jobs/helpers/Ticker.ts:16
+Defined in src/hermes_modules/jobs/helpers/Ticker.ts:34
+
+Start the timer
 
 **Returns:** *void*
 
@@ -417,7 +427,9 @@ ___
 
 ▸ **stop**(): *void*
 
-Defined in src/hermes_modules/jobs/helpers/Ticker.ts:23
+Defined in src/hermes_modules/jobs/helpers/Ticker.ts:44
+
+Stop the timer
 
 **Returns:** *void*
 

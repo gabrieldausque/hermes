@@ -1,6 +1,6 @@
-[@hermes/bull-jobs](README.md) › [Globals](globals.md)
+[@hermes/jobs](README.md) › [Globals](globals.md)
 
-# @hermes/bull-jobs
+# @hermes/jobs
 
 # Hermes
 

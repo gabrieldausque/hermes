@@ -24,6 +24,7 @@
 ### Variables
 
 * [Socket](globals.md#socket)
+* [Timeout](globals.md#timeout)
 * [sleep](globals.md#const-sleep)
 
 ## Variables
@@ -40,8 +41,16 @@ Defined in TopicService.ts:6
 
 ___
 
+###  Timeout
+
+• **Timeout**: *any*
+
+Defined in TopicService.ts:12
+
+___
+
 ### `Const` sleep
 
 • **sleep**: *__promisify__* = util.promisify(setTimeout)
 
-Defined in TopicService.ts:12
+Defined in TopicService.ts:13

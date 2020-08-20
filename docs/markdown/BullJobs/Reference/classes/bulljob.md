@@ -1,10 +1,12 @@
-[@hermes/bull-jobs](../README.md) › [Globals](../globals.md) › [BullJob](bulljob.md)
+[@hermes/jobs](../README.md) › [Globals](../globals.md) › [BullJob](bulljob.md)
 
 # Class: BullJob
 
+The job implementation used for Bull, especially to encapsulate value type as payload (not natively done in bull)
+
 ## Hierarchy
 
-* Job
+  ↳ [Job](job.md)
 
   ↳ **BullJob**
 
@@ -24,7 +26,6 @@
 * [result](bulljob.md#result)
 * [state](bulljob.md#state)
 * [toExecute](bulljob.md#toexecute)
-* [nextId](bulljob.md#static-nextid)
 
 ### Methods
 
@@ -57,17 +58,19 @@
 
 \+ **new BullJob**(`toExecute`: any, `payload?`: any, `jobOptions?`: object): *[BullJob](bulljob.md)*
 
-*Inherited from [BullJob](bulljob.md).[constructor](bulljob.md#constructor)*
+*Inherited from [Job](job.md).[constructor](job.md#constructor)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:13
+Defined in src/hermes_modules/jobs/jobs/Job.ts:39
+
+Create a new Job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`toExecute` | any |
-`payload?` | any |
-`jobOptions?` | object |
+Name | Type | Description |
+------ | ------ | ------ |
+`toExecute` | any | function to be executed |
+`payload?` | any | payload to use for execution |
+`jobOptions?` | object | options to use for execution  |
 
 **Returns:** *[BullJob](bulljob.md)*
 
@@ -77,9 +80,11 @@ Name | Type |
 
 • **err**: *any*
 
-*Inherited from [BullJob](bulljob.md).[err](bulljob.md#err)*
+*Inherited from [Job](job.md).[err](job.md#err)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:9
+Defined in src/hermes_modules/jobs/jobs/Job.ts:29
+
+err that may occured during execution
 
 ___
 
@@ -87,9 +92,11 @@ ___
 
 • **id**: *string*
 
-*Inherited from [BullJob](bulljob.md).[id](bulljob.md#id)*
+*Inherited from [Job](job.md).[id](job.md#id)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:5
+Defined in src/hermes_modules/jobs/jobs/Job.ts:9
+
+The id of the current job
 
 ___
 
@@ -97,7 +104,9 @@ ___
 
 • **innerJob**: *InnerJob*
 
-Defined in src/hermes_modules/bull-jobs/BullJob.ts:6
+Defined in src/hermes_modules/bull-jobs/BullJob.ts:13
+
+The bull job
 
 ___
 
@@ -105,9 +114,11 @@ ___
 
 • **jobOptions**: *object*
 
-*Inherited from [BullJob](bulljob.md).[jobOptions](bulljob.md#joboptions)*
+*Inherited from [Job](job.md).[jobOptions](job.md#joboptions)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:11
+Defined in src/hermes_modules/jobs/jobs/Job.ts:39
+
+options that may be used for the execution
 
 #### Type declaration:
 
@@ -119,9 +130,11 @@ ___
 
 • **payload**: *any*
 
-*Inherited from [BullJob](bulljob.md).[payload](bulljob.md#payload)*
+*Inherited from [Job](job.md).[payload](job.md#payload)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:8
+Defined in src/hermes_modules/jobs/jobs/Job.ts:24
+
+payload passed to the function that will be executed
 
 ___
 
@@ -129,9 +142,11 @@ ___
 
 • **result**: *any*
 
-*Inherited from [BullJob](bulljob.md).[result](bulljob.md#result)*
+*Inherited from [Job](job.md).[result](job.md#result)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:6
+Defined in src/hermes_modules/jobs/jobs/Job.ts:14
+
+Result of the job execution
 
 ___
 
@@ -139,9 +154,11 @@ ___
 
 • **state**: *number*
 
-*Inherited from [BullJob](bulljob.md).[state](bulljob.md#state)*
+*Inherited from [Job](job.md).[state](job.md#state)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:10
+Defined in src/hermes_modules/jobs/jobs/Job.ts:34
+
+state of the current job. see JobStates
 
 ___
 
@@ -149,19 +166,11 @@ ___
 
 • **toExecute**: *any*
 
-*Inherited from [BullJob](bulljob.md).[toExecute](bulljob.md#toexecute)*
+*Inherited from [Job](job.md).[toExecute](job.md#toexecute)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:7
+Defined in src/hermes_modules/jobs/jobs/Job.ts:19
 
-___
-
-### `Static` nextId
-
-▪ **nextId**: *number*
-
-*Inherited from [BullJob](bulljob.md).[nextId](bulljob.md#static-nextid)*
-
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:4
+function that will be executed
 
 ## Methods
 
@@ -169,7 +178,7 @@ Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:4
 
 ▸ **addListener**(`event`: string | symbol, `listener`: function): *this*
 
-*Inherited from [BullJob](bulljob.md).[addListener](bulljob.md#addlistener)*
+*Inherited from [Ticker](ticker.md).[addListener](ticker.md#addlistener)*
 
 Defined in node_modules/@types/node/globals.d.ts:547
 
@@ -195,7 +204,7 @@ ___
 
 ▸ **emit**(`event`: string | symbol, ...`args`: any[]): *boolean*
 
-*Inherited from [BullJob](bulljob.md).[emit](bulljob.md#emit)*
+*Inherited from [Ticker](ticker.md).[emit](ticker.md#emit)*
 
 Defined in node_modules/@types/node/globals.d.ts:557
 
@@ -214,7 +223,7 @@ ___
 
 ▸ **eventNames**(): *Array‹string | symbol›*
 
-*Inherited from [BullJob](bulljob.md).[eventNames](bulljob.md#eventnames)*
+*Inherited from [Ticker](ticker.md).[eventNames](ticker.md#eventnames)*
 
 Defined in node_modules/@types/node/globals.d.ts:562
 
@@ -226,7 +235,7 @@ ___
 
 ▸ **getMaxListeners**(): *number*
 
-*Inherited from [BullJob](bulljob.md).[getMaxListeners](bulljob.md#getmaxlisteners)*
+*Inherited from [Ticker](ticker.md).[getMaxListeners](ticker.md#getmaxlisteners)*
 
 Defined in node_modules/@types/node/globals.d.ts:554
 
@@ -238,7 +247,9 @@ ___
 
 ▸ **getPayload**(): *object*
 
-Defined in src/hermes_modules/bull-jobs/BullJob.ts:8
+Defined in src/hermes_modules/bull-jobs/BullJob.ts:18
+
+Get the payload as an object even if it is a value type
 
 **Returns:** *object*
 
@@ -248,7 +259,7 @@ ___
 
 ▸ **listenerCount**(`type`: string | symbol): *number*
 
-*Inherited from [BullJob](bulljob.md).[listenerCount](bulljob.md#listenercount)*
+*Inherited from [Ticker](ticker.md).[listenerCount](ticker.md#listenercount)*
 
 Defined in node_modules/@types/node/globals.d.ts:558
 
@@ -266,7 +277,7 @@ ___
 
 ▸ **listeners**(`event`: string | symbol): *Function[]*
 
-*Inherited from [BullJob](bulljob.md).[listeners](bulljob.md#listeners)*
+*Inherited from [Ticker](ticker.md).[listeners](ticker.md#listeners)*
 
 Defined in node_modules/@types/node/globals.d.ts:555
 
@@ -284,7 +295,7 @@ ___
 
 ▸ **off**(`event`: string | symbol, `listener`: function): *this*
 
-*Inherited from [BullJob](bulljob.md).[off](bulljob.md#off)*
+*Inherited from [Ticker](ticker.md).[off](ticker.md#off)*
 
 Defined in node_modules/@types/node/globals.d.ts:551
 
@@ -310,7 +321,7 @@ ___
 
 ▸ **on**(`event`: string | symbol, `listener`: function): *this*
 
-*Inherited from [BullJob](bulljob.md).[on](bulljob.md#on)*
+*Inherited from [Ticker](ticker.md).[on](ticker.md#on)*
 
 Defined in node_modules/@types/node/globals.d.ts:548
 
@@ -336,7 +347,7 @@ ___
 
 ▸ **once**(`event`: string | symbol, `listener`: function): *this*
 
-*Inherited from [BullJob](bulljob.md).[once](bulljob.md#once)*
+*Inherited from [Ticker](ticker.md).[once](ticker.md#once)*
 
 Defined in node_modules/@types/node/globals.d.ts:549
 
@@ -362,7 +373,7 @@ ___
 
 ▸ **prependListener**(`event`: string | symbol, `listener`: function): *this*
 
-*Inherited from [BullJob](bulljob.md).[prependListener](bulljob.md#prependlistener)*
+*Inherited from [Ticker](ticker.md).[prependListener](ticker.md#prependlistener)*
 
 Defined in node_modules/@types/node/globals.d.ts:560
 
@@ -388,7 +399,7 @@ ___
 
 ▸ **prependOnceListener**(`event`: string | symbol, `listener`: function): *this*
 
-*Inherited from [BullJob](bulljob.md).[prependOnceListener](bulljob.md#prependoncelistener)*
+*Inherited from [Ticker](ticker.md).[prependOnceListener](ticker.md#prependoncelistener)*
 
 Defined in node_modules/@types/node/globals.d.ts:561
 
@@ -414,9 +425,11 @@ ___
 
 ▸ **raiseCompletedEvent**(): *void*
 
-*Inherited from [BullJob](bulljob.md).[raiseCompletedEvent](bulljob.md#raisecompletedevent)*
+*Inherited from [Job](job.md).[raiseCompletedEvent](job.md#raisecompletedevent)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:19
+Defined in src/hermes_modules/jobs/jobs/Job.ts:96
+
+As an EventEmitter, raise the 'completed' event of the job, even if it fails or success
 
 **Returns:** *void*
 
@@ -426,15 +439,17 @@ ___
 
 ▸ **raiseFailedEvent**(`err`: any): *void*
 
-*Inherited from [BullJob](bulljob.md).[raiseFailedEvent](bulljob.md#raisefailedevent)*
+*Inherited from [Job](job.md).[raiseFailedEvent](job.md#raisefailedevent)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:18
+Defined in src/hermes_modules/jobs/jobs/Job.ts:81
+
+As an EventEmitter, raise the 'failed' event of the job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`err` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`err` | any | The error that fails the job  |
 
 **Returns:** *void*
 
@@ -444,16 +459,18 @@ ___
 
 ▸ **raiseProgressEvent**(`completionPercentage`: number, `completionMessage?`: string): *void*
 
-*Inherited from [BullJob](bulljob.md).[raiseProgressEvent](bulljob.md#raiseprogressevent)*
+*Inherited from [Job](job.md).[raiseProgressEvent](job.md#raiseprogressevent)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:20
+Defined in src/hermes_modules/jobs/jobs/Job.ts:106
+
+As an EventEmitter, raise the 'progress' event for the job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`completionPercentage` | number |
-`completionMessage?` | string |
+Name | Type | Description |
+------ | ------ | ------ |
+`completionPercentage` | number | Percentage of completion of the job |
+`completionMessage?` | string | Associated message for this progression state  |
 
 **Returns:** *void*
 
@@ -463,15 +480,17 @@ ___
 
 ▸ **raiseSuccessEvent**(`result`: any): *void*
 
-*Inherited from [BullJob](bulljob.md).[raiseSuccessEvent](bulljob.md#raisesuccessevent)*
+*Inherited from [Job](job.md).[raiseSuccessEvent](job.md#raisesuccessevent)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:21
+Defined in src/hermes_modules/jobs/jobs/Job.ts:114
+
+As an EventEmitter, raise the 'success' event of the job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`result` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`result` | any | The result obtained from the execution  |
 
 **Returns:** *void*
 
@@ -481,7 +500,7 @@ ___
 
 ▸ **rawListeners**(`event`: string | symbol): *Function[]*
 
-*Inherited from [BullJob](bulljob.md).[rawListeners](bulljob.md#rawlisteners)*
+*Inherited from [Ticker](ticker.md).[rawListeners](ticker.md#rawlisteners)*
 
 Defined in node_modules/@types/node/globals.d.ts:556
 
@@ -499,7 +518,7 @@ ___
 
 ▸ **removeAllListeners**(`event?`: string | symbol): *this*
 
-*Inherited from [BullJob](bulljob.md).[removeAllListeners](bulljob.md#removealllisteners)*
+*Inherited from [Ticker](ticker.md).[removeAllListeners](ticker.md#removealllisteners)*
 
 Defined in node_modules/@types/node/globals.d.ts:552
 
@@ -517,7 +536,7 @@ ___
 
 ▸ **removeListener**(`event`: string | symbol, `listener`: function): *this*
 
-*Inherited from [BullJob](bulljob.md).[removeListener](bulljob.md#removelistener)*
+*Inherited from [Ticker](ticker.md).[removeListener](ticker.md#removelistener)*
 
 Defined in node_modules/@types/node/globals.d.ts:550
 
@@ -543,13 +562,15 @@ ___
 
 ▸ **setInnerJob**(`job`: InnerJob): *void*
 
-Defined in src/hermes_modules/bull-jobs/BullJob.ts:16
+Defined in src/hermes_modules/bull-jobs/BullJob.ts:30
+
+Set the bull job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`job` | InnerJob |
+Name | Type | Description |
+------ | ------ | ------ |
+`job` | InnerJob | The bull job corresponding to this job  |
 
 **Returns:** *void*
 
@@ -559,7 +580,7 @@ ___
 
 ▸ **setMaxListeners**(`n`: number): *this*
 
-*Inherited from [BullJob](bulljob.md).[setMaxListeners](bulljob.md#setmaxlisteners)*
+*Inherited from [Ticker](ticker.md).[setMaxListeners](ticker.md#setmaxlisteners)*
 
 Defined in node_modules/@types/node/globals.d.ts:553
 
@@ -577,14 +598,16 @@ ___
 
 ▸ **waitForCompletion**(`timeoutInMs?`: any): *Promise‹void›*
 
-*Inherited from [BullJob](bulljob.md).[waitForCompletion](bulljob.md#waitforcompletion)*
+*Inherited from [Job](job.md).[waitForCompletion](job.md#waitforcompletion)*
 
-Defined in src/hermes_modules/jobs/lib/jobs/Job.d.ts:17
+Defined in src/hermes_modules/jobs/jobs/Job.ts:60
+
+Semaphore that helps you wait for the execution of the job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`timeoutInMs?` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`timeoutInMs?` | any |   |
 
 **Returns:** *Promise‹void›*

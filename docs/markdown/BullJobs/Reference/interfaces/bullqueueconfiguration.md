@@ -1,6 +1,9 @@
-[@hermes/bull-jobs](../README.md) › [Globals](../globals.md) › [BullQueueConfiguration](bullqueueconfiguration.md)
+[@hermes/jobs](../README.md) › [Globals](../globals.md) › [BullQueueConfiguration](bullqueueconfiguration.md)
 
 # Interface: BullQueueConfiguration
+
+The configuration to use for creating a queue
+See [bull](https://github.com/OptimalBits/bull/blob/HEAD/REFERENCE.md#queue) for available option on bullQueueOptions
 
 ## Hierarchy
 
@@ -20,7 +23,7 @@
 
 • **bullQueueOptions**: *QueueOptions*
 
-Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:6
+Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:10
 
 ___
 
@@ -28,7 +31,7 @@ ___
 
 • **name**: *string*
 
-Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:4
+Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:8
 
 ___
 
@@ -36,4 +39,4 @@ ___
 
 • **redisUrl**: *string*
 
-Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:5
+Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:9

@@ -24,7 +24,6 @@
 * [state](job.md#state)
 * [toExecute](job.md#toexecute)
 * [defaultMaxListeners](job.md#static-defaultmaxlisteners)
-* [nextId](job.md#static-nextid)
 
 ### Methods
 
@@ -58,15 +57,17 @@
 
 *Overrides void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:14
+Defined in src/hermes_modules/jobs/jobs/Job.ts:39
+
+Create a new Job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`toExecute` | any |
-`payload?` | any |
-`jobOptions?` | object |
+Name | Type | Description |
+------ | ------ | ------ |
+`toExecute` | any | function to be executed |
+`payload?` | any | payload to use for execution |
+`jobOptions?` | object | options to use for execution  |
 
 **Returns:** *[Job](job.md)*
 
@@ -76,7 +77,9 @@ Name | Type |
 
 • **err**: *any*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:12
+Defined in src/hermes_modules/jobs/jobs/Job.ts:29
+
+err that may occured during execution
 
 ___
 
@@ -84,7 +87,9 @@ ___
 
 • **id**: *string*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:8
+Defined in src/hermes_modules/jobs/jobs/Job.ts:9
+
+The id of the current job
 
 ___
 
@@ -92,7 +97,9 @@ ___
 
 • **jobOptions**: *object*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:14
+Defined in src/hermes_modules/jobs/jobs/Job.ts:39
+
+options that may be used for the execution
 
 #### Type declaration:
 
@@ -104,7 +111,9 @@ ___
 
 • **payload**: *any*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:11
+Defined in src/hermes_modules/jobs/jobs/Job.ts:24
+
+payload passed to the function that will be executed
 
 ___
 
@@ -112,7 +121,9 @@ ___
 
 • **result**: *any*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:9
+Defined in src/hermes_modules/jobs/jobs/Job.ts:14
+
+Result of the job execution
 
 ___
 
@@ -120,7 +131,9 @@ ___
 
 • **state**: *number*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:13
+Defined in src/hermes_modules/jobs/jobs/Job.ts:34
+
+state of the current job. see JobStates
 
 ___
 
@@ -128,7 +141,9 @@ ___
 
 • **toExecute**: *any*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:10
+Defined in src/hermes_modules/jobs/jobs/Job.ts:19
+
+function that will be executed
 
 ___
 
@@ -139,14 +154,6 @@ ___
 *Inherited from [Job](job.md).[defaultMaxListeners](job.md#static-defaultmaxlisteners)*
 
 Defined in node_modules/@types/node/events.d.ts:45
-
-___
-
-### `Static` nextId
-
-▪ **nextId**: *number* = 0
-
-Defined in src/hermes_modules/jobs/jobs/Job.ts:6
 
 ## Methods
 
@@ -389,7 +396,9 @@ ___
 
 ▸ **raiseCompletedEvent**(): *void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:55
+Defined in src/hermes_modules/jobs/jobs/Job.ts:96
+
+As an EventEmitter, raise the 'completed' event of the job, even if it fails or success
 
 **Returns:** *void*
 
@@ -399,13 +408,15 @@ ___
 
 ▸ **raiseFailedEvent**(`err`: any): *void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:43
+Defined in src/hermes_modules/jobs/jobs/Job.ts:81
+
+As an EventEmitter, raise the 'failed' event of the job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`err` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`err` | any | The error that fails the job  |
 
 **Returns:** *void*
 
@@ -415,14 +426,16 @@ ___
 
 ▸ **raiseProgressEvent**(`completionPercentage`: number, `completionMessage?`: string): *void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:60
+Defined in src/hermes_modules/jobs/jobs/Job.ts:106
+
+As an EventEmitter, raise the 'progress' event for the job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`completionPercentage` | number |
-`completionMessage?` | string |
+Name | Type | Description |
+------ | ------ | ------ |
+`completionPercentage` | number | Percentage of completion of the job |
+`completionMessage?` | string | Associated message for this progression state  |
 
 **Returns:** *void*
 
@@ -432,13 +445,15 @@ ___
 
 ▸ **raiseSuccessEvent**(`result`: any): *void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:64
+Defined in src/hermes_modules/jobs/jobs/Job.ts:114
+
+As an EventEmitter, raise the 'success' event of the job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`result` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`result` | any | The result obtained from the execution  |
 
 **Returns:** *void*
 
@@ -528,13 +543,15 @@ ___
 
 ▸ **waitForCompletion**(`timeoutInMs?`: any): *Promise‹void›*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:26
+Defined in src/hermes_modules/jobs/jobs/Job.ts:60
+
+Semaphore that helps you wait for the execution of the job
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`timeoutInMs?` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`timeoutInMs?` | any |   |
 
 **Returns:** *Promise‹void›*
 

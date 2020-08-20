@@ -1,6 +1,8 @@
-[@hermes/bull-jobs](../README.md) › [Globals](../globals.md) › [BullQueuesFactory](bullqueuesfactory.md)
+[@hermes/jobs](../README.md) › [Globals](../globals.md) › [BullQueuesFactory](bullqueuesfactory.md)
 
 # Class: BullQueuesFactory
+
+The factory that will create queue using the bull framework
 
 ## Hierarchy
 
@@ -8,7 +10,7 @@
 
 ## Implements
 
-* QueuesFactory
+* [QueuesFactory](../interfaces/queuesfactory.md)
 
 ## Index
 
@@ -30,21 +32,25 @@
     isShared: true
   }]
 
-Defined in src/hermes_modules/bull-jobs/BullQueuesFactory.ts:6
+Defined in src/hermes_modules/bull-jobs/BullQueuesFactory.ts:12
+
+Export metadata used by InstancesFactory
 
 ## Methods
 
 ###  createQueue
 
-▸ **createQueue**(`queueName`: string, `queueOptions?`: [BullQueueConfiguration](../interfaces/bullqueueconfiguration.md)): *Queue*
+▸ **createQueue**(`queueName`: string, `queueOptions?`: [BullQueueConfiguration](../interfaces/bullqueueconfiguration.md)): *[Queue](queue.md)*
 
-Defined in src/hermes_modules/bull-jobs/BullQueuesFactory.ts:12
+Defined in src/hermes_modules/bull-jobs/BullQueuesFactory.ts:23
+
+Create a BullQueue with the specified name
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`queueName` | string |
-`queueOptions?` | [BullQueueConfiguration](../interfaces/bullqueueconfiguration.md) |
+Name | Type | Description |
+------ | ------ | ------ |
+`queueName` | string | The queue name |
+`queueOptions?` | [BullQueueConfiguration](../interfaces/bullqueueconfiguration.md) | The options to use for the creation of the queue  |
 
-**Returns:** *Queue*
+**Returns:** *[Queue](queue.md)*

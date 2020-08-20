@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BullQueueConfiguration | @hermes/bull-jobs</title>
-	<meta name="description" content="Documentation for @hermes/bull-jobs">
+	<title>BullQueueConfiguration | @hermes/jobs</title>
+	<meta name="description" content="Documentation for @hermes/jobs">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">@hermes/bull-jobs</a>
+					<a href="../index.html" class="title">@hermes/jobs</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -66,6 +66,14 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The configuration to use for creating a queue
+						See <a href="https://github.com/OptimalBits/bull/blob/HEAD/REFERENCE.md#queue">bull</a> for available option on bullQueueOptions</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -97,7 +105,7 @@
 					<div class="tsd-signature tsd-kind-icon">bull<wbr>Queue<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">QueueOptions</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:6</li>
+							<li>Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:10</li>
 						</ul>
 					</aside>
 				</section>
@@ -107,7 +115,7 @@
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:4</li>
+							<li>Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:8</li>
 						</ul>
 					</aside>
 				</section>
@@ -117,7 +125,7 @@
 					<div class="tsd-signature tsd-kind-icon">redis<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:5</li>
+							<li>Defined in src/hermes_modules/bull-jobs/configuration/BullQueueConfiguration.ts:9</li>
 						</ul>
 					</aside>
 				</section>
@@ -145,6 +153,42 @@
 					<li class=" tsd-kind-class">
 						<a href="../classes/bullvaluetypebox.html" class="tsd-kind-icon">Bull<wbr>Value<wbr>Type<wbr>Box</a>
 					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/exportcatalog.html" class="tsd-kind-icon">Export<wbr>Catalog</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/exportmetadata.html" class="tsd-kind-icon">Export<wbr>Metadata</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/inmemoryqueue.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queue</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/inmemoryqueuesfactory.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queues<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/instancesfactory.html" class="tsd-kind-icon">Instances<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/job.html" class="tsd-kind-icon">Job</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/jobmanager.html" class="tsd-kind-icon">Job<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/queue.html" class="tsd-kind-icon">Queue</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/ticker.html" class="tsd-kind-icon">Ticker</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="autodescribed.html" class="tsd-kind-icon">Auto<wbr>Described</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="bulljoboptions.html" class="tsd-kind-icon">Bull<wbr>Job<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="bullprocessingoptions.html" class="tsd-kind-icon">Bull<wbr>Processing<wbr>Options</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
@@ -163,6 +207,42 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="jobmanagerconfiguration.html" class="tsd-kind-icon">Job<wbr>Manager<wbr>Configuration</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="processingoptions.html" class="tsd-kind-icon">Processing<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="queuesfactory.html" class="tsd-kind-icon">Queues<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-external">
+						<a href="../globals.html#action" class="tsd-kind-icon">Action</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="../globals.html#globalinstancesfactory" class="tsd-kind-icon">global<wbr>Instances<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="../globals.html#globaljobmanager" class="tsd-kind-icon">global<wbr>Job<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="../globals.html#instancesfactory" class="tsd-kind-icon">instances<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="../globals.html#getglobaljobmanager" class="tsd-kind-icon">get<wbr>Global<wbr>Job<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="../globals.html#getjobmanagerinstancesfactory" class="tsd-kind-icon">get<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="../globals.html#setglobaljobmanager" class="tsd-kind-icon">set<wbr>Global<wbr>Job<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="../globals.html#setjobmanagerinstancesfactory" class="tsd-kind-icon">set<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-external">
+						<a href="../globals.html#jobstates" class="tsd-kind-icon">Job<wbr>States</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

@@ -6,8 +6,11 @@
 
 ### Classes
 
+* [ExportCatalog](classes/exportcatalog.md)
+* [ExportMetadata](classes/exportmetadata.md)
 * [InMemoryQueue](classes/inmemoryqueue.md)
 * [InMemoryQueuesFactory](classes/inmemoryqueuesfactory.md)
+* [InstancesFactory](classes/instancesfactory.md)
 * [Job](classes/job.md)
 * [JobManager](classes/jobmanager.md)
 * [Queue](classes/queue.md)
@@ -15,6 +18,7 @@
 
 ### Interfaces
 
+* [AutoDescribed](interfaces/autodescribed.md)
 * [JobManagerConfiguration](interfaces/jobmanagerconfiguration.md)
 * [ProcessingOptions](interfaces/processingoptions.md)
 * [QueuesFactory](interfaces/queuesfactory.md)
@@ -25,6 +29,7 @@
 
 ### Variables
 
+* [globalInstancesFactory](globals.md#const-globalinstancesfactory)
 * [globalJobManager](globals.md#let-globaljobmanager)
 * [instancesFactory](globals.md#let-instancesfactory)
 
@@ -62,6 +67,16 @@ Name | Type |
 
 ## Variables
 
+### `Const` globalInstancesFactory
+
+• **globalInstancesFactory**: *[InstancesFactory](classes/instancesfactory.md)‹›* = new InstancesFactory()
+
+Defined in src/hermes_modules/composition/InstancesFactory.ts:89
+
+the global factory that can be used accross all objects of your running application
+
+___
+
 ### `Let` globalJobManager
 
 • **globalJobManager**: *[JobManager](classes/jobmanager.md)* = new JobManager()
@@ -86,7 +101,7 @@ The shared instances factory that can be change through setJobManagerInstancesFa
 
 ▸ **getGlobalJobManager**(): *[JobManager](classes/jobmanager.md)*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:182
+Defined in src/hermes_modules/jobs/JobManager.ts:183
 
 Get the global shared instance of the JobManager
 
@@ -96,13 +111,13 @@ ___
 
 ###  getJobManagerInstancesFactory
 
-▸ **getJobManagerInstancesFactory**(): *InstancesFactory*
+▸ **getJobManagerInstancesFactory**(): *[InstancesFactory](classes/instancesfactory.md)*
 
 Defined in src/hermes_modules/jobs/JobManager.ts:28
 
 Get the InstancesFactory that will be used by JobManager
 
-**Returns:** *InstancesFactory*
+**Returns:** *[InstancesFactory](classes/instancesfactory.md)*
 
 ___
 
@@ -126,7 +141,7 @@ ___
 
 ###  setJobManagerInstancesFactory
 
-▸ **setJobManagerInstancesFactory**(`factory`: InstancesFactory): *void*
+▸ **setJobManagerInstancesFactory**(`factory`: [InstancesFactory](classes/instancesfactory.md)): *void*
 
 Defined in src/hermes_modules/jobs/JobManager.ts:18
 
@@ -136,7 +151,7 @@ Set the InstancesFactory that will be used to create the QueuesFactory of furthe
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`factory` | InstancesFactory | The factory to use in all futur JobManager  |
+`factory` | [InstancesFactory](classes/instancesfactory.md) | The factory to use in all futur JobManager  |
 
 **Returns:** *void*
 
@@ -146,34 +161,36 @@ Name | Type | Description |
 
 ### ▪ **JobStates**: *object*
 
-Defined in src/hermes_modules/jobs/jobs/JobStates.ts:1
+Defined in src/hermes_modules/jobs/jobs/JobStates.ts:4
+
+All available states for a Job
 
 ###  done
 
 • **done**: *number* = 2
 
-Defined in src/hermes_modules/jobs/jobs/JobStates.ts:4
+Defined in src/hermes_modules/jobs/jobs/JobStates.ts:7
 
 ###  error
 
 • **error**: *number* = 666
 
-Defined in src/hermes_modules/jobs/jobs/JobStates.ts:5
+Defined in src/hermes_modules/jobs/jobs/JobStates.ts:8
 
 ###  running
 
 • **running**: *number* = 1
 
-Defined in src/hermes_modules/jobs/jobs/JobStates.ts:3
+Defined in src/hermes_modules/jobs/jobs/JobStates.ts:6
 
 ###  timedOut
 
 • **timedOut**: *number* = 777
 
-Defined in src/hermes_modules/jobs/jobs/JobStates.ts:6
+Defined in src/hermes_modules/jobs/jobs/JobStates.ts:9
 
 ###  waiting
 
 • **waiting**: *number* = 0
 
-Defined in src/hermes_modules/jobs/jobs/JobStates.ts:2
+Defined in src/hermes_modules/jobs/jobs/JobStates.ts:5

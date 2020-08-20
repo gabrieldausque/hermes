@@ -1,6 +1,8 @@
-[@hermes/bull-jobs](../README.md) › [Globals](../globals.md) › [BullValueTypeBox](bullvaluetypebox.md)
+[@hermes/jobs](../README.md) › [Globals](../globals.md) › [BullValueTypeBox](bullvaluetypebox.md)
 
 # Class: BullValueTypeBox
+
+A box to encapsulate value type (string, number, boolean , etc...) in an object
 
 ## Hierarchy
 
@@ -22,13 +24,15 @@
 
 \+ **new BullValueTypeBox**(`valueToBox`: any): *[BullValueTypeBox](bullvaluetypebox.md)*
 
-Defined in src/hermes_modules/bull-jobs/BullValueTypeBox.ts:1
+Defined in src/hermes_modules/bull-jobs/BullValueTypeBox.ts:4
+
+Create a new BullValueTypeBox
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`valueToBox` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`valueToBox` | any | The value to encapsulate  |
 
 **Returns:** *[BullValueTypeBox](bullvaluetypebox.md)*
 
@@ -38,4 +42,6 @@ Name | Type |
 
 • **boxedValue**: *any*
 
-Defined in src/hermes_modules/bull-jobs/BullValueTypeBox.ts:5
+Defined in src/hermes_modules/bull-jobs/BullValueTypeBox.ts:16
+
+the encapsulated value

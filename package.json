@@ -31,7 +31,7 @@
     "mocha": "ts-mocha \"test/**/*.ts\" --recursive --reporter mocha-multi-reporters --reporter-options configFile=mocha-config.json",
     "coverage": "NODE_ENV=test nyc --reporter=cobertura ts-mocha \"test/**/*.ts\" --recursive --exit",
     "compile": "shx rm -rf lib/ && tsc && node_modules/.bin/ncp src/hermes_modules/topic/browser/ public/lib/topic/ && npm run compilePackages",
-    "docs": "npm run compile && npm run topicDocs && npm run compositionDocs && npm run jobsDocs && npm run bulljobsDocs",
+    "docs": "npm run topicDocs && npm run compositionDocs && npm run jobsDocs && npm run bulljobsDocs",
     "topicDocs": "./node_modules/.bin/typedoc --options typedoc-topic-html.json src/hermes_modules/topic && ./node_modules/.bin/typedoc --options typedoc-topic-md.json src/hermes_modules/topic",
     "compositionDocs": "./node_modules/.bin/typedoc --options typedoc-composition-html.json src/hermes_modules/composition && ./node_modules/.bin/typedoc --options typedoc-composition-md.json src/hermes_modules/composition",
     "jobsDocs": "./node_modules/.bin/typedoc --options typedoc-jobs-html.json src/hermes_modules/jobs && ./node_modules/.bin/typedoc --options typedoc-jobs-md.json src/hermes_modules/jobs",

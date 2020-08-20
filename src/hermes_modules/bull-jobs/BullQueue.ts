@@ -1,15 +1,36 @@
-import { Queue, Job } from '@hermes/jobs';
+import { Queue, Job, ProcessingOptions } from '@hermes/jobs';
 import { BullQueueConfiguration } from './configuration/BullQueueConfiguration';
 import InnerQueue from 'bull';
 import { BullJob } from './BullJob';
 import { BullValueTypeBox } from './BullValueTypeBox';
+import { BullProcessingOptions } from './configuration/BullProcessingOptions';
+import { BullJobOptions } from './configuration/BullJobOptions';
 
+/**
+ * The Queue implementation for Bull
+ */
 export class BullQueue extends Queue {
 
+  /**
+   * The inner bull queue
+   */
   public innerQueue: any;
+
+  /**
+   * The set of action used for named jobs
+   */
   private readonly namedAction: {};
+
+  /**
+   * The list of runnings job for the current queue
+   */
   private readonly runningJobs: BullJob[];
 
+  /**
+   * Create a new BullQueue
+   * @param name The name of the queue
+   * @param configuration The configuration of the queue.
+   */
   constructor(name:string, configuration?:BullQueueConfiguration) {
     super(name, configuration);
     this.runningJobs = [];
@@ -42,6 +63,10 @@ export class BullQueue extends Queue {
     this.namedAction = {};
   }
 
+  /**
+   * Execute a job
+   * @param bullJob the bull job to execute
+   */
   private async executeJob(bullJob:InnerQueue.Job<any>) {
     let action;
     if(bullJob.name && (bullJob.name !== '__default__')) {
@@ -75,7 +100,13 @@ export class BullQueue extends Queue {
     return resultOrPromise;
   }
 
-  onJobToProcess(action: any, processingOptions?: any) {
+  /**
+   * Create the worker to execute on job execution request
+   * See [bull](https://github.com/OptimalBits/bull/blob/HEAD/REFERENCE.md#queueprocess) for processingOptions details
+   * @param action The function to execute on a job receive
+   * @param processingOptions The options for the current worker :
+   */
+  onJobToProcess(action: any, processingOptions?: BullProcessingOptions) {
     const processorName:string = (processingOptions && typeof processingOptions.name === 'string')?processingOptions.name:'';
     const concurrency:number = (processingOptions && typeof processingOptions.concurrency === 'number')?processingOptions.concurrency:1;
     if(processorName)
@@ -88,7 +119,12 @@ export class BullQueue extends Queue {
     }
   }
 
-  push(actionPayloadOrJob: any, jobOptions: { [p: string]: any }): Job {
+  /**
+   * Push a job to be executed
+   * @param actionPayloadOrJob The payload or the job to execute
+   * @param jobOptions The options to use for this execution
+   */
+  push(actionPayloadOrJob: any, jobOptions: BullJobOptions): Job {
     let jobToReturn:BullJob;
     const current = this;
     if(actionPayloadOrJob instanceof BullJob){
@@ -116,18 +152,30 @@ export class BullQueue extends Queue {
     return jobToReturn;
   }
 
+  /**
+   * Get the redis host used by this queue
+   */
   getHost() {
     return this.innerQueue.client.options.host
   }
 
+  /**
+   * Get the port used for the redis connexion
+   */
   getPort() {
     return this.innerQueue.client.options.port
   }
 
+  /**
+   * Do nothing, bull has no need for a start
+   */
   start(): void {
     // Do nothing;
   }
 
+  /**
+   * Close the inner queue
+   */
   stop(): void {
     this.innerQueue.close()
   }
