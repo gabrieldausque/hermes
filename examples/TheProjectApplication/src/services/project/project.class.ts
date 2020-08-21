@@ -158,7 +158,7 @@ export class Project implements ServiceMethods<Data> {
 
       const job = this.jobManager.execute('project#get', id);
       await job.waitForCompletion();
-      if(job.state === JobStates.done) {
+      if(job.state === JobStates.success) {
         project = job.result;
       } else {
         throw new NotFound(job.err)
@@ -177,7 +177,7 @@ export class Project implements ServiceMethods<Data> {
     if(data.needLongProcess) {
       const job = this.jobManager.execute('project#create', data)
       await job.waitForCompletion();
-      if(job.state === JobStates.done) {
+      if(job.state === JobStates.success) {
         project = job.result;
       } else {
         throw new GeneralError(job.err);
@@ -201,7 +201,7 @@ export class Project implements ServiceMethods<Data> {
       if(data.needLongProcess) {
         const job = this.jobManager.execute('project#update', data);
         await job.waitForCompletion();
-        if(job.result !== JobStates.done) {
+        if(job.result !== JobStates.success) {
           throw new GeneralError(job.err)
         }
       } else {
