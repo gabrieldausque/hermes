@@ -3,14 +3,14 @@ import { Job as InnerJob } from 'bull';
 import { BullValueTypeBox } from './BullValueTypeBox';
 
 /**
- * The job implementation used for Bull, especially to encapsulate value type as payload (not natively done in bull)
+ * The job implementation used for Bull, especially to encapsulate value type as payload (not natively success in bull)
  */
 export class BullJob extends Job {
 
   /**
    * The bull job
    */
-  private innerJob:InnerJob;
+  public innerJob:InnerJob;
 
   /**
    * Get the payload as an object even if it is a value type
@@ -30,5 +30,16 @@ export class BullJob extends Job {
   setInnerJob(job:InnerJob) {
     this.innerJob = job;
     this.id = job.id.toString();
+  }
+
+  /**
+   * As an EventEmitter, raise the 'progress' event for the job
+   * @param completionPercentage Percentage of completion of the job
+   * @param completionMessage Associated message for this progression state
+   */
+  raiseProgressEvent(completionPercentage:number, completionMessage?:string) {
+    this.innerJob.progress(completionPercentage).then(() => {
+      this.emit('progress', { percentage:completionPercentage, message:completionMessage});
+    })
   }
 }

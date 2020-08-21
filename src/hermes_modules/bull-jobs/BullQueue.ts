@@ -43,15 +43,42 @@ export class BullQueue extends Queue {
     this.innerQueue.client.on('ready', () => {
       current.raiseReady();
     });
-    this.innerQueue.on('completed', (job, result) => {
+    this.innerQueue.on('global:failed', async (jobId, err) => {
       const outerJob = current.runningJobs.find((j) => {
-        return j.id === job.id.toString();
+        return j.id === jobId.toString();
+      });
+      try {
+        if (outerJob) {
+          console.error(err);
+          if(outerJob) {
+            current.raiseJobFailed(outerJob, err);
+          }
+        }
+      } catch(err) {
+        if(outerJob) {
+          current.raiseJobFailed(outerJob, err);
+        }
+      }
+    });
+    this.innerQueue.on('global:completed', async (jobId, result) => {
+      const outerJob = current.runningJobs.find((j) => {
+        return j.id === jobId.toString();
       });
       try {
         if(outerJob)
         {
-          current.runningJobs.splice(current.runningJobs.indexOf(outerJob), 1);
-          current.raiseJobSuccess(outerJob, result);
+          const state = await outerJob.innerJob.getState();
+          if(state === 'completed') {
+            let resultToSend = result;
+            try {
+              // try to parse the result as it is normally JSON
+              resultToSend = JSON.parse(result)
+            }finally {
+              current.runningJobs.splice(current.runningJobs.indexOf(outerJob), 1);
+              current.raiseJobSuccess(outerJob, resultToSend);
+            }
+          }
+          return;
         }
       } catch(err) {
         console.error(err);

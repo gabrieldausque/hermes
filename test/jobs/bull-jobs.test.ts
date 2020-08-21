@@ -4,6 +4,9 @@ import { InMemoryQueue, getJobManagerInstancesFactory, Job, JobManager, JobState
 import { TestClass } from './TestClass';
 import { BullQueue } from '@hermes/bull-jobs';
 import * as util from 'util';
+import { create } from 'domain';
+import { uuid } from 'uuidv4';
+import { BullJob } from '@hermes/bull-jobs/BullJob';
 
 getJobManagerInstancesFactory().loadExportedClassesFromDirectory(__dirname + '/../plugins');
 const sleep = util.promisify(setTimeout);
@@ -52,7 +55,11 @@ describe('Job Scheduling using Bull', () => {
   })
 
   afterEach(() => {
-    jm.stop();
+    try{
+      jm.stop();
+    }catch(err) {
+      console.warn(err)
+    }
   });
 
   it('Should have a bullQueue instead of the default InMemoryQueue', () => {
@@ -60,31 +67,32 @@ describe('Job Scheduling using Bull', () => {
     expect(q).to.be.instanceof(BullQueue);
   })
 
-
-  it('Should raise error event if no connection on redis', (done) => {
+  it('Should raise error event if no connection on redis', async () => {
     jm = new JobManager({
       queuesFactoryExportName:'Bull'
     });
-    const q2 = jm.createQueue('Error', {
-      redisUrl:"redis://localhost:590",
-      bullQueueOptions: {
-        redis:{
-          host:"localhost",
-          port:"590",
-          retryStrategy: (times) => {
-            return new Error('Wrong port');
-          },
-          maxRetriesPerRequest: 0,
-          connectTimeout:50,
-        }
-      }
-    });
+    let q2:Queue;
 
-    const errorListener = (err) => {
-        expect(err.code).to.be.equal('ECONNREFUSED');
-        done();
-    };
-    q2.once('error', errorListener);
+    const c = () => {
+      q2 = jm.createQueue('Error', {
+        redisUrl: "redis://localhost:590",
+        bullQueueOptions: {
+          redis: {
+            host: "localhost",
+            port: "590",
+            retryStrategy: (times) => {
+              return;
+            },
+            maxRetriesPerRequest: 0,
+            connectTimeout: 50,
+          }
+        }
+      });
+      q2.once('error', (err) => {
+        expect(err.code).to.eql('ECONNREFUSED');
+      })
+    }
+    c();
   })
 
   it('Should connect to another port', (done) => {
@@ -120,30 +128,28 @@ describe('Job Scheduling using Bull', () => {
     expect(redisClient.options.maxRetriesPerRequest).to.be.equal(2);
   })
 
-
-  it('Should execute a job and get result when job is done for string result', (done) => {
+  it('Should execute a job and get result when job is success for string result', (done) => {
     createJmAndQ();
     const functionToExecute = (p, j) => {
-      console.log('p:');
-      console.log(p);
-      console.log('j');
-      console.log(j);
       return 'done';
     }
-    jm.createWorker('Test', functionToExecute);
-    q.on('error', (err, j) => {
+    const queueId = uuid();
+    q = jm.createQueue(queueId);
+    jm.createWorker(queueId, functionToExecute);
+    q.once('error', (err, j) => {
       done(err);
     })
-    const job = jm.execute('Test')
-    job.once('done', (event) => {
+    const job = jm.execute(queueId)
+    job.once('success', (event) => {
       expect(job.result).to.be.equal('done');
       done();
     });
   })
 
-  it('Should execute a job and get result when job is done for complex result', (done) => {
+  it('Should execute a job and get result when job is success for complex result', (done) => {
     createJmAndQ();
-
+    const queueId = uuid();
+    q = jm.createQueue(queueId);
     const functionToExecute = () => {
       return {
         prop1:'value',
@@ -153,9 +159,9 @@ describe('Job Scheduling using Bull', () => {
         }
       };
     }
-    jm.createWorker('Test', functionToExecute);      console.log("inside the promise");
-    const job = jm.execute('Test')
-    job.once('done', () => {
+    jm.createWorker(queueId, functionToExecute);      console.log("inside the promise");
+    const job = jm.execute(queueId);
+    job.once('success', () => {
       expect(job.result.prop1).to.be.equal('value');
       expect(job.result.prop2.prop21).to.be.equal(45);
       expect(job.result.prop2.prop22).to.be.equal('astring');
@@ -166,11 +172,13 @@ describe('Job Scheduling using Bull', () => {
   it('Should execute a method from class instance and send result', (done) => {
     createJmAndQ();
     const instance = new TestClass();
-    jm.createWorker('Test', () => {
+    const queueId = uuid();
+    q = jm.createQueue(queueId);
+    jm.createWorker(queueId, () => {
       return instance.aTestMethod();
     });
-    const job = jm.execute('Test');
-    job.on('done', (event) => {
+    const job = jm.execute(queueId);
+    job.on('success', (event) => {
       expect(job.result).to.be.equal('testMethodCall');
       done();
     });
@@ -200,13 +208,15 @@ describe('Job Scheduling using Bull', () => {
     createJmAndQ();
     const progressPercentages = [];
     const progressMessages = [];
-    jm.createWorker('Test', async (p, j) => {
+    const queueId = uuid();
+    q = jm.createQueue(queueId);
+    jm.createWorker(queueId, async (p, j) => {
       j.raiseProgressEvent(50, 'first progress');
       await sleep(500);
       j.raiseProgressEvent(100, 'last progress');
       return `A result with parameters : ${p}`;
     })
-    const job = jm.execute('Test', 'A simple string');
+    const job = jm.execute(queueId, 'A simple string');
     job.on('progress', (data) => {
       progressPercentages.push(data.percentage);
       progressMessages.push(data.message);
@@ -215,6 +225,7 @@ describe('Job Scheduling using Bull', () => {
     expect(job.result).to.be.equal('A result with parameters : A simple string');
     expect(progressPercentages).to.be.eql([50,100]);
     expect(progressMessages).to.be.eql(['first progress','last progress']);
+    expect((job as BullJob).innerJob.progress()).to.be.eql(100);
   })
 
   it('Should execute job and manage error', async () => {
@@ -226,7 +237,7 @@ describe('Job Scheduling using Bull', () => {
     try {
       await job.waitForCompletion();
     }finally {
-      expect(job.state).to.be.equal(JobStates.error);
+      expect(job.state).to.be.equal(JobStates.failed);
       expect(job.err.message).to.be.eql('Expected error');
     }
   })
@@ -251,6 +262,15 @@ describe('Job Scheduling using Bull', () => {
   it('Should return the right host name', async() => {
     createJmAndQ();
     expect((q as BullQueue).getHost()).to.be.eql('127.0.0.1');
+  })
+
+  it('Should work when send exception', async () => {
+    createJmAndQ();
+    jm.createWorker('Test', (p, j) => {
+      throw new Error('Expected Error');
+    })
+    const job = jm.execute('Test');
+    await job.waitForCompletion();
   })
 
 })

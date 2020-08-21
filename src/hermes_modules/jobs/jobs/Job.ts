@@ -80,7 +80,7 @@ export class Job extends EventEmitter {
    */
   raiseFailedEvent(err: any) {
     this.err = err;
-    this.state = JobStates.error;
+    this.state = JobStates.failed;
     try {
       this.emit('failed', err );
     }catch(err) {
@@ -113,8 +113,8 @@ export class Job extends EventEmitter {
    */
   raiseSuccessEvent(result: any) {
     this.result = result;
-    this.state = JobStates.done;
-    this.emit('done');
+    this.state = JobStates.success;
+    this.emit('success');
     this.raiseCompletedEvent();
   }
 }

@@ -3,7 +3,7 @@
  */
 export interface ProcessingOptions {
   /**
-   * handler to be executed when a job is done
+   * handler to be executed when a job is success
    */
   doneHandler:any
 

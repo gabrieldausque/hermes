@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import { Job, JobManager, Queue, InMemoryQueue } from '@hermes/jobs';
 // @ts-ignore
 import {TestClass} from './TestClass';
+import { uuid } from 'uuidv4';
 
 describe('Job scheduling tests', () => {
 
@@ -17,39 +18,38 @@ describe('Job scheduling tests', () => {
     jm.stop()
   })
 
-  it('Should execute a job and get result when job is done for string result', (done) => {
-      const functionToExecute = () => {
-        return 'done';
-      }
+  it('Should execute a job and get result when job is success for string result', (done) => {
+    const functionToExecute = () => {
+      return 'done';
+    }
 
-      jm.createWorker('Test', functionToExecute);
-      const job = jm.execute('Test')
-      job.on('done', (event) => {
-        expect(job.result).to.be.equal('done');
-        done();
-      });
+    jm.createWorker('Test', functionToExecute);
+    const job = jm.execute('Test')
+    job.on('success', (event) => {
+      expect(job.result).to.be.equal('done');
+      done();
+    });
   })
 
-  it('Should execute a job and get result when job is done for complex result', (done) => {
-      const functionToExecute = () => {
-        return {
-          prop1:'value',
-          prop2:{
-            prop21:45,
-            prop22:'astring'
-          }
-        };
-      }
+  it('Should execute a job and get result when job is success for complex result', (done) => {
+    const functionToExecute = () => {
+      return {
+        prop1:'value',
+        prop2:{
+          prop21:45,
+          prop22:'astring'
+        }
+      };
+    }
+    jm.createWorker('Test', functionToExecute);      console.log("inside the promise");
 
-      jm.createWorker('Test', functionToExecute);      console.log("inside the promise");
-
-      const job = jm.execute('Test')
-      job.on('done', (event) => {
-        expect(job.result.prop1).to.be.equal('value');
-        expect(job.result.prop2.prop21).to.be.equal(45);
-        expect(job.result.prop2.prop22).to.be.equal('astring');
-        done();
-      });
+    const job = jm.execute('Test')
+    job.on('success', (event) => {
+      expect(job.result.prop1).to.be.equal('value');
+      expect(job.result.prop2.prop21).to.be.equal(45);
+      expect(job.result.prop2.prop22).to.be.equal('astring');
+      done();
+    });
   })
 
   it('Should execute a method from class instance and send result', (done) => {
@@ -59,7 +59,7 @@ describe('Job scheduling tests', () => {
     });
     const job = jm.execute('Test');
 
-    job.on('done', (event) => {
+    job.on('success', (event) => {
       expect(job.result).to.be.equal('testMethodCall');
       done();
     });
