@@ -6,7 +6,7 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 
 ## Hierarchy
 
-  ↳ [Job](job.md)
+  ↳ [Job](../Jobs/Reference/job.md)
 
   ↳ **BullMQJob**
 
@@ -14,43 +14,43 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 
 ### Constructors
 
-* [constructor](bullmqjob.md#constructor)
+* [constructor](bullmq../Jobs/Reference/job.md#constructor)
 
 ### Properties
 
-* [err](bullmqjob.md#err)
-* [id](bullmqjob.md#id)
-* [innerJob](bullmqjob.md#innerjob)
-* [jobOptions](bullmqjob.md#joboptions)
-* [payload](bullmqjob.md#payload)
-* [result](bullmqjob.md#result)
-* [state](bullmqjob.md#state)
-* [toExecute](bullmqjob.md#toexecute)
+* [err](bullmq../Jobs/Reference/job.md#err)
+* [id](bullmq../Jobs/Reference/job.md#id)
+* [innerJob](bullmq../Jobs/Reference/job.md#innerjob)
+* [jobOptions](bullmq../Jobs/Reference/job.md#joboptions)
+* [payload](bullmq../Jobs/Reference/job.md#payload)
+* [result](bullmq../Jobs/Reference/job.md#result)
+* [state](bullmq../Jobs/Reference/job.md#state)
+* [toExecute](bullmq../Jobs/Reference/job.md#toexecute)
 
 ### Methods
 
-* [addListener](bullmqjob.md#addlistener)
-* [emit](bullmqjob.md#emit)
-* [eventNames](bullmqjob.md#eventnames)
-* [getMaxListeners](bullmqjob.md#getmaxlisteners)
-* [getPayload](bullmqjob.md#getpayload)
-* [listenerCount](bullmqjob.md#listenercount)
-* [listeners](bullmqjob.md#listeners)
-* [off](bullmqjob.md#off)
-* [on](bullmqjob.md#on)
-* [once](bullmqjob.md#once)
-* [prependListener](bullmqjob.md#prependlistener)
-* [prependOnceListener](bullmqjob.md#prependoncelistener)
-* [raiseCompletedEvent](bullmqjob.md#raisecompletedevent)
-* [raiseFailedEvent](bullmqjob.md#raisefailedevent)
-* [raiseProgressEvent](bullmqjob.md#raiseprogressevent)
-* [raiseSuccessEvent](bullmqjob.md#raisesuccessevent)
-* [rawListeners](bullmqjob.md#rawlisteners)
-* [removeAllListeners](bullmqjob.md#removealllisteners)
-* [removeListener](bullmqjob.md#removelistener)
-* [setInnerJob](bullmqjob.md#setinnerjob)
-* [setMaxListeners](bullmqjob.md#setmaxlisteners)
-* [waitForCompletion](bullmqjob.md#waitforcompletion)
+* [addListener](bullmq../Jobs/Reference/job.md#addlistener)
+* [emit](bullmq../Jobs/Reference/job.md#emit)
+* [eventNames](bullmq../Jobs/Reference/job.md#eventnames)
+* [getMaxListeners](bullmq../Jobs/Reference/job.md#getmaxlisteners)
+* [getPayload](bullmq../Jobs/Reference/job.md#getpayload)
+* [listenerCount](bullmq../Jobs/Reference/job.md#listenercount)
+* [listeners](bullmq../Jobs/Reference/job.md#listeners)
+* [off](bullmq../Jobs/Reference/job.md#off)
+* [on](bullmq../Jobs/Reference/job.md#on)
+* [once](bullmq../Jobs/Reference/job.md#once)
+* [prependListener](bullmq../Jobs/Reference/job.md#prependlistener)
+* [prependOnceListener](bullmq../Jobs/Reference/job.md#prependoncelistener)
+* [raiseCompletedEvent](bullmq../Jobs/Reference/job.md#raisecompletedevent)
+* [raiseFailedEvent](bullmq../Jobs/Reference/job.md#raisefailedevent)
+* [raiseProgressEvent](bullmq../Jobs/Reference/job.md#raiseprogressevent)
+* [raiseSuccessEvent](bullmq../Jobs/Reference/job.md#raisesuccessevent)
+* [rawListeners](bullmq../Jobs/Reference/job.md#rawlisteners)
+* [removeAllListeners](bullmq../Jobs/Reference/job.md#removealllisteners)
+* [removeListener](bullmq../Jobs/Reference/job.md#removelistener)
+* [setInnerJob](bullmq../Jobs/Reference/job.md#setinnerjob)
+* [setMaxListeners](bullmq../Jobs/Reference/job.md#setmaxlisteners)
+* [waitForCompletion](bullmq../Jobs/Reference/job.md#waitforcompletion)
 
 ## Constructors
 
@@ -58,7 +58,7 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 
 \+ **new BullMQJob**(`toExecute`: any, `payload?`: any, `jobOptions?`: object): *[BullMQJob](bullmqjob.md)*
 
-*Inherited from [Job](job.md).[constructor](job.md#constructor)*
+*Inherited from [Job](../Jobs/Reference/job.md).[constructor](../Jobs/Reference/job.md#constructor)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:39
 
@@ -80,7 +80,7 @@ Name | Type | Description |
 
 • **err**: *any*
 
-*Inherited from [Job](job.md).[err](job.md#err)*
+*Inherited from [Job](../Jobs/Reference/job.md).[err](../Jobs/Reference/job.md#err)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:29
 
@@ -92,7 +92,7 @@ ___
 
 • **id**: *string*
 
-*Inherited from [Job](job.md).[id](job.md#id)*
+*Inherited from [Job](../Jobs/Reference/job.md).[id](../Jobs/Reference/job.md#id)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:9
 
@@ -114,7 +114,7 @@ ___
 
 • **jobOptions**: *object*
 
-*Inherited from [Job](job.md).[jobOptions](job.md#joboptions)*
+*Inherited from [Job](../Jobs/Reference/job.md).[jobOptions](../Jobs/Reference/job.md#joboptions)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:39
 
@@ -130,7 +130,7 @@ ___
 
 • **payload**: *any*
 
-*Inherited from [Job](job.md).[payload](job.md#payload)*
+*Inherited from [Job](../Jobs/Reference/job.md).[payload](../Jobs/Reference/job.md#payload)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:24
 
@@ -142,7 +142,7 @@ ___
 
 • **result**: *any*
 
-*Inherited from [Job](job.md).[result](job.md#result)*
+*Inherited from [Job](../Jobs/Reference/job.md).[result](../Jobs/Reference/job.md#result)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:14
 
@@ -154,7 +154,7 @@ ___
 
 • **state**: *number*
 
-*Inherited from [Job](job.md).[state](job.md#state)*
+*Inherited from [Job](../Jobs/Reference/job.md).[state](../Jobs/Reference/job.md#state)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:34
 
@@ -166,7 +166,7 @@ ___
 
 • **toExecute**: *any*
 
-*Inherited from [Job](job.md).[toExecute](job.md#toexecute)*
+*Inherited from [Job](../Jobs/Reference/job.md).[toExecute](../Jobs/Reference/job.md#toexecute)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:19
 
@@ -425,7 +425,7 @@ ___
 
 ▸ **raiseCompletedEvent**(): *void*
 
-*Inherited from [Job](job.md).[raiseCompletedEvent](job.md#raisecompletedevent)*
+*Inherited from [Job](../Jobs/Reference/job.md).[raiseCompletedEvent](../Jobs/Reference/job.md#raisecompletedevent)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:96
 
@@ -439,7 +439,7 @@ ___
 
 ▸ **raiseFailedEvent**(`err`: any): *void*
 
-*Inherited from [Job](job.md).[raiseFailedEvent](job.md#raisefailedevent)*
+*Inherited from [Job](../Jobs/Reference/job.md).[raiseFailedEvent](../Jobs/Reference/job.md#raisefailedevent)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:81
 
@@ -459,7 +459,7 @@ ___
 
 ▸ **raiseProgressEvent**(`completionPercentage`: number, `completionMessage?`: string): *void*
 
-*Overrides [Job](job.md).[raiseProgressEvent](job.md#raiseprogressevent)*
+*Overrides [Job](../Jobs/Reference/job.md).[raiseProgressEvent](../Jobs/Reference/job.md#raiseprogressevent)*
 
 Defined in src/hermes_modules/bullmq-jobs/BullMQJob.ts:40
 
@@ -480,7 +480,7 @@ ___
 
 ▸ **raiseSuccessEvent**(`result`: any): *void*
 
-*Inherited from [Job](job.md).[raiseSuccessEvent](job.md#raisesuccessevent)*
+*Inherited from [Job](../Jobs/Reference/job.md).[raiseSuccessEvent](../Jobs/Reference/job.md#raisesuccessevent)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:114
 
@@ -598,7 +598,7 @@ ___
 
 ▸ **waitForCompletion**(`timeoutInMs?`: any): *Promise‹void›*
 
-*Inherited from [Job](job.md).[waitForCompletion](job.md#waitforcompletion)*
+*Inherited from [Job](../Jobs/Reference/job.md).[waitForCompletion](../Jobs/Reference/job.md#waitforcompletion)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:60
 
