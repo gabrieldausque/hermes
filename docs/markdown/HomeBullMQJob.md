@@ -10,6 +10,8 @@ The bullmq-job module is a nodejs library to use with [@hermes/job](HomeJob.md) 
 
 NB : for more details on JobManager, see [Jobs](HomeJob.md) home
 
+For more documentation on bullmq, see [here](https://docs.bullmq.io/)
+
 ## Installation
 
 A npm package is available to make installation easiest as possible

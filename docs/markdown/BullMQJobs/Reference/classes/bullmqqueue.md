@@ -471,7 +471,7 @@ ___
 Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:152
 
 Create the worker to execute on job execution request
-See [bullmq](https://docs.bullmq.io/guide/connections) for processingOptions details
+See [bullmq](https://docs.bullmq.io/) for processingOptions details
 
 **Parameters:**
 

@@ -10,6 +10,8 @@ The bull-job module is a nodejs library to use with [@hermes/job](HomeJob.md) mo
 
 NB : for more details on JobManager, see [Jobs](HomeJob.md) home
 
+For more information on bull, click [here](https://github.com/OptimalBits/bull)
+
 ## Installation
 
 A npm package is available to make installation easiest as possible

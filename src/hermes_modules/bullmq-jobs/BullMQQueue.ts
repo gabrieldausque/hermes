@@ -145,7 +145,7 @@ export class BullMQQueue extends Queue {
 
   /**
    * Create the worker to execute on job execution request
-   * See [bullmq](https://docs.bullmq.io/guide/connections) for processingOptions details
+   * See [bullmq](https://docs.bullmq.io/) for processingOptions details
    * @param action The function to execute on a job receive
    * @param processingOptions The options for the current worker :
    */
