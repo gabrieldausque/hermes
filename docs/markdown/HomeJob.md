@@ -79,7 +79,7 @@ Run npm command to install dependencies:
 npm install @hermes/jobs --save
 ```
 
-### <a name="usage">Usage</a>
+### Usage
 
 Now, to use the JobManager, 
 
