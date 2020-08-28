@@ -77,6 +77,10 @@ steps:
     npm run compileBullJobsPackage
   displayName: 'npm install and compile Bull-Jobs Package'
 
+- script: |
+    npm run compileBullMQJobsPackage
+  displayName: 'npm install and compile BullMQ-Jobs Package'
+
 - task: Npm@1
   displayName: 'Publish Composition to Azure Dev ops Hermes/hermes feed'
   condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishComposition'],'true'))
@@ -112,5 +116,14 @@ steps:
     publishRegistry: useFeed
     publishFeed: Hermes/hermes
     workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/bull-jobs/
+
+- task: Npm@1
+  displayName: 'Publish BullMQ Jobs to Azure Dev ops Hermes/hermes feed'
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishBullMQJobs'],'true'))
+  inputs:
+    command: publish
+    publishRegistry: useFeed
+    publishFeed: Hermes/hermes
+    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/bullmq-jobs/
 
 
