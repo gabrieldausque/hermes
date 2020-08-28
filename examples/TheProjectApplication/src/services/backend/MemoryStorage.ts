@@ -25,11 +25,12 @@ export class MemoryStorage {
     }
   }
   update(project:ProjectEntity):void{
-    this.delete(project);
+    if(this.exists(project))
+      this.delete(project);
     this.add(project);
   }
 
-  private exists(projectOrId: ProjectEntity|string):boolean {
+  exists(projectOrId: ProjectEntity|string):boolean {
     if(projectOrId instanceof ProjectEntity){
       return this.innerStorage.findIndex(value => value.id === projectOrId.id) >= 0;
     }else {

@@ -21,10 +21,9 @@ export class BackEndService {
     this.topicService = globalInstancesFactory.getInstanceFromCatalogs('TopicService', 'Default')
     this.topicClient = new MemoryTopicServiceClient(this.topicService);
     this.topicClient.subscribe('global.project_created', ((topic, topicMessage) => {
-      if(!topicMessage.isForwardedByCluster)
-        return;
-      const p = ProjectEntity.deserialize(topicMessage.content);
-      this.store.add(p);
+      const p = ProjectEntity.deserialize(topicMessage.content) as ProjectEntity;
+      if(!this.store.exists(p))
+        this.store.add(p);
     }), this);
     this.topicClient.subscribe('*.molecule_loaded', (topic, topicMessage ) => {
       if(!topicMessage.isForwardedByCluster)

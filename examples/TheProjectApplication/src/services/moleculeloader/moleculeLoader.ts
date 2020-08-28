@@ -21,8 +21,11 @@ export class MoleculeLoader {
   }
 
   private async loadMolecules(topicTriggered:string, topicMessage:TopicMessage) {
-    if(topicMessage.isForwardedByCluster)
+    if(topicMessage.isForwardedByCluster){
+      console.debug(`load molecules avoid in ${process.pid}`)
       return;
+    }
+    console.debug(`add molecule executed from ${process.pid}`)
     const content = topicMessage.content as ProjectEntity;
     const project:ProjectEntity = this.backendService.getProject(content.id.toString());
     if(project) {

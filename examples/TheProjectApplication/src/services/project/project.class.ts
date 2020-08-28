@@ -136,7 +136,7 @@ export class Project implements ServiceMethods<Data> {
     this.jobManager.createQueue('project#update');
     this.jobManager.createQueue('project#get');
     this.jobManager.createWorker('project#create', async (payload:ProjectDto, job) => {
-      console.debug(`Executing ${job.id} from queue project#create`);
+      console.debug(`Executing ${job.id} from queue project#create in ${process.pid}`);
       await sleep(3000);
       return current.app.backend.createProject(ProjectEntity.loadFromDto(payload));
     });
@@ -186,6 +186,7 @@ export class Project implements ServiceMethods<Data> {
       project = await this.app.backend.createProject(ProjectEntity.loadFromDto(data));
     }
     const newProject = ProjectDto.createFromEntity(project);
+
     this.app.topicService.publish("global.project_created", project).catch((error) => {
       console.error("error in create : " + error);
     });
