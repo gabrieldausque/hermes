@@ -13,6 +13,7 @@ and metadata worn by class
 process and from external clients (browser or other node process) using socket.io
 - [Job](/HomeJob) : a framework that provides a queue and jobs management that can be customized through Composition
 - [Bull-Job](/HomeBullJob) : the specific implementation using bull (with underlying redis) of the Job framework
+- [BullMQ-Job](/HomeBullMQJob) : the specific implementation using bullmq (with underlying redis) of the Job framework
 
 
 

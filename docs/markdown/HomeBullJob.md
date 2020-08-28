@@ -5,7 +5,10 @@
 
 ## What it does
 
-TODO
+The bull-job module is a nodejs library to use with [@hermes/job](HomeJob.md) module, to use bull implementation that relies on
+ redis under the JobManager facade. 
+
+NB : for more details on JobManager, see [Jobs](HomeJob.md) home
 
 ## Installation
 
@@ -72,9 +75,9 @@ npm install @hermes/jobs --save
 npm install @hermes/bull-jobs --save
 ```
 
-Now, to use the JobManager with Bull,
+### Usage
 
-TODO 
+For usage, see the [Jobs Usage section](/HomeJob#Usage)
 
 ## Resources :
 
