@@ -18,7 +18,7 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 
 ### Properties
 
-* [err](../Jobs/Reference/job.md#err)
+* [err](../../../Jobs/Reference/job.md#err)
 * [id](../Jobs/Reference/job.md#id)
 * [innerJob](../Jobs/Reference/job.md#innerjob)
 * [jobOptions](../Jobs/Reference/job.md#joboptions)
