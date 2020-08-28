@@ -6,7 +6,7 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 
 ## Hierarchy
 
-  ↳ [Job](../Jobs/Reference/job.md)
+  ↳ [Job](/Jobs/Reference/classes/job.md)
 
   ↳ **BullMQJob**
 
@@ -14,43 +14,43 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 
 ### Constructors
 
-* [constructor](../Jobs/Reference/job.md#constructor)
+* [constructor](/Jobs/Reference/classes/job.md#constructor)
 
 ### Properties
 
-* [err](../Jobs/Reference/job.md#err)
-* [id](../Jobs/Reference/job.md#id)
-* [innerJob](../Jobs/Reference/job.md#innerjob)
-* [jobOptions](../Jobs/Reference/job.md#joboptions)
-* [payload](../Jobs/Reference/job.md#payload)
-* [result](../Jobs/Reference/job.md#result)
-* [state](../Jobs/Reference/job.md#state)
-* [toExecute](../Jobs/Reference/job.md#toexecute)
+* [err](/Jobs/Reference/classes/job.md#err)
+* [id](/Jobs/Reference/classes/job.md#id)
+* [innerJob](/Jobs/Reference/classes/job.md#innerjob)
+* [jobOptions](/Jobs/Reference/classes/job.md#joboptions)
+* [payload](/Jobs/Reference/classes/job.md#payload)
+* [result](/Jobs/Reference/classes/job.md#result)
+* [state](/Jobs/Reference/classes/job.md#state)
+* [toExecute](/Jobs/Reference/classes/job.md#toexecute)
 
 ### Methods
 
-* [addListener](../Jobs/Reference/job.md#addlistener)
-* [emit](../Jobs/Reference/job.md#emit)
-* [eventNames](../Jobs/Reference/job.md#eventnames)
-* [getMaxListeners](../Jobs/Reference/job.md#getmaxlisteners)
-* [getPayload](../Jobs/Reference/job.md#getpayload)
-* [listenerCount](../Jobs/Reference/job.md#listenercount)
-* [listeners](../Jobs/Reference/job.md#listeners)
-* [off](../Jobs/Reference/job.md#off)
-* [on](../Jobs/Reference/job.md#on)
-* [once](../Jobs/Reference/job.md#once)
-* [prependListener](../Jobs/Reference/job.md#prependlistener)
-* [prependOnceListener](../Jobs/Reference/job.md#prependoncelistener)
-* [raiseCompletedEvent](../Jobs/Reference/job.md#raisecompletedevent)
-* [raiseFailedEvent](../Jobs/Reference/job.md#raisefailedevent)
-* [raiseProgressEvent](../Jobs/Reference/job.md#raiseprogressevent)
-* [raiseSuccessEvent](../Jobs/Reference/job.md#raisesuccessevent)
-* [rawListeners](../Jobs/Reference/job.md#rawlisteners)
-* [removeAllListeners](../Jobs/Reference/job.md#removealllisteners)
-* [removeListener](../Jobs/Reference/job.md#removelistener)
-* [setInnerJob](../Jobs/Reference/job.md#setinnerjob)
-* [setMaxListeners](../Jobs/Reference/job.md#setmaxlisteners)
-* [waitForCompletion](../Jobs/Reference/job.md#waitforcompletion)
+* [addListener](/Jobs/Reference/classes/job.md#addlistener)
+* [emit](/Jobs/Reference/classes/job.md#emit)
+* [eventNames](/Jobs/Reference/classes/job.md#eventnames)
+* [getMaxListeners](/Jobs/Reference/classes/job.md#getmaxlisteners)
+* [getPayload](/Jobs/Reference/classes/job.md#getpayload)
+* [listenerCount](/Jobs/Reference/classes/job.md#listenercount)
+* [listeners](/Jobs/Reference/classes/job.md#listeners)
+* [off](/Jobs/Reference/classes/job.md#off)
+* [on](/Jobs/Reference/classes/job.md#on)
+* [once](/Jobs/Reference/classes/job.md#once)
+* [prependListener](/Jobs/Reference/classes/job.md#prependlistener)
+* [prependOnceListener](/Jobs/Reference/classes/job.md#prependoncelistener)
+* [raiseCompletedEvent](/Jobs/Reference/classes/job.md#raisecompletedevent)
+* [raiseFailedEvent](/Jobs/Reference/classes/job.md#raisefailedevent)
+* [raiseProgressEvent](/Jobs/Reference/classes/job.md#raiseprogressevent)
+* [raiseSuccessEvent](/Jobs/Reference/classes/job.md#raisesuccessevent)
+* [rawListeners](/Jobs/Reference/classes/job.md#rawlisteners)
+* [removeAllListeners](/Jobs/Reference/classes/job.md#removealllisteners)
+* [removeListener](/Jobs/Reference/classes/job.md#removelistener)
+* [setInnerJob](/Jobs/Reference/classes/job.md#setinnerjob)
+* [setMaxListeners](/Jobs/Reference/classes/job.md#setmaxlisteners)
+* [waitForCompletion](/Jobs/Reference/classes/job.md#waitforcompletion)
 
 ## Constructors
 
@@ -58,7 +58,7 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 
 \+ **new BullMQJob**(`toExecute`: any, `payload?`: any, `jobOptions?`: object): *[BullMQJob](bullmqjob.md)*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[constructor](../Jobs/Reference/job.md#constructor)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[constructor](/Jobs/Reference/classes/job.md#constructor)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:39
 
@@ -80,7 +80,7 @@ Name | Type | Description |
 
 • **err**: *any*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[err](../Jobs/Reference/job.md#err)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[err](/Jobs/Reference/classes/job.md#err)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:29
 
@@ -92,7 +92,7 @@ ___
 
 • **id**: *string*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[id](../Jobs/Reference/job.md#id)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[id](/Jobs/Reference/classes/job.md#id)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:9
 
@@ -114,7 +114,7 @@ ___
 
 • **jobOptions**: *object*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[jobOptions](../Jobs/Reference/job.md#joboptions)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[jobOptions](/Jobs/Reference/classes/job.md#joboptions)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:39
 
@@ -130,7 +130,7 @@ ___
 
 • **payload**: *any*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[payload](../Jobs/Reference/job.md#payload)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[payload](/Jobs/Reference/classes/job.md#payload)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:24
 
@@ -142,7 +142,7 @@ ___
 
 • **result**: *any*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[result](../Jobs/Reference/job.md#result)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[result](/Jobs/Reference/classes/job.md#result)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:14
 
@@ -154,7 +154,7 @@ ___
 
 • **state**: *number*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[state](../Jobs/Reference/job.md#state)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[state](/Jobs/Reference/classes/job.md#state)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:34
 
@@ -166,7 +166,7 @@ ___
 
 • **toExecute**: *any*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[toExecute](../Jobs/Reference/job.md#toexecute)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[toExecute](/Jobs/Reference/classes/job.md#toexecute)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:19
 
@@ -425,7 +425,7 @@ ___
 
 ▸ **raiseCompletedEvent**(): *void*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[raiseCompletedEvent](../Jobs/Reference/job.md#raisecompletedevent)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[raiseCompletedEvent](/Jobs/Reference/classes/job.md#raisecompletedevent)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:96
 
@@ -439,7 +439,7 @@ ___
 
 ▸ **raiseFailedEvent**(`err`: any): *void*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[raiseFailedEvent](../Jobs/Reference/job.md#raisefailedevent)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[raiseFailedEvent](/Jobs/Reference/classes/job.md#raisefailedevent)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:81
 
@@ -459,7 +459,7 @@ ___
 
 ▸ **raiseProgressEvent**(`completionPercentage`: number, `completionMessage?`: string): *void*
 
-*Overrides [Job](../Jobs/Reference/job.md).[raiseProgressEvent](../Jobs/Reference/job.md#raiseprogressevent)*
+*Overrides [Job](/Jobs/Reference/classes/job.md).[raiseProgressEvent](/Jobs/Reference/classes/job.md#raiseprogressevent)*
 
 Defined in src/hermes_modules/bullmq-jobs/BullMQJob.ts:40
 
@@ -480,7 +480,7 @@ ___
 
 ▸ **raiseSuccessEvent**(`result`: any): *void*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[raiseSuccessEvent](../Jobs/Reference/job.md#raisesuccessevent)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[raiseSuccessEvent](/Jobs/Reference/classes/job.md#raisesuccessevent)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:114
 
@@ -598,7 +598,7 @@ ___
 
 ▸ **waitForCompletion**(`timeoutInMs?`: any): *Promise‹void›*
 
-*Inherited from [Job](../Jobs/Reference/job.md).[waitForCompletion](../Jobs/Reference/job.md#waitforcompletion)*
+*Inherited from [Job](/Jobs/Reference/classes/job.md).[waitForCompletion](/Jobs/Reference/classes/job.md#waitforcompletion)*
 
 Defined in src/hermes_modules/jobs/jobs/Job.ts:60
 
