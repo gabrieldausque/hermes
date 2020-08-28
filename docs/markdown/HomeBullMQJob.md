@@ -1,11 +1,14 @@
 [Home](./Home.md) > [BullMQJob](HomeBullMQJob.md)
 
-# Hermes - TopicService : All Resources
+# Hermes - Bull MQ Job : All Resources
 >All resources from Source code for JobManagement using BullMQ, including example 
 
 ## What it does
 
-TODO
+The bullmq-job module is a nodejs library to use with [@hermes/job](HomeJob.md) module, to use [bullmq](https://www.npmjs.com/package/bullmq) implementation that relies on
+ redis under the JobManager facade. 
+
+NB : for more details on JobManager, see [Jobs](HomeJob.md) home
 
 ## Installation
 
@@ -72,9 +75,40 @@ npm install @hermes/jobs --save
 npm install @hermes/bullmq-jobs --save
 ```
 
-Now, to use the JobManager,
+### Usage
 
-TODO 
+For usage, see the [Jobs Usage section](/HomeJob#Usage), but replace configuration with this :
+
+``` json
+{
+  ...
+  "jobManager": {
+    "queuesFactoryExportName":"BullMQ",
+    "defaultQueueConfiguration":{
+      "bullQueueOptions": {
+        "connection":{
+          "host":"localhost",
+          "port":"6379",
+          "maxRetriesPerRequest": 2,
+          "connectTimeout":250
+        }
+      }
+    }
+  }
+  ...
+}
+```
+
+And load the following directory in the InstanceFactory : 
+
+
+``` ts
+import {getJobManagerInstancesFactory, getGlobalJobManager, setGlobalJobManager, JobManager} from '@hermes/jobs';
+import config from 'config';
+...
+getJobManagerInstancesFactory().loadExportedClassesFromDirectory('../node_modules/@hermes/bullmq-jobs/lib');
+...
+```
 
 ## Resources :
 

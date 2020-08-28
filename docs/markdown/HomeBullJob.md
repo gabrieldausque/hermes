@@ -1,11 +1,11 @@
 [Home](./Home.md) > [BullJob](HomeBullJob.md)
 
-# Hermes - TopicService : All Resources
+# Hermes - Bull Job : All Resources
 >All resources from Source code for Jobs management using Bull, including example 
 
 ## What it does
 
-The bull-job module is a nodejs library to use with [@hermes/job](HomeJob.md) module, to use bull implementation that relies on
+The bull-job module is a nodejs library to use with [@hermes/job](HomeJob.md) module, to use [bull](https://www.npmjs.com/package/bull) implementation that relies on
  redis under the JobManager facade. 
 
 NB : for more details on JobManager, see [Jobs](HomeJob.md) home
