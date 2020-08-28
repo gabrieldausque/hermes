@@ -24,7 +24,7 @@ Options to be used by workers, depending on implementation
 
 Defined in src/hermes_modules/jobs/queues/ProcessingOptions.ts:8
 
-handler to be executed when a job is done
+handler to be executed when a job is success
 
 ___
 

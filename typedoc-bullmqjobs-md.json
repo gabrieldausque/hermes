@@ -1,0 +1,10 @@
+{
+  "mode": "file",
+  "out": "docs/markdown/BullMQJobs/Reference",
+  "includes": "src/hermes_modules/bullmq-jobs/docs",
+  "exclude": [
+    "src/hermes_modules/bullmq-jobs/node_modules/**/*",
+    "src/hermes_modules/bullmq-jobs/lib/**/*"
+  ],
+  "plugin": "typedoc-plugin-markdown"
+}

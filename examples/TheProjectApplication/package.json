@@ -28,7 +28,8 @@
     "dev": "ts-node-dev --no-notify src/",
     "start": "npm run compile && node lib/",
     "mocha": "ts-mocha \"test/**/*.ts\" --recursive --exit",
-    "compile": "shx rm -rf lib/ && tsc && node_modules/.bin/ncp node_modules/@hermes/topicservice/lib/browser/ public/lib/topicservice/"
+    "compile": "shx rm -rf lib/ && tsc && node_modules/.bin/ncp node_modules/@hermes/topicservice/lib/browser/ public/lib/topicservice/",
+    "start-bullmq": "npm run compile && NODE_ENV=bullmq node lib/"
   },
   "standard": {
     "env": [
@@ -48,6 +49,7 @@
     "@hermes/topicservice": "^1.0.31",
     "@hermes/jobs": "^1.0.10",
     "@hermes/bull-jobs": "^1.0.8",
+    "@hermes/bullmq-jobs": "^1.0.0",
     "node-duckduckgo": "^2.0.12",
     "qwant-api": "^0.5.0",
     "compression": "^1.7.4",

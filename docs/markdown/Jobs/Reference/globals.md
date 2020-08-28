@@ -165,15 +165,9 @@ Defined in src/hermes_modules/jobs/jobs/JobStates.ts:4
 
 All available states for a Job
 
-###  done
+###  failed
 
-• **done**: *number* = 2
-
-Defined in src/hermes_modules/jobs/jobs/JobStates.ts:7
-
-###  error
-
-• **error**: *number* = 666
+• **failed**: *number* = 666
 
 Defined in src/hermes_modules/jobs/jobs/JobStates.ts:8
 
@@ -182,6 +176,12 @@ Defined in src/hermes_modules/jobs/jobs/JobStates.ts:8
 • **running**: *number* = 1
 
 Defined in src/hermes_modules/jobs/jobs/JobStates.ts:6
+
+###  success
+
+• **success**: *number* = 2
+
+Defined in src/hermes_modules/jobs/jobs/JobStates.ts:7
 
 ###  timedOut
 

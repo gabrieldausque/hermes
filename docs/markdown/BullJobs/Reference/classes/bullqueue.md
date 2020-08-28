@@ -251,7 +251,7 @@ ___
 
 ▸ **executeJob**(`bullJob`: InnerQueue.Job‹any›): *Promise‹any›*
 
-Defined in src/hermes_modules/bull-jobs/BullQueue.ts:70
+Defined in src/hermes_modules/bull-jobs/BullQueue.ts:99
 
 Execute a job
 
@@ -283,7 +283,7 @@ ___
 
 ▸ **getHost**(): *any*
 
-Defined in src/hermes_modules/bull-jobs/BullQueue.ts:158
+Defined in src/hermes_modules/bull-jobs/BullQueue.ts:187
 
 Get the redis host used by this queue
 
@@ -321,7 +321,7 @@ ___
 
 ▸ **getPort**(): *any*
 
-Defined in src/hermes_modules/bull-jobs/BullQueue.ts:165
+Defined in src/hermes_modules/bull-jobs/BullQueue.ts:194
 
 Get the port used for the redis connexion
 
@@ -437,7 +437,7 @@ ___
 
 *Overrides [Queue](queue.md).[onJobToProcess](queue.md#onjobtoprocess)*
 
-Defined in src/hermes_modules/bull-jobs/BullQueue.ts:109
+Defined in src/hermes_modules/bull-jobs/BullQueue.ts:138
 
 Create the worker to execute on job execution request
 See [bull](https://github.com/OptimalBits/bull/blob/HEAD/REFERENCE.md#queueprocess) for processingOptions details
@@ -551,7 +551,7 @@ ___
 
 *Overrides [Queue](queue.md).[push](queue.md#abstract-push)*
 
-Defined in src/hermes_modules/bull-jobs/BullQueue.ts:127
+Defined in src/hermes_modules/bull-jobs/BullQueue.ts:156
 
 Push a job to be executed
 
@@ -762,7 +762,7 @@ ___
 
 *Overrides [Queue](queue.md).[start](queue.md#abstract-start)*
 
-Defined in src/hermes_modules/bull-jobs/BullQueue.ts:172
+Defined in src/hermes_modules/bull-jobs/BullQueue.ts:201
 
 Do nothing, bull has no need for a start
 
@@ -776,7 +776,7 @@ ___
 
 *Overrides [Queue](queue.md).[stop](queue.md#abstract-stop)*
 
-Defined in src/hermes_modules/bull-jobs/BullQueue.ts:179
+Defined in src/hermes_modules/bull-jobs/BullQueue.ts:208
 
 Close the inner queue
 

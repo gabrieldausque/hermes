@@ -2,7 +2,7 @@
 
 # Class: BullJob
 
-The job implementation used for Bull, especially to encapsulate value type as payload (not natively done in bull)
+The job implementation used for Bull, especially to encapsulate value type as payload (not natively success in bull)
 
 ## Hierarchy
 
@@ -20,7 +20,7 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 
 * [err](bulljob.md#err)
 * [id](bulljob.md#id)
-* [innerJob](bulljob.md#private-innerjob)
+* [innerJob](bulljob.md#innerjob)
 * [jobOptions](bulljob.md#joboptions)
 * [payload](bulljob.md#payload)
 * [result](bulljob.md#result)
@@ -100,7 +100,7 @@ The id of the current job
 
 ___
 
-### `Private` innerJob
+###  innerJob
 
 • **innerJob**: *InnerJob*
 
@@ -459,9 +459,9 @@ ___
 
 ▸ **raiseProgressEvent**(`completionPercentage`: number, `completionMessage?`: string): *void*
 
-*Inherited from [Job](job.md).[raiseProgressEvent](job.md#raiseprogressevent)*
+*Overrides [Job](job.md).[raiseProgressEvent](job.md#raiseprogressevent)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:106
+Defined in src/hermes_modules/bull-jobs/BullJob.ts:40
 
 As an EventEmitter, raise the 'progress' event for the job
 

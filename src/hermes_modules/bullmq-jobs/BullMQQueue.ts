@@ -86,6 +86,8 @@ export class BullMQQueue extends Queue {
             try {
               // try to parse the result as it is normally JSON
               resultToSend = JSON.parse(event.returnvalue);
+            }catch(err) {
+              // Do nothing, just catch exception and prevent propagation
             }finally {
               current.runningJobs.splice(current.runningJobs.indexOf(outerJob), 1);
               current.raiseJobSuccess(outerJob, resultToSend);

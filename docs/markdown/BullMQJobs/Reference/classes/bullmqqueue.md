@@ -1,94 +1,99 @@
-[@hermes/jobs](../README.md) › [Globals](../globals.md) › [Queue](queue.md)
+[@hermes/jobs](../README.md) › [Globals](../globals.md) › [BullMQQueue](bullmqqueue.md)
 
-# Class: Queue
+# Class: BullMQQueue
 
-A Queue that will execute associated worker with specified payload in FIFO mode.
+The Queue implementation for Bull
 
 ## Hierarchy
 
-* EventEmitter
+  ↳ [Queue](queue.md)
 
-  ↳ **Queue**
-
-  ↳ [InMemoryQueue](inmemoryqueue.md)
-
-  ↳ [BullQueue](bullqueue.md)
+  ↳ **BullMQQueue**
 
 ## Index
 
 ### Constructors
 
-* [constructor](queue.md#protected-constructor)
+* [constructor](bullmqqueue.md#constructor)
 
 ### Properties
 
-* [action](queue.md#protected-action)
-* [configuration](queue.md#protected-configuration)
-* [isQueue](queue.md#isqueue)
-* [jobs](queue.md#protected-jobs)
-* [name](queue.md#protected-name)
-* [paused](queue.md#protected-paused)
-* [defaultMaxListeners](queue.md#static-defaultmaxlisteners)
+* [action](bullmqqueue.md#protected-action)
+* [configuration](bullmqqueue.md#protected-configuration)
+* [innerQueue](bullmqqueue.md#innerqueue)
+* [innerQueueEvents](bullmqqueue.md#innerqueueevents)
+* [innerQueueWorker](bullmqqueue.md#innerqueueworker)
+* [isClosed](bullmqqueue.md#private-isclosed)
+* [isQueue](bullmqqueue.md#isqueue)
+* [jobs](bullmqqueue.md#protected-jobs)
+* [name](bullmqqueue.md#protected-name)
+* [namedAction](bullmqqueue.md#private-namedaction)
+* [paused](bullmqqueue.md#protected-paused)
+* [runningJobs](bullmqqueue.md#private-runningjobs)
 
 ### Methods
 
-* [addListener](queue.md#addlistener)
-* [emit](queue.md#emit)
-* [eventNames](queue.md#eventnames)
-* [getConfiguration](queue.md#getconfiguration)
-* [getMaxListeners](queue.md#getmaxlisteners)
-* [getName](queue.md#getname)
-* [isPaused](queue.md#ispaused)
-* [listenerCount](queue.md#listenercount)
-* [listeners](queue.md#listeners)
-* [off](queue.md#off)
-* [on](queue.md#on)
-* [onJobToProcess](queue.md#onjobtoprocess)
-* [once](queue.md#once)
-* [pause](queue.md#pause)
-* [prependListener](queue.md#prependlistener)
-* [prependOnceListener](queue.md#prependoncelistener)
-* [push](queue.md#abstract-push)
-* [raiseJobCompleted](queue.md#raisejobcompleted)
-* [raiseJobFailed](queue.md#raisejobfailed)
-* [raiseJobSuccess](queue.md#raisejobsuccess)
-* [raiseQueueError](queue.md#raisequeueerror)
-* [raiseReady](queue.md#raiseready)
-* [rawListeners](queue.md#rawlisteners)
-* [removeAllListeners](queue.md#removealllisteners)
-* [removeListener](queue.md#removelistener)
-* [resume](queue.md#resume)
-* [setMaxListeners](queue.md#setmaxlisteners)
-* [start](queue.md#abstract-start)
-* [stop](queue.md#abstract-stop)
-* [listenerCount](queue.md#static-listenercount)
+* [addListener](bullmqqueue.md#addlistener)
+* [emit](bullmqqueue.md#emit)
+* [eventNames](bullmqqueue.md#eventnames)
+* [executeJob](bullmqqueue.md#private-executejob)
+* [getConfiguration](bullmqqueue.md#getconfiguration)
+* [getHost](bullmqqueue.md#gethost)
+* [getMaxListeners](bullmqqueue.md#getmaxlisteners)
+* [getName](bullmqqueue.md#getname)
+* [getPort](bullmqqueue.md#getport)
+* [isPaused](bullmqqueue.md#ispaused)
+* [listenerCount](bullmqqueue.md#listenercount)
+* [listeners](bullmqqueue.md#listeners)
+* [off](bullmqqueue.md#off)
+* [on](bullmqqueue.md#on)
+* [onJobToProcess](bullmqqueue.md#onjobtoprocess)
+* [once](bullmqqueue.md#once)
+* [pause](bullmqqueue.md#pause)
+* [prependListener](bullmqqueue.md#prependlistener)
+* [prependOnceListener](bullmqqueue.md#prependoncelistener)
+* [push](bullmqqueue.md#push)
+* [raiseJobCompleted](bullmqqueue.md#raisejobcompleted)
+* [raiseJobFailed](bullmqqueue.md#raisejobfailed)
+* [raiseJobSuccess](bullmqqueue.md#raisejobsuccess)
+* [raiseQueueError](bullmqqueue.md#raisequeueerror)
+* [raiseReady](bullmqqueue.md#raiseready)
+* [rawListeners](bullmqqueue.md#rawlisteners)
+* [removeAllListeners](bullmqqueue.md#removealllisteners)
+* [removeListener](bullmqqueue.md#removelistener)
+* [resume](bullmqqueue.md#resume)
+* [setMaxListeners](bullmqqueue.md#setmaxlisteners)
+* [start](bullmqqueue.md#start)
+* [stop](bullmqqueue.md#stop)
 
 ## Constructors
 
-### `Protected` constructor
+###  constructor
 
-\+ **new Queue**(`name`: string, `configuration?`: any): *[Queue](queue.md)*
+\+ **new BullMQQueue**(`name`: string, `configuration?`: [BullMQQueueConfiguration](../interfaces/bullmqqueueconfiguration.md)): *[BullMQQueue](bullmqqueue.md)*
 
-*Overrides void*
+*Overrides [Queue](queue.md).[constructor](queue.md#protected-constructor)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:39
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:38
 
-Create a new queue instance.
+Create a new BullQueue
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`name` | string | The name of the Queue |
-`configuration?` | any | The configuration of the queue. May override default queue options  |
+`name` | string | The name of the queue |
+`configuration?` | [BullMQQueueConfiguration](../interfaces/bullmqqueueconfiguration.md) | The configuration of the queue.  |
 
-**Returns:** *[Queue](queue.md)*
+**Returns:** *[BullMQQueue](bullmqqueue.md)*
 
 ## Properties
 
 ### `Protected` action
 
 • **action**: *[Action](../globals.md#action)*
+
+*Inherited from [Queue](queue.md).[action](queue.md#protected-action)*
 
 Defined in src/hermes_modules/jobs/queues/Queue.ts:19
 
@@ -100,15 +105,57 @@ ___
 
 • **configuration**: *any*
 
+*Inherited from [Queue](queue.md).[configuration](queue.md#protected-configuration)*
+
 Defined in src/hermes_modules/jobs/queues/Queue.ts:34
 
 Configuration of the queue used on creation
 
 ___
 
+###  innerQueue
+
+• **innerQueue**: *InnerQueue*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:17
+
+The inner bull queue
+
+___
+
+###  innerQueueEvents
+
+• **innerQueueEvents**: *InnerQueueEvents*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:22
+
+The inner bull queue
+
+___
+
+###  innerQueueWorker
+
+• **innerQueueWorker**: *InnerWorker*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:27
+
+The inner bull worker
+
+___
+
+### `Private` isClosed
+
+• **isClosed**: *boolean*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:38
+
+___
+
 ###  isQueue
 
 • **isQueue**: *boolean* = true
+
+*Inherited from [Queue](queue.md).[isQueue](queue.md#isqueue)*
 
 Defined in src/hermes_modules/jobs/queues/Queue.ts:14
 
@@ -120,6 +167,8 @@ ___
 
 • **jobs**: *[Job](job.md)[]*
 
+*Inherited from [Queue](queue.md).[jobs](queue.md#protected-jobs)*
+
 Defined in src/hermes_modules/jobs/queues/Queue.ts:24
 
 A list of jobs to be used internally - TO BE REMOVED
@@ -130,9 +179,23 @@ ___
 
 • **name**: *string*
 
+*Inherited from [Queue](queue.md).[name](queue.md#protected-name)*
+
 Defined in src/hermes_modules/jobs/queues/Queue.ts:39
 
 Name of the current Queue
+
+___
+
+### `Private` namedAction
+
+• **namedAction**: *object*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:32
+
+The set of action used for named jobs
+
+#### Type declaration:
 
 ___
 
@@ -140,19 +203,21 @@ ___
 
 • **paused**: *boolean*
 
+*Inherited from [Queue](queue.md).[paused](queue.md#protected-paused)*
+
 Defined in src/hermes_modules/jobs/queues/Queue.ts:29
 
 True if the queue is paused. Usage depends on implementation
 
 ___
 
-### `Static` defaultMaxListeners
+### `Private` runningJobs
 
-▪ **defaultMaxListeners**: *number*
+• **runningJobs**: *[BullMQJob](bullmqjob.md)[]*
 
-*Inherited from [Ticker](ticker.md).[defaultMaxListeners](ticker.md#static-defaultmaxlisteners)*
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:37
 
-Defined in node_modules/@types/node/events.d.ts:45
+The list of runnings job for the current queue
 
 ## Methods
 
@@ -213,15 +278,47 @@ Defined in node_modules/@types/node/globals.d.ts:562
 
 ___
 
+### `Private` executeJob
+
+▸ **executeJob**(`bullJob`: InnerJob‹any›): *Promise‹any›*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:113
+
+Execute a job
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`bullJob` | InnerJob‹any› | the bull job to execute  |
+
+**Returns:** *Promise‹any›*
+
+___
+
 ###  getConfiguration
 
 ▸ **getConfiguration**(): *any*
+
+*Inherited from [Queue](queue.md).[getConfiguration](queue.md#getconfiguration)*
 
 Defined in src/hermes_modules/jobs/queues/Queue.ts:66
 
 Get the configuration used on creation
 
 **Returns:** *any*
+
+___
+
+###  getHost
+
+▸ **getHost**(): *Promise‹string›*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:203
+
+Get the redis host used by this queue
+
+**Returns:** *Promise‹string›*
 
 ___
 
@@ -241,6 +338,8 @@ ___
 
 ▸ **getName**(): *string*
 
+*Inherited from [Queue](queue.md).[getName](queue.md#getname)*
+
 Defined in src/hermes_modules/jobs/queues/Queue.ts:73
 
 Get the name of the Queue
@@ -249,9 +348,23 @@ Get the name of the Queue
 
 ___
 
+###  getPort
+
+▸ **getPort**(): *Promise‹number›*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:210
+
+Get the port used for the redis connexion
+
+**Returns:** *Promise‹number›*
+
+___
+
 ###  isPaused
 
 ▸ **isPaused**(): *boolean*
+
+*Inherited from [Queue](queue.md).[isPaused](queue.md#ispaused)*
 
 Defined in src/hermes_modules/jobs/queues/Queue.ts:111
 
@@ -351,18 +464,27 @@ ___
 
 ###  onJobToProcess
 
-▸ **onJobToProcess**(`action`: [Action](../globals.md#action), `processingOptions?`: [ProcessingOptions](../interfaces/processingoptions.md)): *void*
+▸ **onJobToProcess**(`action`: any, `processingOptions`: [BullProcessingOptions](../interfaces/bullprocessingoptions.md)): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:59
+*Overrides [Queue](queue.md).[onJobToProcess](queue.md#onjobtoprocess)*
 
-Set the action to be executed on reception of a Job
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:152
+
+Create the worker to execute on job execution request
+See [bullmq](https://docs.bullmq.io/guide/connections) for processingOptions details
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`action` | [Action](../globals.md#action) | The Action to execute on a job reception |
-`processingOptions?` | [ProcessingOptions](../interfaces/processingoptions.md) | Specific configuration to use on creation of the worker (Depend of the implementation). May override Queue options  |
+Name | Type | Default | Description |
+------ | ------ | ------ | ------ |
+`action` | any | - | The function to execute on a job receive |
+`processingOptions` | [BullProcessingOptions](../interfaces/bullprocessingoptions.md) | {
+    name:'default',
+    concurrency:1,
+    doneHandler: () => { /** Do nothing */ },
+    errorHandler: () => { /** Do nothing */ },
+    progressHandler: () => { /** Do nothing */ }
+  } | The options for the current worker :  |
 
 **Returns:** *void*
 
@@ -397,6 +519,8 @@ ___
 ###  pause
 
 ▸ **pause**(): *void*
+
+*Inherited from [Queue](queue.md).[pause](queue.md#pause)*
 
 Defined in src/hermes_modules/jobs/queues/Queue.ts:97
 
@@ -458,20 +582,22 @@ Name | Type |
 
 ___
 
-### `Abstract` push
+###  push
 
-▸ **push**(`actionPayload`: any, `jobOptions`: object): *[Job](job.md)*
+▸ **push**(`actionPayloadOrJob`: any, `jobOptions`: [BullMQJobOptions](../interfaces/bullmqjoboptions.md)): *[Job](job.md)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:82
+*Overrides [Queue](queue.md).[push](queue.md#abstract-push)*
 
-Push a Job with a payload for execution. Return the job that will be executed.
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:173
+
+Push a job to be executed
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`actionPayload` | any | The payload for the job execution |
-`jobOptions` | object | The options that can be used for this specific execution. May override processing options.  |
+`actionPayloadOrJob` | any | The payload or the job to execute |
+`jobOptions` | [BullMQJobOptions](../interfaces/bullmqjoboptions.md) | The options to use for this execution  |
 
 **Returns:** *[Job](job.md)*
 
@@ -480,6 +606,8 @@ ___
 ###  raiseJobCompleted
 
 ▸ **raiseJobCompleted**(`job`: [Job](job.md)): *void*
+
+*Inherited from [Queue](queue.md).[raiseJobCompleted](queue.md#raisejobcompleted)*
 
 Defined in src/hermes_modules/jobs/queues/Queue.ts:139
 
@@ -498,6 +626,8 @@ ___
 ###  raiseJobFailed
 
 ▸ **raiseJobFailed**(`job`: [Job](job.md), `err`: any): *void*
+
+*Inherited from [Queue](queue.md).[raiseJobFailed](queue.md#raisejobfailed)*
 
 Defined in src/hermes_modules/jobs/queues/Queue.ts:130
 
@@ -518,6 +648,8 @@ ___
 
 ▸ **raiseJobSuccess**(`job`: [Job](job.md), `result`: any): *void*
 
+*Inherited from [Queue](queue.md).[raiseJobSuccess](queue.md#raisejobsuccess)*
+
 Defined in src/hermes_modules/jobs/queues/Queue.ts:120
 
 As an EventEmitter, will raise the 'success' event to indicate when a job is successful. Return the job concerned and the result
@@ -537,6 +669,8 @@ ___
 
 ▸ **raiseQueueError**(`err`: any): *void*
 
+*Inherited from [Queue](queue.md).[raiseQueueError](queue.md#raisequeueerror)*
+
 Defined in src/hermes_modules/jobs/queues/Queue.ts:148
 
 As an EventEmitter will raise the 'error' event if the queue encounters an Error
@@ -554,6 +688,8 @@ ___
 ###  raiseReady
 
 ▸ **raiseReady**(): *void*
+
+*Inherited from [Queue](queue.md).[raiseReady](queue.md#raiseready)*
 
 Defined in src/hermes_modules/jobs/queues/Queue.ts:155
 
@@ -629,6 +765,8 @@ ___
 
 ▸ **resume**(): *void*
 
+*Inherited from [Queue](queue.md).[resume](queue.md#resume)*
+
 Defined in src/hermes_modules/jobs/queues/Queue.ts:104
 
 Resume the current Queue treatment
@@ -655,45 +793,28 @@ Name | Type |
 
 ___
 
-### `Abstract` start
+###  start
 
 ▸ **start**(): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:87
+*Overrides [Queue](queue.md).[start](queue.md#abstract-start)*
 
-Start the current Queue
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:217
+
+Do nothing, bull has no need for a start
 
 **Returns:** *void*
 
 ___
 
-### `Abstract` stop
+###  stop
 
 ▸ **stop**(): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:92
+*Overrides [Queue](queue.md).[stop](queue.md#abstract-stop)*
 
-Stop the current Queue
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:280
+
+Close the inner queue
 
 **Returns:** *void*
-
-___
-
-### `Static` listenerCount
-
-▸ **listenerCount**(`emitter`: EventEmitter, `event`: string | symbol): *number*
-
-*Inherited from [Ticker](ticker.md).[listenerCount](ticker.md#static-listenercount)*
-
-Defined in node_modules/@types/node/events.d.ts:44
-
-**`deprecated`** since v4.0.0
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`emitter` | EventEmitter |
-`event` | string &#124; symbol |
-
-**Returns:** *number*

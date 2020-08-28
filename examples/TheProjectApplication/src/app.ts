@@ -28,6 +28,7 @@ import { BullQueue } from '@hermes/bull-jobs';
 // Load all lazy loaded class
 globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/topicservice/lib');
 globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/bull-jobs/lib');
+globalInstancesFactory.loadExportedClassesFromDirectory('../node_modules/@hermes/bullmq-jobs/lib');
 globalInstancesFactory.loadExportedClassesFromDirectory('./services');
 globalInstancesFactory.loadExportedClassesFromDirectory('./plugins');
 

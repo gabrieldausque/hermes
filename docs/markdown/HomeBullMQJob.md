@@ -1,7 +1,7 @@
-[Home](./Home.md) > [BullJob](HomeBullJob.md)
+[Home](./Home.md) > [BullMQJob](HomeBullMQJob.md)
 
 # Hermes - TopicService : All Resources
->All resources from Source code for Jobs management using Bull, including example 
+>All resources from Source code for JobManagement using BullMQ, including example 
 
 ## What it does
 
@@ -69,10 +69,10 @@ Run npm command to install dependencies:
 
 ```
 npm install @hermes/jobs --save
-npm install @hermes/bull-jobs --save
+npm install @hermes/bullmq-jobs --save
 ```
 
-Now, to use the JobManager with Bull,
+Now, to use the JobManager,
 
 TODO 
 
@@ -80,5 +80,5 @@ TODO
 
 [Examples](/Examples)
 
-[Code Reference](/BullJobs/Reference/globals)
+[Code Reference](/BullMQJobs/Reference/globals)
 
