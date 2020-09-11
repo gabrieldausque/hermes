@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import { JobStates } from './JobStates';
 import { uuid } from 'uuidv4'
+import { JobEvents } from './JobEvents';
 
 export class Job extends EventEmitter {
   /**
@@ -39,6 +40,11 @@ export class Job extends EventEmitter {
   public jobOptions: { [p: string]: any };
 
   /**
+   * The progress percentage
+   */
+  private progress: number;
+
+  /**
    * Create a new Job
    * @param toExecute function to be executed
    * @param payload payload to use for execution
@@ -61,7 +67,10 @@ export class Job extends EventEmitter {
     const current = this;
     const semaphore = new Promise((resolve, reject) => {
       current.once('completed', () => {
-        resolve()
+        if(current.state === JobStates.success)
+          resolve(current.result)
+        else
+          reject(current.err)
       })
       if(timeoutInMs && typeof timeoutInMs === 'number'){
         setTimeout(() => {
@@ -82,7 +91,7 @@ export class Job extends EventEmitter {
     this.err = err;
     this.state = JobStates.failed;
     try {
-      this.emit('failed', err );
+      this.emit(JobEvents.failed, this);
     }catch(err) {
       console.error(err);
     }finally {
@@ -95,7 +104,7 @@ export class Job extends EventEmitter {
    */
   raiseCompletedEvent() {
     const resultsOrErr = (this.err)?this.err:this.result
-    this.emit('completed', resultsOrErr);
+    this.emit(JobEvents.completed, this);
   }
 
   /**
@@ -104,7 +113,8 @@ export class Job extends EventEmitter {
    * @param completionMessage Associated message for this progression state
    */
   raiseProgressEvent(completionPercentage:number, completionMessage?:string) {
-    this.emit('progress', { percentage:completionPercentage, message:completionMessage});
+    this.progress = completionPercentage;
+    this.emit(JobEvents.progress, { percentage:completionPercentage, message:completionMessage}, this);
   }
 
   /**
@@ -114,7 +124,7 @@ export class Job extends EventEmitter {
   raiseSuccessEvent(result: any) {
     this.result = result;
     this.state = JobStates.success;
-    this.emit('success');
+    this.emit(JobEvents.success, this);
     this.raiseCompletedEvent();
   }
 }

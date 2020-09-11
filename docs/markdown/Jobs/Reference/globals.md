@@ -6,11 +6,8 @@
 
 ### Classes
 
-* [ExportCatalog](classes/exportcatalog.md)
-* [ExportMetadata](classes/exportmetadata.md)
 * [InMemoryQueue](classes/inmemoryqueue.md)
 * [InMemoryQueuesFactory](classes/inmemoryqueuesfactory.md)
-* [InstancesFactory](classes/instancesfactory.md)
 * [Job](classes/job.md)
 * [JobManager](classes/jobmanager.md)
 * [Queue](classes/queue.md)
@@ -18,7 +15,6 @@
 
 ### Interfaces
 
-* [AutoDescribed](interfaces/autodescribed.md)
 * [JobManagerConfiguration](interfaces/jobmanagerconfiguration.md)
 * [ProcessingOptions](interfaces/processingoptions.md)
 * [QueuesFactory](interfaces/queuesfactory.md)
@@ -29,7 +25,6 @@
 
 ### Variables
 
-* [globalInstancesFactory](globals.md#const-globalinstancesfactory)
 * [globalJobManager](globals.md#let-globaljobmanager)
 * [instancesFactory](globals.md#let-instancesfactory)
 
@@ -42,6 +37,7 @@
 
 ### Object literals
 
+* [JobEvents](globals.md#const-jobevents)
 * [JobStates](globals.md#const-jobstates)
 
 ## Type aliases
@@ -66,16 +62,6 @@ Name | Type |
 `job` | [Job](classes/job.md) |
 
 ## Variables
-
-### `Const` globalInstancesFactory
-
-• **globalInstancesFactory**: *[InstancesFactory](classes/instancesfactory.md)‹›* = new InstancesFactory()
-
-Defined in src/hermes_modules/composition/InstancesFactory.ts:89
-
-the global factory that can be used accross all objects of your running application
-
-___
 
 ### `Let` globalJobManager
 
@@ -111,13 +97,13 @@ ___
 
 ###  getJobManagerInstancesFactory
 
-▸ **getJobManagerInstancesFactory**(): *[InstancesFactory](classes/instancesfactory.md)*
+▸ **getJobManagerInstancesFactory**(): *InstancesFactory*
 
 Defined in src/hermes_modules/jobs/JobManager.ts:28
 
 Get the InstancesFactory that will be used by JobManager
 
-**Returns:** *[InstancesFactory](classes/instancesfactory.md)*
+**Returns:** *InstancesFactory*
 
 ___
 
@@ -141,7 +127,7 @@ ___
 
 ###  setJobManagerInstancesFactory
 
-▸ **setJobManagerInstancesFactory**(`factory`: [InstancesFactory](classes/instancesfactory.md)): *void*
+▸ **setJobManagerInstancesFactory**(`factory`: InstancesFactory): *void*
 
 Defined in src/hermes_modules/jobs/JobManager.ts:18
 
@@ -151,11 +137,45 @@ Set the InstancesFactory that will be used to create the QueuesFactory of furthe
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`factory` | [InstancesFactory](classes/instancesfactory.md) | The factory to use in all futur JobManager  |
+`factory` | InstancesFactory | The factory to use in all futur JobManager  |
 
 **Returns:** *void*
 
 ## Object literals
+
+### `Const` JobEvents
+
+### ▪ **JobEvents**: *object*
+
+Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:4
+
+All events label for a Job
+
+###  completed
+
+• **completed**: *string* = "completed"
+
+Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:8
+
+###  failed
+
+• **failed**: *string* = "failed"
+
+Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:7
+
+###  progress
+
+• **progress**: *string* = "progress"
+
+Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:5
+
+###  success
+
+• **success**: *string* = "success"
+
+Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:6
+
+___
 
 ### `Const` JobStates
 

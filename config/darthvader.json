@@ -1,10 +1,10 @@
 {
   "port":3032,
   "topicservice":{
-    "host":"http://localhost:3030",
+    "host":"http://localhost:3032",
     "clusterNodes":[
-      "http://localhost:3031",
-      "http://localhost:3030"
+      "http://localhost:3032",
+      "http://localhost:3031"
     ]
   }
 }
