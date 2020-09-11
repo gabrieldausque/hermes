@@ -60,7 +60,7 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 
 *Inherited from [Job](job.md).[constructor](job.md#constructor)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:39
+Defined in src/hermes_modules/jobs/jobs/Job.ts:45
 
 Create a new Job
 
@@ -82,7 +82,7 @@ Name | Type | Description |
 
 *Inherited from [Job](job.md).[err](job.md#err)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:29
+Defined in src/hermes_modules/jobs/jobs/Job.ts:30
 
 err that may occured during execution
 
@@ -94,7 +94,7 @@ ___
 
 *Inherited from [Job](job.md).[id](job.md#id)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:9
+Defined in src/hermes_modules/jobs/jobs/Job.ts:10
 
 The id of the current job
 
@@ -116,7 +116,7 @@ ___
 
 *Inherited from [Job](job.md).[jobOptions](job.md#joboptions)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:39
+Defined in src/hermes_modules/jobs/jobs/Job.ts:40
 
 options that may be used for the execution
 
@@ -132,7 +132,7 @@ ___
 
 *Inherited from [Job](job.md).[payload](job.md#payload)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:24
+Defined in src/hermes_modules/jobs/jobs/Job.ts:25
 
 payload passed to the function that will be executed
 
@@ -144,7 +144,7 @@ ___
 
 *Inherited from [Job](job.md).[result](job.md#result)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:14
+Defined in src/hermes_modules/jobs/jobs/Job.ts:15
 
 Result of the job execution
 
@@ -156,7 +156,7 @@ ___
 
 *Inherited from [Job](job.md).[state](job.md#state)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:34
+Defined in src/hermes_modules/jobs/jobs/Job.ts:35
 
 state of the current job. see JobStates
 
@@ -168,7 +168,7 @@ ___
 
 *Inherited from [Job](job.md).[toExecute](job.md#toexecute)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:19
+Defined in src/hermes_modules/jobs/jobs/Job.ts:20
 
 function that will be executed
 
@@ -427,7 +427,7 @@ ___
 
 *Inherited from [Job](job.md).[raiseCompletedEvent](job.md#raisecompletedevent)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:96
+Defined in src/hermes_modules/jobs/jobs/Job.ts:105
 
 As an EventEmitter, raise the 'completed' event of the job, even if it fails or success
 
@@ -441,7 +441,7 @@ ___
 
 *Inherited from [Job](job.md).[raiseFailedEvent](job.md#raisefailedevent)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:81
+Defined in src/hermes_modules/jobs/jobs/Job.ts:90
 
 As an EventEmitter, raise the 'failed' event of the job
 
@@ -482,7 +482,7 @@ ___
 
 *Inherited from [Job](job.md).[raiseSuccessEvent](job.md#raisesuccessevent)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:114
+Defined in src/hermes_modules/jobs/jobs/Job.ts:124
 
 As an EventEmitter, raise the 'success' event of the job
 
@@ -600,7 +600,7 @@ ___
 
 *Inherited from [Job](job.md).[waitForCompletion](job.md#waitforcompletion)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:60
+Defined in src/hermes_modules/jobs/jobs/Job.ts:66
 
 Semaphore that helps you wait for the execution of the job
 

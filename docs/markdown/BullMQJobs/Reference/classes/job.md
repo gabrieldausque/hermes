@@ -22,6 +22,7 @@
 * [id](job.md#id)
 * [jobOptions](job.md#joboptions)
 * [payload](job.md#payload)
+* [progress](job.md#private-progress)
 * [result](job.md#result)
 * [state](job.md#state)
 * [toExecute](job.md#toexecute)
@@ -59,7 +60,7 @@
 
 *Overrides void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:39
+Defined in src/hermes_modules/jobs/jobs/Job.ts:45
 
 Create a new Job
 
@@ -79,7 +80,7 @@ Name | Type | Description |
 
 • **err**: *any*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:29
+Defined in src/hermes_modules/jobs/jobs/Job.ts:30
 
 err that may occured during execution
 
@@ -89,7 +90,7 @@ ___
 
 • **id**: *string*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:9
+Defined in src/hermes_modules/jobs/jobs/Job.ts:10
 
 The id of the current job
 
@@ -99,7 +100,7 @@ ___
 
 • **jobOptions**: *object*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:39
+Defined in src/hermes_modules/jobs/jobs/Job.ts:40
 
 options that may be used for the execution
 
@@ -113,9 +114,19 @@ ___
 
 • **payload**: *any*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:24
+Defined in src/hermes_modules/jobs/jobs/Job.ts:25
 
 payload passed to the function that will be executed
+
+___
+
+### `Private` progress
+
+• **progress**: *number*
+
+Defined in src/hermes_modules/jobs/jobs/Job.ts:45
+
+The progress percentage
 
 ___
 
@@ -123,7 +134,7 @@ ___
 
 • **result**: *any*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:14
+Defined in src/hermes_modules/jobs/jobs/Job.ts:15
 
 Result of the job execution
 
@@ -133,7 +144,7 @@ ___
 
 • **state**: *number*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:34
+Defined in src/hermes_modules/jobs/jobs/Job.ts:35
 
 state of the current job. see JobStates
 
@@ -143,7 +154,7 @@ ___
 
 • **toExecute**: *any*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:19
+Defined in src/hermes_modules/jobs/jobs/Job.ts:20
 
 function that will be executed
 
@@ -398,7 +409,7 @@ ___
 
 ▸ **raiseCompletedEvent**(): *void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:96
+Defined in src/hermes_modules/jobs/jobs/Job.ts:105
 
 As an EventEmitter, raise the 'completed' event of the job, even if it fails or success
 
@@ -410,7 +421,7 @@ ___
 
 ▸ **raiseFailedEvent**(`err`: any): *void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:81
+Defined in src/hermes_modules/jobs/jobs/Job.ts:90
 
 As an EventEmitter, raise the 'failed' event of the job
 
@@ -428,7 +439,7 @@ ___
 
 ▸ **raiseProgressEvent**(`completionPercentage`: number, `completionMessage?`: string): *void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:106
+Defined in src/hermes_modules/jobs/jobs/Job.ts:115
 
 As an EventEmitter, raise the 'progress' event for the job
 
@@ -447,7 +458,7 @@ ___
 
 ▸ **raiseSuccessEvent**(`result`: any): *void*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:114
+Defined in src/hermes_modules/jobs/jobs/Job.ts:124
 
 As an EventEmitter, raise the 'success' event of the job
 
@@ -545,7 +556,7 @@ ___
 
 ▸ **waitForCompletion**(`timeoutInMs?`: any): *Promise‹void›*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:60
+Defined in src/hermes_modules/jobs/jobs/Job.ts:66
 
 Semaphore that helps you wait for the execution of the job
 

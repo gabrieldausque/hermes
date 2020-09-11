@@ -74,11 +74,8 @@
 								<li class="tsd-kind-class"><a href="classes/bullqueue.html" class="tsd-kind-icon">Bull<wbr>Queue</a></li>
 								<li class="tsd-kind-class"><a href="classes/bullqueuesfactory.html" class="tsd-kind-icon">Bull<wbr>Queues<wbr>Factory</a></li>
 								<li class="tsd-kind-class"><a href="classes/bullvaluetypebox.html" class="tsd-kind-icon">Bull<wbr>Value<wbr>Type<wbr>Box</a></li>
-								<li class="tsd-kind-class tsd-is-external"><a href="classes/exportcatalog.html" class="tsd-kind-icon">Export<wbr>Catalog</a></li>
-								<li class="tsd-kind-class tsd-is-external"><a href="classes/exportmetadata.html" class="tsd-kind-icon">Export<wbr>Metadata</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/inmemoryqueue.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queue</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/inmemoryqueuesfactory.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queues<wbr>Factory</a></li>
-								<li class="tsd-kind-class tsd-is-external"><a href="classes/instancesfactory.html" class="tsd-kind-icon">Instances<wbr>Factory</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/job.html" class="tsd-kind-icon">Job</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/jobmanager.html" class="tsd-kind-icon">Job<wbr>Manager</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/queue.html" class="tsd-kind-icon">Queue</a></li>
@@ -88,7 +85,6 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/autodescribed.html" class="tsd-kind-icon">Auto<wbr>Described</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/bulljoboptions.html" class="tsd-kind-icon">Bull<wbr>Job<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/bullprocessingoptions.html" class="tsd-kind-icon">Bull<wbr>Processing<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/bullqueueconfiguration.html" class="tsd-kind-icon">Bull<wbr>Queue<wbr>Configuration</a></li>
@@ -106,7 +102,6 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-is-external"><a href="globals.html#globalinstancesfactory" class="tsd-kind-icon">global<wbr>Instances<wbr>Factory</a></li>
 								<li class="tsd-kind-variable tsd-is-external"><a href="globals.html#globaljobmanager" class="tsd-kind-icon">global<wbr>Job<wbr>Manager</a></li>
 								<li class="tsd-kind-variable tsd-is-external"><a href="globals.html#instancesfactory" class="tsd-kind-icon">instances<wbr>Factory</a></li>
 							</ul>
@@ -123,6 +118,7 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Object literals</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-object-literal tsd-is-external"><a href="globals.html#jobevents" class="tsd-kind-icon">Job<wbr>Events</a></li>
 								<li class="tsd-kind-object-literal tsd-is-external"><a href="globals.html#jobstates" class="tsd-kind-icon">Job<wbr>States</a></li>
 							</ul>
 						</section>
@@ -173,21 +169,6 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external">
-					<a name="globalinstancesfactory" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> global<wbr>Instances<wbr>Factory</h3>
-					<div class="tsd-signature tsd-kind-icon">global<wbr>Instances<wbr>Factory<span class="tsd-signature-symbol">:</span> <a href="classes/instancesfactory.html" class="tsd-signature-type">InstancesFactory</a><span class="tsd-signature-symbol"> = new InstancesFactory()</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in src/hermes_modules/composition/InstancesFactory.ts:89</li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>the global factory that can be used accross all objects of your running application</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external">
 					<a name="globaljobmanager" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagLet">Let</span> global<wbr>Job<wbr>Manager</h3>
@@ -247,7 +228,7 @@
 					<a name="getjobmanagerinstancesfactory" class="tsd-anchor"></a>
 					<h3>get<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes/instancesfactory.html" class="tsd-signature-type">InstancesFactory</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InstancesFactory</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -261,7 +242,7 @@
 									<p>Get the InstancesFactory that will be used by JobManager</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="classes/instancesfactory.html" class="tsd-signature-type">InstancesFactory</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">InstancesFactory</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -299,7 +280,7 @@
 					<a name="setjobmanagerinstancesfactory" class="tsd-anchor"></a>
 					<h3>set<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory<span class="tsd-signature-symbol">(</span>factory<span class="tsd-signature-symbol">: </span><a href="classes/instancesfactory.html" class="tsd-signature-type">InstancesFactory</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory<span class="tsd-signature-symbol">(</span>factory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InstancesFactory</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -316,7 +297,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>factory: <a href="classes/instancesfactory.html" class="tsd-signature-type">InstancesFactory</a></h5>
+									<h5>factory: <span class="tsd-signature-type">InstancesFactory</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The factory to use in all futur JobManager</p>
 									</div>
@@ -329,6 +310,61 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Object literals</h2>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-is-external">
+					<a name="jobevents" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Job<wbr>Events</h3>
+					<div class="tsd-signature tsd-kind-icon">Job<wbr>Events<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:4</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>All events label for a Job</p>
+						</div>
+					</div>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="jobevents.completed" class="tsd-anchor"></a>
+						<h3>completed</h3>
+						<div class="tsd-signature tsd-kind-icon">completed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;completed&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:8</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="jobevents.failed" class="tsd-anchor"></a>
+						<h3>failed</h3>
+						<div class="tsd-signature tsd-kind-icon">failed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;failed&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:7</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="jobevents.progress" class="tsd-anchor"></a>
+						<h3>progress</h3>
+						<div class="tsd-signature tsd-kind-icon">progress<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;progress&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:5</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="jobevents.success" class="tsd-anchor"></a>
+						<h3>success</h3>
+						<div class="tsd-signature tsd-kind-icon">success<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;success&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/hermes_modules/jobs/jobs/JobEvents.ts:6</li>
+							</ul>
+						</aside>
+					</section>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-is-external">
 					<a name="jobstates" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Job<wbr>States</h3>
@@ -419,19 +455,10 @@
 						<a href="classes/bullvaluetypebox.html" class="tsd-kind-icon">Bull<wbr>Value<wbr>Type<wbr>Box</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="classes/exportcatalog.html" class="tsd-kind-icon">Export<wbr>Catalog</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-external">
-						<a href="classes/exportmetadata.html" class="tsd-kind-icon">Export<wbr>Metadata</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/inmemoryqueue.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queue</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/inmemoryqueuesfactory.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queues<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-external">
-						<a href="classes/instancesfactory.html" class="tsd-kind-icon">Instances<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/job.html" class="tsd-kind-icon">Job</a>
@@ -444,9 +471,6 @@
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/ticker.html" class="tsd-kind-icon">Ticker</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/autodescribed.html" class="tsd-kind-icon">Auto<wbr>Described</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/bulljoboptions.html" class="tsd-kind-icon">Bull<wbr>Job<wbr>Options</a>
@@ -470,9 +494,6 @@
 						<a href="globals.html#action" class="tsd-kind-icon">Action</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external">
-						<a href="globals.html#globalinstancesfactory" class="tsd-kind-icon">global<wbr>Instances<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-external">
 						<a href="globals.html#globaljobmanager" class="tsd-kind-icon">global<wbr>Job<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external">
@@ -489,6 +510,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#setjobmanagerinstancesfactory" class="tsd-kind-icon">set<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-external">
+						<a href="globals.html#jobevents" class="tsd-kind-icon">Job<wbr>Events</a>
 					</li>
 					<li class=" tsd-kind-object-literal tsd-is-external">
 						<a href="globals.html#jobstates" class="tsd-kind-icon">Job<wbr>States</a>

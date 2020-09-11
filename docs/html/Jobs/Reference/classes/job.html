@@ -96,6 +96,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="job.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="job.html#joboptions" class="tsd-kind-icon">job<wbr>Options</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="job.html#payload" class="tsd-kind-icon">payload</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="job.html#progress" class="tsd-kind-icon">progress</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="job.html#result" class="tsd-kind-icon">result</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="job.html#state" class="tsd-kind-icon">state</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="job.html#toexecute" class="tsd-kind-icon">to<wbr>Execute</a></li>
@@ -144,7 +145,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides EventEmitter.__constructor</p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:39</li>
+									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:45</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -197,7 +198,7 @@
 					<div class="tsd-signature tsd-kind-icon">err<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:29</li>
+							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:30</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -212,7 +213,7 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:9</li>
+							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:10</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -227,7 +228,7 @@
 					<div class="tsd-signature tsd-kind-icon">job<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:39</li>
+							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:40</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -250,12 +251,27 @@
 					<div class="tsd-signature tsd-kind-icon">payload<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:24</li>
+							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:25</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>payload passed to the function that will be executed</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="progress" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> progress</h3>
+					<div class="tsd-signature tsd-kind-icon">progress<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:45</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The progress percentage</p>
 						</div>
 					</div>
 				</section>
@@ -265,7 +281,7 @@
 					<div class="tsd-signature tsd-kind-icon">result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:14</li>
+							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:15</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -280,7 +296,7 @@
 					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:34</li>
+							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:35</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -295,7 +311,7 @@
 					<div class="tsd-signature tsd-kind-icon">to<wbr>Execute<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:19</li>
+							<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:20</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -709,7 +725,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:96</li>
+									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:105</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -731,7 +747,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:81</li>
+									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:90</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -762,7 +778,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:106</li>
+									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:115</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -799,7 +815,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:114</li>
+									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:124</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -947,7 +963,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:60</li>
+									<li>Defined in src/hermes_modules/jobs/jobs/Job.ts:66</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1013,20 +1029,11 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-is-external">
-						<a href="exportcatalog.html" class="tsd-kind-icon">Export<wbr>Catalog</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-external">
-						<a href="exportmetadata.html" class="tsd-kind-icon">Export<wbr>Metadata</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="inmemoryqueue.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queue</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="inmemoryqueuesfactory.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queues<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-external">
-						<a href="instancesfactory.html" class="tsd-kind-icon">Instances<wbr>Factory</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -1047,6 +1054,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="job.html#payload" class="tsd-kind-icon">payload</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="job.html#progress" class="tsd-kind-icon">progress</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="job.html#result" class="tsd-kind-icon">result</a>
@@ -1136,9 +1146,6 @@
 					<li class=" tsd-kind-class">
 						<a href="ticker.html" class="tsd-kind-icon">Ticker</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="../interfaces/autodescribed.html" class="tsd-kind-icon">Auto<wbr>Described</a>
-					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/jobmanagerconfiguration.html" class="tsd-kind-icon">Job<wbr>Manager<wbr>Configuration</a>
 					</li>
@@ -1150,9 +1157,6 @@
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="../globals.html#action" class="tsd-kind-icon">Action</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-external">
-						<a href="../globals.html#globalinstancesfactory" class="tsd-kind-icon">global<wbr>Instances<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#globaljobmanager" class="tsd-kind-icon">global<wbr>Job<wbr>Manager</a>
@@ -1171,6 +1175,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#setjobmanagerinstancesfactory" class="tsd-kind-icon">set<wbr>Job<wbr>Manager<wbr>Instances<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="../globals.html#jobevents" class="tsd-kind-icon">Job<wbr>Events</a>
 					</li>
 					<li class=" tsd-kind-object-literal">
 						<a href="../globals.html#jobstates" class="tsd-kind-icon">Job<wbr>States</a>
