@@ -1,6 +1,6 @@
 {
   "name": "@hermes/bullmq-jobs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "plugin for @hermes/jobs integrating Bull MQ framework",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

@@ -9,7 +9,7 @@ import configuration from '@feathersjs/configuration';
 import express from '@feathersjs/express';
 import socketio from '@feathersjs/socketio';
 import swagger from 'feathers-swagger';
-
+import Arena from 'bull-arena'
 
 import { Application } from './declarations';
 import logger from './logger';
@@ -23,8 +23,9 @@ import {InstancesFactory,globalInstancesFactory} from '@hermes/composition';
 import {MemoryStorage} from "./services/backend/MemoryStorage";
 import {IExportedClass} from "./DirectoryCatalog/IExportedClass";
 import {Platform} from "./platform/Platform";
-import { JobManager } from '@hermes/jobs';
+import { getGlobalJobManager, JobManager, JobManagerConfiguration, setGlobalJobManager } from '@hermes/jobs';
 import cluster from "cluster";
+import { BullQueue } from '@hermes/bull-jobs';
 
 // Don't remove this comment. It's needed to format import lines nicely.
 const app: Application = express(feathers());
@@ -39,7 +40,8 @@ const clusterConfig = app.get("cluster");
 // load class from constructed catalog (Work in progress)
 globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/services/');
 globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/topic');
-globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs/queues');
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/jobs');
+globalInstancesFactory.loadExportedClassesFromDirectory(__dirname + '/hermes_modules/bull-jobs');
 let topicService:TopicService;
 
 if(clusterConfig &&
@@ -60,8 +62,10 @@ if(clusterConfig &&
 
   app.platform = new Platform(configurationObject);
   // TODO : add configuration of job Manager
+  const jobManagerConfiguration:JobManagerConfiguration = app.get("jobManager");
   // @ts-ignore
-  app.jobManager = new JobManager();
+  setGlobalJobManager(new JobManager(jobManagerConfiguration));
+  app.jobManager = getGlobalJobManager();
 
   // Enable security, CORS, compression, favicon and body parsing
   app.use(helmet());
@@ -104,6 +108,46 @@ if(clusterConfig &&
   app.configure(middleware);
   // Set up our services (see `services/index.js`)
   app.configure(services);
+
+  // Enable Arena for queue monitoring of Bull
+  if(jobManagerConfiguration.queuesFactoryExportName === 'Bull') {
+    const arenaConfig = {
+      Bull: require('bull'),
+      queues:[]
+    };
+    const jobManager = getGlobalJobManager();
+    for(const queue of jobManager.getQueues()) {
+      const bullQueue = queue as BullQueue
+      // @ts-ignore
+      arenaConfig.queues.push({
+        name:bullQueue.getName(),
+        hostId:bullQueue.getName().split('#')[0],
+        redis: {
+          // @ts-ignore
+          port: bullQueue.getPort(),
+          // @ts-ignore
+          host: bullQueue.getHost()
+        }
+      })
+    }
+    arenaConfig.queues.push({
+      name:'Test',
+      hostId:'localhost',
+      redis: {
+        // @ts-ignore
+        port: 6379,
+        // @ts-ignore
+        host: 'localhost'
+      }
+    });
+    const arenaModule = Arena(arenaConfig, {
+      basePath:'/jobs',
+      disableListen: true,
+      useCdn: false
+    })
+    app.use('/', arenaModule);
+  }
+
   // Set up event channels (see channels.js)
   app.configure(channels);
 

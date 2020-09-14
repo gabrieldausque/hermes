@@ -1,5 +1,10 @@
+import chai from 'chai';
+// tslint:disable-next-line:no-var-requires
+chai.use(require('chai-as-promised'));
 import {expect} from 'chai';
-import { InMemoryQueue, getJobManagerInstancesFactory, Job, JobManager, JobStates, Queue } from '@hermes/jobs';
+import InnerQueue from 'bull';
+
+import { InMemoryQueue, getJobManagerInstancesFactory, Job, JobManager, JobStates, Queue, Filter } from '@hermes/jobs';
 // @ts-ignore
 import { TestClass } from './TestClass';
 import { BullQueue } from '@hermes/bull-jobs';
@@ -13,93 +18,54 @@ const sleep = util.promisify(setTimeout);
 
 
 describe('Job Scheduling using Bull', () => {
-  let jm:JobManager = null;
-  let q:Queue = null;
-
-  const createJmAndQ = (() => {
-    jm = new JobManager({
-      queuesFactoryExportName:'Bull',
-      defaultQueueConfiguration:{
-        redisUrl:"redis://localhost:6379",
-        bullQueueOptions: {
-          redis:{
-            host:"localhost",
-            port:"6379",
-            retryStrategy: (times) => {
-              return new Error('No connection ! Please start docker container ...');
-            },
-            maxRetriesPerRequest: 2,
-            connectTimeout:250
-          }
-        }
-      }
-    });
-    q = jm.createQueue('Test', {
+  const jm:JobManager = new JobManager({
+    queuesFactoryExportName:'Bull',
+    defaultQueueConfiguration:{
       redisUrl:"redis://localhost:6379",
       bullQueueOptions: {
         redis:{
-          host:"127.0.0.1",
+          host:"localhost",
           port:"6379",
           retryStrategy: (times) => {
             return new Error('No connection ! Please start docker container ...');
           },
-          maxRetriesPerRequest: 0,
-          connectTimeout:50,
+          maxRetriesPerRequest: 2,
+          connectTimeout:250
         }
       }
-    });
-    (q as unknown as BullQueue).innerQueue.empty().then(() => {
-      // do nothing
-    });
-    jm.start();
-  })
-
-  afterEach(() => {
-    try{
-      jm.stop();
-    }catch(err) {
-      console.warn(err)
     }
   });
+  const q:Queue = jm.createQueue('Test', {
+    redisUrl:"redis://localhost:6379",
+    bullQueueOptions: {
+      redis:{
+        host:"127.0.0.1",
+        port:"6379",
+        retryStrategy: (times) => {
+          return new Error('No connection ! Please start docker container ...');
+        },
+        maxRetriesPerRequest: 0,
+        connectTimeout:50,
+      }
+    }
+  });;
 
-  it('Should have a bullQueue instead of the default InMemoryQueue', () => {
-    createJmAndQ();
+  before(() => {
+    // @ts-ignore
+    ((q as unknown as BullQueue).innerQueue as InnerQueue).clean(0);
+  })
+
+
+  it('Should have a bullQueue instead of the default InMemoryQueue', async () => {
+
     expect(q).to.be.instanceof(BullQueue);
   })
 
-  it('Should raise error event if no connection on redis', async () => {
-    jm = new JobManager({
-      queuesFactoryExportName:'Bull'
-    });
-    let q2:Queue;
-
-    const c = () => {
-      q2 = jm.createQueue('Error', {
-        redisUrl: "redis://localhost:590",
-        bullQueueOptions: {
-          redis: {
-            host: "localhost",
-            port: "590",
-            retryStrategy: (times) => {
-              return;
-            },
-            maxRetriesPerRequest: 0,
-            connectTimeout: 50,
-          }
-        }
-      });
-      q2.once('error', (err) => {
-        expect(err.code).to.eql('ECONNREFUSED');
-      })
-    }
-    c();
-  })
-
   it('Should connect to another port', (done) => {
-    jm = new JobManager({
+    const localJm = new JobManager({
       queuesFactoryExportName:'Bull'
     });
-    const q2 = jm.createQueue('Error', {
+    const q2 = localJm.createQueue('Error', {
       redisUrl:"redis://localhost:6380",
       bullQueueOptions: {
         redis:{
@@ -121,35 +87,32 @@ describe('Job Scheduling using Bull', () => {
   })
 
   it('Should had defaulted configuration for queue if no configuration has been passed and defaultQueueConfiguration is set', async () => {
-    createJmAndQ();
+
     const q3 = jm.createQueue('Defaulted');
     const redisClient = await (q3 as unknown as BullQueue).innerQueue.client;
     expect(redisClient.options.connectTimeout).to.be.equal(250);
     expect(redisClient.options.maxRetriesPerRequest).to.be.equal(2);
   })
 
-  it('Should execute a job and get result when job is success for string result', (done) => {
-    createJmAndQ();
+  it('Should execute a job and get result when job is success for string result', async () => {
+
     const functionToExecute = (p, j) => {
       return 'done';
     }
     const queueId = uuid();
-    q = jm.createQueue(queueId);
+    const q3 = jm.createQueue(queueId);
     jm.createWorker(queueId, functionToExecute);
-    q.once('error', (err, j) => {
-      done(err);
-    })
     const job = jm.execute(queueId)
-    job.once('success', (event) => {
-      expect(job.result).to.be.equal('done');
-      done();
+    const result = await job.waitForCompletion().then((intermediateResult:string) => {
+      return intermediateResult;
     });
+    expect(result).to.be.eql('done');
   })
 
-  it('Should execute a job and get result when job is success for complex result', (done) => {
-    createJmAndQ();
+  it('Should execute a job and get result when job is success for complex result', async () => {
+
     const queueId = uuid();
-    q = jm.createQueue(queueId);
+    const q4 = jm.createQueue(queueId);
     const functionToExecute = () => {
       return {
         prop1:'value',
@@ -161,31 +124,27 @@ describe('Job Scheduling using Bull', () => {
     }
     jm.createWorker(queueId, functionToExecute);      console.log("inside the promise");
     const job = jm.execute(queueId);
-    job.once('success', () => {
-      expect(job.result.prop1).to.be.equal('value');
-      expect(job.result.prop2.prop21).to.be.equal(45);
-      expect(job.result.prop2.prop22).to.be.equal('astring');
-      done();
-    });
+    await job.waitForCompletion();
+    expect(job.result.prop1).to.be.equal('value');
+    expect(job.result.prop2.prop21).to.be.equal(45);
+    expect(job.result.prop2.prop22).to.be.equal('astring');
   })
 
-  it('Should execute a method from class instance and send result', (done) => {
-    createJmAndQ();
+  it('Should execute a method from class instance and send result', async () => {
+
     const instance = new TestClass();
     const queueId = uuid();
-    q = jm.createQueue(queueId);
+    const q5 = jm.createQueue(queueId);
     jm.createWorker(queueId, () => {
       return instance.aTestMethod();
     });
     const job = jm.execute(queueId);
-    job.on('success', (event) => {
-      expect(job.result).to.be.equal('testMethodCall');
-      done();
-    });
+    await job.waitForCompletion();
+    expect(job.result).to.be.equal('testMethodCall');
   })
 
   it('Should execute job with payload non object', async () => {
-    createJmAndQ();
+
     jm.createWorker('Test', (p, j) => {
       return `A result with parameters : ${p}`;
     })
@@ -195,7 +154,7 @@ describe('Job Scheduling using Bull', () => {
   })
 
   it('Should execute job with payload non object and an async worker method', async () => {
-    createJmAndQ();
+
     jm.createWorker('Test', async (p, j) => {
       return `A result with parameters : ${p}`;
     })
@@ -205,11 +164,11 @@ describe('Job Scheduling using Bull', () => {
   })
 
   it('Should execute job and get progress', async () => {
-    createJmAndQ();
+
     const progressPercentages = [];
     const progressMessages = [];
     const queueId = uuid();
-    q = jm.createQueue(queueId);
+    const q5 = jm.createQueue(queueId);
     jm.createWorker(queueId, async (p, j) => {
       j.raiseProgressEvent(50, 'first progress');
       await sleep(500);
@@ -229,21 +188,18 @@ describe('Job Scheduling using Bull', () => {
   })
 
   it('Should execute job and manage error', async () => {
-    createJmAndQ();
+
     jm.createWorker('Test', async (p, j) => {
       throw new Error('Expected error');
     })
     const job = jm.execute('Test');
-    try {
-      await job.waitForCompletion();
-    }finally {
-      expect(job.state).to.be.equal(JobStates.failed);
-      expect(job.err.message).to.be.eql('Expected error');
-    }
+    await expect(job.waitForCompletion()).to.be.rejectedWith('Expected error');
+    expect(job.state).to.be.equal(JobStates.failed);
+    expect(job.err.message).to.be.eql('Expected error');
   })
 
   it('Should execute multiple job', async () => {
-    createJmAndQ();
+
     const expected = [];
     const actuals = [];
     const jobs = [];
@@ -260,17 +216,90 @@ describe('Job Scheduling using Bull', () => {
   })
 
   it('Should return the right host name', async() => {
-    createJmAndQ();
+
     expect((q as BullQueue).getHost()).to.be.eql('127.0.0.1');
   })
 
   it('Should work when send exception', async () => {
-    createJmAndQ();
+
     jm.createWorker('Test', (p, j) => {
       throw new Error('Expected Error');
     })
     const job = jm.execute('Test');
-    await job.waitForCompletion();
+    try {
+      await job.waitForCompletion()
+    } catch(err) {
+      expect(err.message).to.be.eql('Expected Error')
+    }
+  })
+
+  it('Should get a job with a specific id', async() => {
+    console.log('The test')
+    jm.createWorker('Test', () => {
+      console.log('executing the worker')
+      return 'done';
+    });
+    const job = jm.execute('Test');
+    const result = await job.waitForCompletion();
+    const searchJob = await jm.getJob(job.id);
+    expect(result).to.be.eql('done', `result:#${result}# job.id:${job.id} job.result:${job.result}`);
+    expect(job.id).to.be.eql(searchJob.id);
+    expect(job.payload).to.be.eql(searchJob.payload);
+    expect(job.state).to.be.eql(searchJob.state);
+    expect(searchJob.state).to.be.eql(JobStates.success);
+    expect(job.result).to.be.eql(searchJob.result);
+  })
+
+  it('Should get jobs with a filter on payload value', async() => {
+
+    jm.createWorker('Test', () => {
+      return 'done';
+    });
+    const semaphores = [];
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}   ).waitForCompletion());
+    await Promise.all(semaphores);
+    const found = await jm.getJobs({ valueFilter:{ category: 'aCategory'} });
+    return Promise.all([
+      expect(found.find((fj) => {
+      return fj.payload.value.category === 'aCategory' && fj.payload.value.prop === 'aProp'
+    })).to.be.ok,
+    expect(found.find((fj) => {
+      return fj.payload.value.category === 'aCategory' && fj.payload.value.prop === 'aProp2'
+    })).to.be.ok]);
+  })
+
+  it('Should get jobs with a filter on payload metadata', async() => {
+
+    jm.createWorker('Test', () => {
+      return 'done';
+    })
+    const semaphores = [];
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
+    await Promise.all(semaphores);
+    const found = await jm.getJobs({ metadataFilter:{ userName: 'aUser'} });
+    expect(found.length).to.be.eql(3);
+  })
+
+  it('Should get jobs with a filter on payload value and metadata', async() => {
+
+    jm.createWorker('Test', () => {
+      return 'done';
+    })
+    const semaphores = [];
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
+    await Promise.all(semaphores);
+    const found = await jm.getJobs({ valueFilter:{category:'aCategory'}, metadataFilter:{ userName: 'aUser'} });
+    expect(found.length).to.be.eql(3);
   })
 
 })

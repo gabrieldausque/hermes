@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * A box to encapsulate value type (string, number, boolean , etc...) in an object
  */
 export class BullValueTypeBox {

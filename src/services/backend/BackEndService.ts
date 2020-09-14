@@ -49,9 +49,14 @@ export class BackEndService {
   }
 
   async createProject(data: ProjectEntity):Promise<ProjectEntity> {
-    return await setTimeoutPromise(3000).then(() => {
-      return this.store.create(data.name, data.code, data.description);
-    })
+    if(!data.id){
+      return await setTimeoutPromise(3000).then(() => {
+        return this.store.create(data.name, data.code, data.description);
+      })
+    } else {
+      this.store.add(data)
+      return data;
+    }
   }
 
   updateProject(data: NullableProject) {

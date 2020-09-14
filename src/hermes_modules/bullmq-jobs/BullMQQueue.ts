@@ -1,10 +1,11 @@
-import { Queue, Job, ProcessingOptions } from '@hermes/jobs';
+import { Queue, Job, ProcessingOptions, JobStates, Filter } from '@hermes/jobs';
 import { BullMQQueueConfiguration } from './configuration/BullMQQueueConfiguration';
 import { Queue as InnerQueue, Worker as InnerWorker, QueueEvents as InnerQueueEvents, Job as InnerJob }  from 'bullmq';
 import { BullMQJob } from './BullMQJob';
 import { BullValueTypeBox } from './BullValueTypeBox';
 import { BullProcessingOptions } from './configuration/BullProcessingOptions';
 import { BullMQJobOptions } from './configuration/BullMQJobOptions';
+import { JobFilter } from '@hermes/jobs/jobs';
 
 /**
  * The Queue implementation for Bull
@@ -117,7 +118,7 @@ export class BullMQQueue extends Queue {
     } else {
       action = this.action;
     }
-    let payload = bullJob.data;
+    const payload = bullJob.data.value;
 
     // manage cluster config, and job that was not sent through the current process
     let currentJob = this.runningJobs.find((j) => j.id === bullJob.id.toString());
@@ -127,9 +128,6 @@ export class BullMQQueue extends Queue {
       this.runningJobs.push(currentJob);
     }
 
-    if(typeof payload.boxedValue !== 'undefined'){
-      payload = (payload as BullValueTypeBox).boxedValue;
-    }
     let resultOrPromise:any;
 
     try {
@@ -284,5 +282,91 @@ export class BullMQQueue extends Queue {
       this.innerQueueWorker?.close(true).then(() => { /** do nothing */ }).catch((err) => console.error(err));
     }
   }
+
+  private async convertInnerJobToBullJob(bullJob: InnerJob):Promise<BullMQJob> {
+    const actionToExecute = (bullJob.name && bullJob.name !== 'default') ? this.namedAction[bullJob.name] : this.action;
+    const job: BullMQJob = new BullMQJob(actionToExecute, bullJob.data, bullJob.opts);
+    job.id = bullJob.id.toString();
+    const status = await bullJob.getState();
+    switch (status) {
+      case 'completed': {
+        job.state = JobStates.success;
+        job.result = bullJob.returnvalue;
+        break;
+      }
+      case 'failed': {
+        job.state = JobStates.failed;
+        job.err = new Error(bullJob.failedReason);
+        break;
+      }
+      default: {
+        job.state = JobStates.running;
+        break;
+      }
+    }
+    return job;
+  }
+
+  /**
+   * Get the job with the corresponding id
+   * @param jobId
+   */
+  async getJob(jobId: string): Promise<Job> {
+    const bullJob:InnerJob = await this.innerQueue.getJob(jobId);
+    if(bullJob){
+      return await this.convertInnerJobToBullJob(bullJob);
+    }
+    throw new Error(`Job with id ${jobId} not found`);
+  }
+
+  /**
+   * Check if the job with corresponding id is in the current queue
+   * @param jobId
+   */
+  async hasJob(jobId: string): Promise<boolean> {
+    return (await this.innerQueue.getJob(jobId)) !== null;
+  }
+
+  /**
+   * Get a list of jobs that match payload value filter and/or metadata filter
+   * @param filter
+   */
+  async getJobs(filter: JobFilter): Promise<Job[]> {
+    let toReturn = [];
+    const listOfInnerJobs = await this.innerQueue.getJobs(['completed','failed','active','waiting']);
+    let listOfJobs = [];
+    for(const innerJob of listOfInnerJobs) {
+      listOfJobs.push(await this.convertInnerJobToBullJob(innerJob))
+    }
+
+    if(filter.valueFilter) {
+      for(const job of listOfJobs){
+        if(job.payload && job.payload.value){
+          const valueToTest = job.payload.value;
+          if(Filter.match(filter.valueFilter, valueToTest)){
+            toReturn.push(job);
+          }
+        }
+      }
+    }
+
+    if(filter.metadataFilter) {
+      if(toReturn.length > 0) {
+        listOfJobs = toReturn;
+        toReturn = [];
+      }
+      for(const job of listOfJobs){
+        if(job.payload && job.payload.metadata){
+          const metadataToTest = job.payload.metadata;
+          if(Filter.match(filter.metadataFilter, metadataToTest)){
+            toReturn.push(job);
+          }
+        }
+      }
+    }
+
+    return toReturn;
+  }
+
 
 }

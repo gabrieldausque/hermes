@@ -1,8 +1,7 @@
-import { Job } from '../jobs/Job';
 import {EventEmitter} from 'events';
-import { JobStates } from '../jobs/JobStates';
 import { ProcessingOptions } from './ProcessingOptions';
 import { Action } from './Action';
+import { Job, JobFilter, PayLoad } from '../jobs';
 
 /**
  * A Queue that will execute associated worker with specified payload in FIFO mode.
@@ -11,7 +10,7 @@ export abstract class Queue extends EventEmitter {
   /**
    * Indicate if the object is a Queue
    */
-  public readonly isQueue:boolean = true;
+  public readonly isQueue: boolean = true;
 
   /**
    * The action to be executed on job received
@@ -43,7 +42,7 @@ export abstract class Queue extends EventEmitter {
    * @param name The name of the Queue
    * @param configuration The configuration of the queue. May override default queue options
    */
-  protected constructor(name:string, configuration?:any) {
+  protected constructor(name: string, configuration?: any) {
     super()
     this.name = name;
     this.jobs = [];
@@ -56,7 +55,7 @@ export abstract class Queue extends EventEmitter {
    * @param action The Action to execute on a job reception
    * @param processingOptions Specific configuration to use on creation of the worker (Depend of the implementation). May override Queue options
    */
-  onJobToProcess(action: Action, processingOptions?:ProcessingOptions) {
+  onJobToProcess(action: Action, processingOptions?: ProcessingOptions) {
     this.action = action;
   }
 
@@ -79,29 +78,47 @@ export abstract class Queue extends EventEmitter {
    * @param actionPayload The payload for the job execution
    * @param jobOptions The options that can be used for this specific execution. May override processing options.
    */
-  abstract push(actionPayload: any, jobOptions:{[propName:string]:any}) : Job;
+  abstract push(actionPayload: PayLoad, jobOptions: { [propName: string]: any }): Job;
+
+  /**
+   * Get the job with corresponding id
+   * @param jobId
+   */
+  abstract getJob(jobId: string): Promise<Job>;
+
+  /**
+   * Get the job with corresponding id
+   * @param filter the filter to get specific jobs
+   */
+  abstract getJobs(filter:JobFilter): Promise<Job[]>;
+
+  /**
+   * True if the queue owns the job with the specified id
+   * @param jobId
+   */
+  abstract hasJob(jobId: string): Promise<boolean>;
 
   /**
    * Start the current Queue
    */
-  abstract start():void;
+  abstract start(): void;
 
   /**
    * Stop the current Queue
    */
-  abstract stop():void;
+  abstract stop(): void;
 
   /**
    * Pause the current Queue
    */
-  pause():void {
+  pause(): void {
     this.paused = true;
   }
 
   /**
    * Resume the current Queue treatment
    */
-  resume():void {
+  resume(): void {
     this.paused = false;
   }
 
@@ -117,7 +134,7 @@ export abstract class Queue extends EventEmitter {
    * @param job The successful Job
    * @param result The result of the execution of the Job
    */
-  raiseJobSuccess(job:Job, result) {
+  raiseJobSuccess(job: Job, result) {
     job.raiseSuccessEvent(result);
     this.emit('success', job, result);
   }
@@ -127,7 +144,7 @@ export abstract class Queue extends EventEmitter {
    * @param job The failed Job
    * @param err The Error or message of the failed execution of the Job
    */
-  raiseJobFailed(job:Job, err) {
+  raiseJobFailed(job: Job, err) {
     job.raiseFailedEvent(err);
     this.emit('failed', job, err);
   }
@@ -136,7 +153,7 @@ export abstract class Queue extends EventEmitter {
    * As an EventEmitter will raise the 'completed' event for a job that is successful or failed.
    * @param job The completed job
    */
-  raiseJobCompleted(job:Job) {
+  raiseJobCompleted(job: Job) {
     job.raiseCompletedEvent();
     this.emit('completed', job);
   }
@@ -157,3 +174,4 @@ export abstract class Queue extends EventEmitter {
   }
 
 }
+

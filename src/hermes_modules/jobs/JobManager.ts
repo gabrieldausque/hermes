@@ -5,6 +5,8 @@ import { InMemoryQueuesFactory } from './queues/InMemoryQueuesFactory';
 import { Queue } from './queues/Queue';
 import { Job } from './jobs/Job';
 import { Action } from './queues';
+import { PayLoad } from './jobs/PayLoad';
+import { JobFilter } from './jobs';
 
 /**
  * The shared instances factory that can be change through setJobManagerInstancesFactory. Defaulted to globalInstancesFactory
@@ -90,6 +92,41 @@ export class JobManager {
   }
 
   /**
+   * Get a job to see status and error or result for monitoring or post mortem result consumption
+   * @param jobId
+   */
+  async getJob(jobId:string, queueName?:string):Promise<Job> {
+    if(queueName) {
+      return await this.queues[queueName].getJob(jobId);
+    } else {
+      for(const innerQueueName in this.queues) {
+        if(this.queues.hasOwnProperty(innerQueueName) && await this.queues[innerQueueName].hasJob(jobId))
+          return await this.queues[innerQueueName].getJob(jobId);
+      }
+    }
+    return null
+  }
+
+  /**
+   * Get jobs corresponding to the specified filter
+   * @param filter The filter on which to get jobs. valueFilter will be applied on payload functional value, metadata filter on metadata
+   * @param queueName The queue name where job has to be searched. If not present, search will be done on all queues
+   */
+  async getJobs(filter:JobFilter, queueName?:string):Promise<Job[]> {
+    if(queueName) {
+      return await this.queues[queueName].getJobs(filter);
+    } else {
+      let found:Job[] = [];
+      for(const innerQueueName in this.queues) {
+        if(this.queues.hasOwnProperty(innerQueueName))
+          found = found.concat(await this.queues[innerQueueName].getJobs(filter));
+      }
+      return found;
+    }
+    return [];
+  }
+
+  /**
    * Get all Queues of the current JobManager
    */
   getQueues() {
@@ -130,10 +167,14 @@ export class JobManager {
    * Execute a job in the specified Queue, with the specified payload
    * @param queueName The name of the queue to post the job in
    * @param actionPayload The payload to use in the job
-   * @param context A context object that can be used in the queue (Experimental)
+   * @param metadata Metadata to enrich information on the job
+   * @param jobOption A jobOption object that can be used in the queue (Experimental)
    */
-  execute(queueName: string, actionPayload:any = null, context?:any):Job {
-    return this.getQueue(queueName).push(actionPayload, context);
+  execute(queueName: string, actionPayload:any = null, metadata:any = null, jobOption?:any):Job {
+    return this.getQueue(queueName).push({
+      value:actionPayload,
+      metadata
+    }, jobOption);
   }
 
   /**

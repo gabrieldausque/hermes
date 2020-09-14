@@ -1,10 +1,12 @@
-import { Queue, Job, ProcessingOptions } from '@hermes/jobs';
+import { Queue, Job, ProcessingOptions, JobStates, Filter } from '@hermes/jobs';
 import { BullQueueConfiguration } from './configuration/BullQueueConfiguration';
 import InnerQueue from 'bull';
+import {Job as InnerJob} from 'bull';
 import { BullJob } from './BullJob';
 import { BullValueTypeBox } from './BullValueTypeBox';
 import { BullProcessingOptions } from './configuration/BullProcessingOptions';
 import { BullJobOptions } from './configuration/BullJobOptions';
+import { JobFilter, PayLoad } from '@hermes/jobs/jobs';
 
 /**
  * The Queue implementation for Bull
@@ -37,7 +39,7 @@ export class BullQueue extends Queue {
     this.innerQueue = new InnerQueue(configuration.name, configuration.redisUrl, configuration.bullQueueOptions);
     const current = this;
     this.innerQueue.on('error', (err) => {
-      console.log(err);
+      console.error(err);
       current.raiseQueueError(err);
     });
     this.innerQueue.client.on('ready', () => {
@@ -98,12 +100,13 @@ export class BullQueue extends Queue {
    */
   private async executeJob(bullJob:InnerQueue.Job<any>) {
     let action;
+
     if(bullJob.name && (bullJob.name !== '__default__')) {
       action = this.namedAction[bullJob.name];
     } else {
       action = this.action;
     }
-    let payload = bullJob.data;
+    const payload = (bullJob.data as PayLoad).value;
 
     // manage cluster config, and job that was not sent through the current process
     let currentJob = this.runningJobs.find((j) => j.id === bullJob.id.toString());
@@ -113,9 +116,6 @@ export class BullQueue extends Queue {
       this.runningJobs.push(currentJob);
     }
 
-    if(typeof payload.boxedValue !== 'undefined'){
-      payload = (payload as BullValueTypeBox).boxedValue;
-    }
     let resultOrPromise:any;
 
     try {
@@ -140,11 +140,17 @@ export class BullQueue extends Queue {
     const concurrency:number = (processingOptions && typeof processingOptions.concurrency === 'number')?processingOptions.concurrency:1;
     if(processorName)
     {
+      if(!this.namedAction[processorName]) {
+        this.innerQueue.process(processorName, concurrency, this.executeJob.bind(this))
+      }
       this.namedAction[processorName] = action;
-      this.innerQueue.process(processorName, concurrency, this.executeJob.bind(this))
     } else {
+      if(!this.action)
+      {
+        this.innerQueue.process(concurrency, this.executeJob.bind(this));
+      }
       this.action = action;
-      this.innerQueue.process(concurrency, this.executeJob.bind(this));
+
     }
   }
 
@@ -153,7 +159,7 @@ export class BullQueue extends Queue {
    * @param actionPayloadOrJob The payload or the job to execute
    * @param jobOptions The options to use for this execution
    */
-  push(actionPayloadOrJob: any, jobOptions: BullJobOptions): Job {
+  push(actionPayloadOrJob: PayLoad, jobOptions: BullJobOptions): Job {
     let jobToReturn:BullJob;
     const current = this;
     if(actionPayloadOrJob instanceof BullJob){
@@ -163,14 +169,16 @@ export class BullQueue extends Queue {
     if(jobOptions && jobOptions.name) {
       if(!jobToReturn)
         jobToReturn = new BullJob(this.namedAction[jobOptions.name], actionPayloadOrJob, jobOptions);
-      this.innerQueue.add(jobOptions.name, jobToReturn.getPayload()).then((bullJob: InnerQueue.Job<any>) => {
+      this.innerQueue.add(jobOptions.name, jobToReturn.payload).then((bullJob: InnerQueue.Job<any>) => {
+        jobToReturn.jobOptions = bullJob.opts;
         jobToReturn.setInnerJob(bullJob);
       });
     } else {
       if(!jobToReturn)
         jobToReturn = new BullJob(this.action, actionPayloadOrJob);
 
-      this.innerQueue.add(jobToReturn.getPayload()).then((bullJob) => {
+      this.innerQueue.add(jobToReturn.payload).then((bullJob) => {
+        jobToReturn.jobOptions = bullJob.opts;
         jobToReturn.setInnerJob(bullJob);
       }).catch((err) => {
         current.raiseQueueError(err);
@@ -206,7 +214,92 @@ export class BullQueue extends Queue {
    * Close the inner queue
    */
   stop(): void {
-    this.innerQueue.close()
+    this.innerQueue.close().then(() => console.log(`Closing queue with name ${this.name}`));
+  }
+
+  /**
+   * Get the job from the queue
+   * @param jobId
+   */
+  async getJob(jobId: string): Promise<Job> {
+    const bullJob:InnerJob = await this.innerQueue.getJob(jobId);
+    if(bullJob){
+      return await this.convertInnerJobToBullJob(bullJob);
+    }
+    throw new Error(`Job with id ${jobId} not found`);
+  }
+
+  private async convertInnerJobToBullJob(bullJob: InnerJob):Promise<BullJob> {
+    const actionToExecute = (bullJob.name && bullJob.name !== '__default__') ? this.namedAction[bullJob.name] : this.action;
+    const job: BullJob = new BullJob(actionToExecute, bullJob.data, bullJob.opts);
+    job.id = bullJob.id.toString();
+    const status = await bullJob.getState();
+    switch (status) {
+      case 'completed': {
+        job.state = JobStates.success;
+        job.result = bullJob.returnvalue;
+        break;
+      }
+      case 'failed': {
+        job.state = JobStates.failed;
+        job.err = new Error(bullJob.failedReason);
+        break;
+      }
+      default: {
+        job.state = JobStates.running;
+        break;
+      }
+    }
+    return job;
+  }
+
+  /**
+   * true if the queue owns a job with the specified id
+   * @param jobId
+   */
+  async hasJob(jobId: string): Promise<boolean> {
+    return (await this.innerQueue.getJob(jobId)) !== null;
+  }
+
+  /**
+   * Get a list of jobs that match payload value filter and/or metadata filter
+   * @param filter
+   */
+  async getJobs(filter: JobFilter): Promise<Job[]> {
+    let toReturn = [];
+    const listOfInnerJobs = await this.innerQueue.getJobs();
+    let listOfJobs = [];
+    for(const innerJob of listOfInnerJobs) {
+      listOfJobs.push(await this.convertInnerJobToBullJob(innerJob))
+    }
+
+    if(filter.valueFilter) {
+      for(const job of listOfJobs){
+        if(job.payload && job.payload.value){
+          const valueToTest = job.payload.value;
+          if(Filter.match(filter.valueFilter, valueToTest)){
+            toReturn.push(job);
+          }
+        }
+      }
+    }
+
+    if(filter.metadataFilter) {
+      if(toReturn.length > 0) {
+        listOfJobs = toReturn;
+        toReturn = [];
+      }
+      for(const job of listOfJobs){
+        if(job.payload && job.payload.metadata){
+          const metadataToTest = job.payload.metadata;
+          if(Filter.match(filter.metadataFilter, metadataToTest)){
+            toReturn.push(job);
+          }
+        }
+      }
+    }
+
+    return toReturn;
   }
 
 }

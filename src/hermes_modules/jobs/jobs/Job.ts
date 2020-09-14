@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import { JobStates } from './JobStates';
 import { uuid } from 'uuidv4'
 import { JobEvents } from './JobEvents';
+import { PayLoad } from './PayLoad';
 
 export class Job extends EventEmitter {
   /**
@@ -22,7 +23,7 @@ export class Job extends EventEmitter {
   /**
    * payload passed to the function that will be executed
    */
-  public payload: any;
+  public payload: PayLoad;
 
   /**
    * err that may occured during execution
@@ -32,7 +33,7 @@ export class Job extends EventEmitter {
   /**
    * state of the current job. see JobStates
    */
-  public state: number;
+  public state: string;
 
   /**
    * options that may be used for the execution
@@ -50,7 +51,7 @@ export class Job extends EventEmitter {
    * @param payload payload to use for execution
    * @param jobOptions options to use for execution
    */
-  constructor(toExecute: any, payload?, jobOptions?: { [p: string]: any }) {
+  constructor(toExecute: any, payload?:PayLoad, jobOptions?: { [p: string]: any }) {
     super();
     this.id = uuid();
     this.toExecute = toExecute;
@@ -79,8 +80,8 @@ export class Job extends EventEmitter {
         })
       }
     })
-    await semaphore
-    return;
+    const result = await semaphore
+    return result;
   }
 
   /**

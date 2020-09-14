@@ -1,4 +1,7 @@
 import {expect} from 'chai';
+import * as chai from 'chai';
+// tslint:disable-next-line:no-var-requires
+chai.use(require('chai-as-promised'));
 import { InMemoryQueue, getJobManagerInstancesFactory, Job, JobManager, JobStates, Queue } from '@hermes/jobs';
 // @ts-ignore
 import { TestClass } from './TestClass';
@@ -34,14 +37,15 @@ describe('Job Scheduling using BullMQ', () => {
       }
     });
     q = jm.createQueue('TestMQ');
-    (q as unknown as BullMQQueue).innerQueue.drain().then(() => {
-      // do nothing
-    });
     jm.start();
   })
 
   afterEach(() => {
     try{
+      (q as unknown as BullMQQueue).innerQueue.clean(0, 0, "completed").then(() => {
+        // do nothing
+      });
+
       jm.stop();
     }catch(err) {
       console.warn(err)
@@ -225,12 +229,10 @@ describe('Job Scheduling using BullMQ', () => {
       throw new Error('Expected error');
     })
     const job = jm.execute('TestMQ');
-    try {
-      await job.waitForCompletion();
-    }finally {
-      expect(job.state).to.be.equal(JobStates.failed);
-      expect(job.err.message).to.be.eql('Expected error');
-    }
+
+    await expect(job.waitForCompletion()).to.be.rejectedWith('Expected error');
+    expect(job.state).to.be.equal(JobStates.failed);
+    expect(job.err.message).to.be.eql('Expected error');
   })
 
   it('Should execute multiple job', async () => {
@@ -260,13 +262,75 @@ describe('Job Scheduling using BullMQ', () => {
     expect(await (q as BullMQQueue).getPort()).to.be.eql(6379);
   })
 
-  it('Should work when send exception', async () => {
+  it('Should work when send exception', (done) => {
     createJmAndQ();
     jm.createWorker('TestMQ', (p, j) => {
       throw new Error('Expected Error');
     })
     const job = jm.execute('TestMQ');
-    await job.waitForCompletion();
+    job.waitForCompletion().catch((err) => {
+      expect(err.message).to.be.eql('Expected Error');
+      done()
+    });
   })
+
+  it('Should get a job with a specific id', async() => {
+    createJmAndQ();
+    jm.createWorker('Test', () => {
+      return 'done';
+    })
+    const job = jm.execute('Test');
+    await expect(job.waitForCompletion()).to.be.fulfilled;
+    const searchJob = await jm.getJob(job.id);
+    expect(job).to.be.eql(searchJob);
+  })
+
+  it('Should get jobs with a filter on payload value', async() => {
+    createJmAndQ();
+    jm.createWorker('Test', () => {
+      return 'done';
+    })
+    const semaphores = [];
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}   ).waitForCompletion());
+    await Promise.all(semaphores);
+    const found = await jm.getJobs({ valueFilter:{ category: 'aCategory'} });
+    expect(found[0].payload.value).to.be.eql({ category:'aCategory', prop:'aProp'});
+    expect(found[1].payload.value).to.be.eql({ category:'aCategory', prop:'aProp2'});
+  })
+
+  it('Should get jobs with a filter on payload metadata', async() => {
+    createJmAndQ();
+    jm.createWorker('Test', () => {
+      return 'done';
+    })
+    const semaphores = [];
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
+    await Promise.all(semaphores);
+    const found = await jm.getJobs({ metadataFilter:{ userName: 'aUser'} });
+    expect(found.length).to.be.eql(3);
+  })
+
+  it('Should get jobs with a filter on payload value and metadata', async() => {
+    createJmAndQ();
+    jm.createWorker('Test', () => {
+      return 'done';
+    })
+    const semaphores = [];
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
+    await Promise.all(semaphores);
+    const found = await jm.getJobs({ valueFilter:{category:'aCategory'}, metadataFilter:{ userName: 'aUser'} });
+    expect(found.length).to.be.eql(2);
+  })
+
 
 })

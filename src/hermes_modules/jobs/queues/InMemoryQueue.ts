@@ -3,6 +3,8 @@ import { Job } from '../jobs/Job';
 import fs from 'fs';
 import { Ticker } from '../helpers/Ticker';
 import { JobStates } from '../jobs/JobStates';
+import { JobFilter } from '../jobs';
+import { Filter } from '../helpers';
 
 /**
  * An in memory implementation of queues
@@ -98,6 +100,7 @@ export class InMemoryQueue extends Queue {
   push(actionPayload: any, jobOptions?:any): Job {
     const job = new Job(this.action, actionPayload, jobOptions);
     this.waitingJobs.unshift(job);
+    this.jobs.push(job);
     return job;
   }
 
@@ -178,7 +181,7 @@ export class InMemoryQueue extends Queue {
     job.state = JobStates.running
     const current = this;
     const p = async () => {
-      const resultOrPromise = this.action(job.payload, job);
+      const resultOrPromise = this.action(job.payload.value, job);
       if(resultOrPromise instanceof Promise) {
         return await resultOrPromise
       } else {
@@ -241,5 +244,45 @@ export class InMemoryQueue extends Queue {
       this.started = false;
       this.ticker.stop()
     }
+  }
+
+  async getJob(jobId: string): Promise<Job> {
+    return this.jobs.find((j) => j.id === jobId);
+  }
+
+  async hasJob(jobId: string): Promise<boolean> {
+    return !!await this.getJob(jobId);
+  }
+
+  async getJobs(filter: JobFilter): Promise<Job[]> {
+    let toReturn = [];
+    let listOfJobs = this.jobs;
+    if(filter.valueFilter) {
+      for(const job of listOfJobs){
+        if(job.payload && job.payload.value){
+          const valueToTest = job.payload.value;
+          if(Filter.match(filter.valueFilter, valueToTest)){
+            toReturn.push(job);
+          }
+        }
+      }
+    }
+
+    if(filter.metadataFilter) {
+      if(toReturn.length > 0) {
+        listOfJobs = toReturn;
+        toReturn = [];
+      }
+      for(const job of listOfJobs){
+        if(job.payload && job.payload.metadata){
+          const metadataToTest = job.payload.metadata;
+          if(Filter.match(filter.metadataFilter, metadataToTest)){
+            toReturn.push(job);
+          }
+        }
+      }
+    }
+
+    return toReturn;
   }
 }

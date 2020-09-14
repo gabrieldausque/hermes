@@ -124,6 +124,7 @@ export class Project implements ServiceMethods<Data> {
         }
       }
     }
+    app.jobManager.createQueue('firstQueue');
     app.jobManager.createQueue('project#create');
     const current = this;
     app.jobManager.createWorker('project#create', async (project) => {
@@ -149,7 +150,7 @@ export class Project implements ServiceMethods<Data> {
     let project = null;
 
     if(data.isLongTermJob === 1) {
-      const job = this.app.jobManager.execute('project#create', ProjectEntity.loadFromDto(data));
+      const job = this.app.jobManager.execute('project#create', ProjectEntity.loadFromDto(data), { userName:"MyUserName" });
       await job.waitForCompletion();
       project = job.result
     } else {
@@ -165,7 +166,7 @@ export class Project implements ServiceMethods<Data> {
   async update (id: NullableId, data: Data, params?: Params): Promise<Data> {
     const project = await this.get(id.toString(), params);
     if(project === null)
-      this.create(data, params);
+      await this.create(data, params);
     else
     {
       this.app.platform.backend.updateProject(ProjectEntity.loadFromDto(data));

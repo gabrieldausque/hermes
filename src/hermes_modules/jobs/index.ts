@@ -1,4 +1,4 @@
-export {Ticker} from './helpers/Ticker';
+export {Ticker, Filter} from './helpers';
 export {JobEvents, JobStates, Job} from './jobs';
 export {Action, Queue, QueuesFactory, InMemoryQueue, InMemoryQueuesFactory, ProcessingOptions} from './queues'
 export {JobManager,setGlobalJobManager, getGlobalJobManager, setJobManagerInstancesFactory, getJobManagerInstancesFactory} from './JobManager';

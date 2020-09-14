@@ -30,12 +30,14 @@ export class MoleculeLoader {
     if(topicMessage.isForwardedByCluster)
       return;
     const content = topicMessage.content as ProjectEntity;
-    const project:ProjectEntity = this.backendService.getProject(content.id.toString());
-    if(project) {
-      const currentService = this;
-      setTimeoutPromise(1000, project).then(this.addRandomMolecule.bind(currentService));
-      setTimeoutPromise(3000, project).then(this.addRandomMolecule.bind(currentService))
+    let project:ProjectEntity = this.backendService.getProject(content.id.toString());
+    const currentService = this;
+    if(!project) {
+      await this.backendService.createProject(ProjectEntity.deserialize(content));
+      project = this.backendService.getProject(content.id.toString())
     }
+    setTimeoutPromise(1000, project).then(this.addRandomMolecule.bind(currentService));
+    setTimeoutPromise(3000, project).then(this.addRandomMolecule.bind(currentService))
   }
 
   private addRandomMolecule(project:ProjectEntity){

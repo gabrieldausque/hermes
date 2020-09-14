@@ -24,10 +24,24 @@
   },
   "topicService":{
     "host":"http://localhost:3030",
-    "standAlone": false,
+    "standAlone": true,
     "clusterNodes":[
       "http://localhost:3031",
       "http://localhost:3030"
     ]
+  },
+  "jobManager": {
+    "queuesFactoryExportName":"Bull",
+    "defaultQueueConfiguration":{
+      "redisUrl":"redis://localhost:6379",
+      "bullQueueOptions": {
+        "redis":{
+          "host":"localhost",
+          "port":"6379",
+          "maxRetriesPerRequest": 2,
+          "connectTimeout":250
+        }
+      }
+    }
   }
 }
