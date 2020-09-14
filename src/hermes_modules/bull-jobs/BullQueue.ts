@@ -226,7 +226,7 @@ export class BullQueue extends Queue {
     if(bullJob){
       return await this.convertInnerJobToBullJob(bullJob);
     }
-    throw new Error(`Job with id ${jobId} not found`);
+    return;
   }
 
   private async convertInnerJobToBullJob(bullJob: InnerJob):Promise<BullJob> {

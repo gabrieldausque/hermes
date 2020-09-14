@@ -16,27 +16,25 @@ const sleep = util.promisify(setTimeout);
 
 
 describe('Job Scheduling using BullMQ', () => {
-  let jm:JobManager = null;
-  let q:Queue = null;
-
-  const createJmAndQ = (() => {
-    jm = new JobManager({
-      queuesFactoryExportName:'BullMQ',
-      defaultQueueConfiguration:{
-        bullQueueOptions: {
-          connection: {
-            host: "localhost",
-            port: "6379",
-            retryStrategy: (times) => {
-              return new Error('No connection ! Please start docker container ...');
-            },
-            maxRetriesPerRequest: 0,
-            connectTimeout: 50
-          }
+  let jm:JobManager = new JobManager({
+    queuesFactoryExportName:'BullMQ',
+    defaultQueueConfiguration:{
+      bullQueueOptions: {
+        connection: {
+          host: "localhost",
+          port: "6379",
+          retryStrategy: (times) => {
+            return new Error('No connection ! Please start docker container ...');
+          },
+          maxRetriesPerRequest: 0,
+          connectTimeout: 50
         }
       }
-    });
-    q = jm.createQueue('TestMQ');
+    }
+  });;
+  let q:Queue = jm.createQueue('TestMQ');;
+
+  before(() => {
     jm.start();
   })
 
@@ -45,15 +43,17 @@ describe('Job Scheduling using BullMQ', () => {
       (q as unknown as BullMQQueue).innerQueue.clean(0, 0, "completed").then(() => {
         // do nothing
       });
-
-      jm.stop();
     }catch(err) {
       console.warn(err)
     }
   });
 
+  after(() => {
+    jm.stop();
+  })
+
   it('Should have a bullQueue instead of the default InMemoryQueue', () => {
-    createJmAndQ();
+
     expect(q).to.be.instanceof(BullMQQueue);
   })
 
@@ -108,15 +108,13 @@ describe('Job Scheduling using BullMQ', () => {
           done()
         } catch(err) {
           done(err);
-        } finally {
-          q2.stop();
         }
       })
     });
   })
 
   it('Should had defaulted configuration for queue if no configuration has been passed and defaultQueueConfiguration is set', async () => {
-    createJmAndQ();
+
     const q3 = jm.createQueue('Defaulted');
     const redisClient = await (q3 as unknown as BullMQQueue).innerQueue.client;
     expect(redisClient.options.connectTimeout).to.be.equal(50);
@@ -124,7 +122,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should execute a job and get result when job is success for string result', (done) => {
-    createJmAndQ();
+
     const functionToExecute = (p, j) => {
       return 'done';
     }
@@ -142,7 +140,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should execute a job and get result when job is success for complex result', (done) => {
-    createJmAndQ();
+
     const queueId = uuid();
     q = jm.createQueue(queueId);
     const functionToExecute = () => {
@@ -165,7 +163,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should execute a method from class instance and send result', (done) => {
-    createJmAndQ();
+
     const instance = new TestClass();
     const queueId = uuid();
     q = jm.createQueue(queueId);
@@ -180,7 +178,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should execute job with payload non object', async () => {
-    createJmAndQ();
+
     jm.createWorker('TestMQ', (p, j) => {
       return `A result with parameters : ${p}`;
     })
@@ -190,7 +188,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should execute job with payload non object and an async worker method', async () => {
-    createJmAndQ();
+
     jm.createWorker('TestMQ', async (p, j) => {
       return `A result with parameters : ${p}`;
     })
@@ -200,7 +198,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should execute job and get progress', async () => {
-    createJmAndQ();
+
     const progressPercentages = [];
     const progressMessages = [];
     const queueId = uuid();
@@ -224,7 +222,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should execute job and manage error', async () => {
-    createJmAndQ();
+
     jm.createWorker('TestMQ', async (p, j) => {
       throw new Error('Expected error');
     })
@@ -236,7 +234,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should execute multiple job', async () => {
-    createJmAndQ();
+
     const expected = [];
     const actuals = [];
     const jobs = [];
@@ -253,17 +251,17 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should return the right host name', async() => {
-    createJmAndQ();
+
     expect(await (q as BullMQQueue).getHost()).to.be.eql('localhost');
   })
 
   it('Should return the right port', async() => {
-    createJmAndQ();
+
     expect(await (q as BullMQQueue).getPort()).to.be.eql(6379);
   })
 
   it('Should work when send exception', (done) => {
-    createJmAndQ();
+
     jm.createWorker('TestMQ', (p, j) => {
       throw new Error('Expected Error');
     })
@@ -275,19 +273,24 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should get a job with a specific id', async() => {
-    createJmAndQ();
-    jm.createWorker('Test', () => {
+
+    jm.createWorker('TestMQ', () => {
       return 'done';
     })
-    const job = jm.execute('Test');
-    await expect(job.waitForCompletion()).to.be.fulfilled;
+    const job = jm.execute('TestMQ');
+    const result = await job.waitForCompletion();
     const searchJob = await jm.getJob(job.id);
-    expect(job).to.be.eql(searchJob);
+    expect(result).to.be.eql('done', `result:#${result}# job.id:${job.id} job.result:${job.result}`);
+    expect(job.id).to.be.eql(searchJob.id);
+    expect(job.payload).to.be.eql(searchJob.payload);
+    expect(job.state).to.be.eql(searchJob.state);
+    expect(searchJob.state).to.be.eql(JobStates.success);
+    expect(job.result).to.be.eql(searchJob.result);
   })
 
   it('Should get jobs with a filter on payload value', async() => {
-    createJmAndQ();
-    jm.createWorker('Test', () => {
+
+    jm.createWorker('TestMQ', () => {
       return 'done';
     })
     const semaphores = [];
@@ -301,7 +304,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should get jobs with a filter on payload metadata', async() => {
-    createJmAndQ();
+
     jm.createWorker('Test', () => {
       return 'done';
     })
@@ -317,7 +320,7 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should get jobs with a filter on payload value and metadata', async() => {
-    createJmAndQ();
+
     jm.createWorker('Test', () => {
       return 'done';
     })

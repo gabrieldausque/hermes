@@ -22,7 +22,7 @@ export class BullMQQueuesFactory implements QueuesFactory{
    */
   createQueue(queueName: string, queueOptions?:BullMQQueueConfiguration): Queue {
     return new BullMQQueue(queueName, {
-      bullQueueOptions:queueOptions.bullQueueOptions
+      bullQueueOptions:queueOptions?.bullQueueOptions
     });
   }
 }

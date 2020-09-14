@@ -312,11 +312,11 @@ export class BullMQQueue extends Queue {
    * @param jobId
    */
   async getJob(jobId: string): Promise<Job> {
-    const bullJob:InnerJob = await this.innerQueue.getJob(jobId);
-    if(bullJob){
-      return await this.convertInnerJobToBullJob(bullJob);
+    const foundJob = await this.innerQueue.getJob(jobId);
+    if(foundJob){
+      return await this.convertInnerJobToBullJob(foundJob);
     }
-    throw new Error(`Job with id ${jobId} not found`);
+    return;
   }
 
   /**
@@ -324,7 +324,8 @@ export class BullMQQueue extends Queue {
    * @param jobId
    */
   async hasJob(jobId: string): Promise<boolean> {
-    return (await this.innerQueue.getJob(jobId)) !== null;
+    const foundJob = await this.innerQueue.getJob(jobId);
+    return (foundJob) !== null && typeof foundJob !== 'undefined';
   }
 
   /**
