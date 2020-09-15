@@ -49,7 +49,7 @@ export class JobManager {
   /**
    * The default configuration to be used in queues
    */
-  private readonly defaultQueueConfiguration: any;
+  public readonly defaultQueueConfiguration: any;
 
   /**
    * Create an instance of JobManager

@@ -16,7 +16,7 @@ const sleep = util.promisify(setTimeout);
 
 
 describe('Job Scheduling using BullMQ', () => {
-  let jm:JobManager = new JobManager({
+  const jm:JobManager = new JobManager({
     queuesFactoryExportName:'BullMQ',
     defaultQueueConfiguration:{
       bullQueueOptions: {
@@ -31,7 +31,7 @@ describe('Job Scheduling using BullMQ', () => {
         }
       }
     }
-  });;
+  });
   let q:Queue = jm.createQueue('TestMQ');;
 
   before(() => {
@@ -58,13 +58,13 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should raise error event if no connection on redis', async () => {
-    jm = new JobManager({
+    const localJm = new JobManager({
       queuesFactoryExportName:'BullMQ'
     });
     let q2:Queue;
 
     const c = () => {
-      q2 = jm.createQueue('Error', {
+      q2 = localJm.createQueue('Error', {
         bullQueueOptions: {
           connection: {
             host: "localhost",
@@ -85,10 +85,10 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should connect to another port', (done) => {
-    jm = new JobManager({
+    const localJm = new JobManager({
       queuesFactoryExportName:'BullMQ'
     });
-    const q2 = jm.createQueue('Error', {
+    const q2 = localJm.createQueue('Error', {
       bullQueueOptions: {
         connection:{
           host:"localhost",
@@ -114,7 +114,6 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should had defaulted configuration for queue if no configuration has been passed and defaultQueueConfiguration is set', async () => {
-
     const q3 = jm.createQueue('Defaulted');
     const redisClient = await (q3 as unknown as BullMQQueue).innerQueue.client;
     expect(redisClient.options.connectTimeout).to.be.equal(50);
@@ -247,7 +246,13 @@ describe('Job Scheduling using BullMQ', () => {
       jobs.push(job.waitForCompletion());
     }
     await Promise.all(jobs);
-    expect(actuals).to.be.eql(expected);
+    const  sumActual = actuals.reduce((acc, c) => {
+      return acc + c;
+    });
+    const sumExpected = expected.reduce((acc, c) => {
+      return acc + c;
+    });
+    expect(sumActual).to.be.eql(sumExpected);
   })
 
   it('Should return the right host name', async() => {
@@ -289,31 +294,36 @@ describe('Job Scheduling using BullMQ', () => {
   })
 
   it('Should get jobs with a filter on payload value', async() => {
+    jm.createWorker('TestMQ', () => {
+      return 'done';
+    })
+    const semaphores = [];
+    semaphores.push(jm.execute('TestMQ',{ category:'aCategory', prop:'aProp'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aCategory', prop:'aProp2'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aSecondCategory', prop:'aProp3'}   ).waitForCompletion());
+    await Promise.all(semaphores);
+    const found = await jm.getJobs({ valueFilter:{ category: 'aCategory'} });
+    expect(found.length).to.be.eql(2);
+    return Promise.all([
+      expect(found.find((fj) => {
+        return fj.payload.value.category === 'aCategory' && fj.payload.value.prop === 'aProp'
+      })).to.be.ok,
+      expect(found.find((fj) => {
+        return fj.payload.value.category === 'aCategory' && fj.payload.value.prop === 'aProp2'
+      })).to.be.ok]);
+  })
+
+  it('Should get jobs with a filter on payload metadata', async() => {
 
     jm.createWorker('TestMQ', () => {
       return 'done';
     })
     const semaphores = [];
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}   ).waitForCompletion());
-    await Promise.all(semaphores);
-    const found = await jm.getJobs({ valueFilter:{ category: 'aCategory'} });
-    expect(found[0].payload.value).to.be.eql({ category:'aCategory', prop:'aProp'});
-    expect(found[1].payload.value).to.be.eql({ category:'aCategory', prop:'aProp2'});
-  })
-
-  it('Should get jobs with a filter on payload metadata', async() => {
-
-    jm.createWorker('Test', () => {
-      return 'done';
-    })
-    const semaphores = [];
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aSecondCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
     await Promise.all(semaphores);
     const found = await jm.getJobs({ metadataFilter:{ userName: 'aUser'} });
     expect(found.length).to.be.eql(3);
@@ -321,18 +331,18 @@ describe('Job Scheduling using BullMQ', () => {
 
   it('Should get jobs with a filter on payload value and metadata', async() => {
 
-    jm.createWorker('Test', () => {
+    jm.createWorker('TestMQ', () => {
       return 'done';
     })
     const semaphores = [];
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(jm.execute('TestMQ',{ category:'aCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
     await Promise.all(semaphores);
     const found = await jm.getJobs({ valueFilter:{category:'aCategory'}, metadataFilter:{ userName: 'aUser'} });
-    expect(found.length).to.be.eql(2);
+    expect(found.length).to.be.eql(3);
   })
 
 

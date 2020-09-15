@@ -224,11 +224,18 @@ export class BullQueue extends Queue {
   async getJob(jobId: string): Promise<Job> {
     const bullJob:InnerJob = await this.innerQueue.getJob(jobId);
     if(bullJob){
-      return await this.convertInnerJobToBullJob(bullJob);
+      const job = await this.convertInnerJobToBullJob(bullJob);
+      if(job.state === JobStates.running)
+        this.runningJobs.unshift(job);
+      return job;
     }
     return;
   }
 
+  /**
+   * Convert a job object from bull package to BullJob object
+   * @param bullJob
+   */
   private async convertInnerJobToBullJob(bullJob: InnerJob):Promise<BullJob> {
     const actionToExecute = (bullJob.name && bullJob.name !== '__default__') ? this.namedAction[bullJob.name] : this.action;
     const job: BullJob = new BullJob(actionToExecute, bullJob.data, bullJob.opts);
@@ -297,6 +304,11 @@ export class BullQueue extends Queue {
           }
         }
       }
+    }
+
+    for(const foundJob of listOfJobs) {
+      if(foundJob.state === JobStates.running)
+        this.runningJobs.push(foundJob)
     }
 
     return toReturn;

@@ -283,6 +283,10 @@ export class BullMQQueue extends Queue {
     }
   }
 
+  /**
+   * Convert a job object from bull package to BullJob object
+   * @param bullJob
+   */
   private async convertInnerJobToBullJob(bullJob: InnerJob):Promise<BullMQJob> {
     const actionToExecute = (bullJob.name && bullJob.name !== 'default') ? this.namedAction[bullJob.name] : this.action;
     const job: BullMQJob = new BullMQJob(actionToExecute, bullJob.data, bullJob.opts);
@@ -314,7 +318,10 @@ export class BullMQQueue extends Queue {
   async getJob(jobId: string): Promise<Job> {
     const foundJob = await this.innerQueue.getJob(jobId);
     if(foundJob){
-      return await this.convertInnerJobToBullJob(foundJob);
+      const job = await this.convertInnerJobToBullJob(foundJob);
+      if(job.state === JobStates.running)
+        this.runningJobs.unshift(job);
+      return job;
     }
     return;
   }
