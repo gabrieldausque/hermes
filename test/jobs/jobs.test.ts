@@ -4,7 +4,7 @@ import chai from 'chai';
 chai.use(require('chai-as-promised'));
 import {expect} from 'chai';
 
-import { Job, JobManager, Queue, InMemoryQueue, JobEvents } from '@hermes/jobs';
+import { Job, JobManager, Queue, InMemoryQueue, JobEvents, JobStates } from '@hermes/jobs';
 // @ts-ignore
 import {TestClass} from './TestClass';
 import { uuid } from 'uuidv4';
@@ -186,6 +186,28 @@ describe('Job scheduling tests', () => {
     await Promise.all(semaphores);
     const found = await jm.getJobs({ valueFilter:{category:'aCategory'}, metadataFilter:{ userName: 'aUser'} });
     expect(found.length).to.be.eql(2);
+  })
+
+  it('Should raise success event if a job is already success when subscribing to event', (done) => {
+    const job = new Job((payload) => {
+      return  `${payload} done`
+    }, { value:'test' });
+    job.state = JobStates.success;
+    job.result = job.toExecute(job.payload.value);
+    job.subscribeToSuccess((j) => {
+      done();
+    }, true)
+  })
+
+  it('Should raise completed event if a job is already success when subscribing to event', (done) => {
+    const job = new Job((payload) => {
+      return  `${payload} done`
+    }, { value:'test' });
+    job.state = JobStates.success;
+    job.result = job.toExecute(job.payload.value);
+    job.subscribeToCompleted((j) => {
+      done();
+    }, true)
   })
 
 })

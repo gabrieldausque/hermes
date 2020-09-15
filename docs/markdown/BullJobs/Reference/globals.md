@@ -10,6 +10,7 @@
 * [BullQueue](classes/bullqueue.md)
 * [BullQueuesFactory](classes/bullqueuesfactory.md)
 * [BullValueTypeBox](classes/bullvaluetypebox.md)
+* [Filter](classes/filter.md)
 * [InMemoryQueue](classes/inmemoryqueue.md)
 * [InMemoryQueuesFactory](classes/inmemoryqueuesfactory.md)
 * [Job](classes/job.md)
@@ -22,7 +23,9 @@
 * [BullJobOptions](interfaces/bulljoboptions.md)
 * [BullProcessingOptions](interfaces/bullprocessingoptions.md)
 * [BullQueueConfiguration](interfaces/bullqueueconfiguration.md)
+* [JobFilter](interfaces/jobfilter.md)
 * [JobManagerConfiguration](interfaces/jobmanagerconfiguration.md)
+* [PayLoad](interfaces/payload.md)
 * [ProcessingOptions](interfaces/processingoptions.md)
 * [QueuesFactory](interfaces/queuesfactory.md)
 
@@ -74,7 +77,7 @@ Name | Type |
 
 • **globalJobManager**: *[JobManager](classes/jobmanager.md)* = new JobManager()
 
-Defined in src/hermes_modules/jobs/JobManager.ts:169
+Defined in src/hermes_modules/jobs/JobManager.ts:210
 
 The global shared instance of the JobManager, by default using the InMemoryQueues
 
@@ -84,7 +87,7 @@ ___
 
 • **instancesFactory**: *any*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:12
+Defined in src/hermes_modules/jobs/JobManager.ts:14
 
 The shared instances factory that can be change through setJobManagerInstancesFactory. Defaulted to globalInstancesFactory
 
@@ -94,7 +97,7 @@ The shared instances factory that can be change through setJobManagerInstancesFa
 
 ▸ **getGlobalJobManager**(): *[JobManager](classes/jobmanager.md)*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:183
+Defined in src/hermes_modules/jobs/JobManager.ts:224
 
 Get the global shared instance of the JobManager
 
@@ -106,7 +109,7 @@ ___
 
 ▸ **getJobManagerInstancesFactory**(): *InstancesFactory*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:28
+Defined in src/hermes_modules/jobs/JobManager.ts:30
 
 Get the InstancesFactory that will be used by JobManager
 
@@ -118,7 +121,7 @@ ___
 
 ▸ **setGlobalJobManager**(`jobManager`: [JobManager](classes/jobmanager.md)): *void*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:175
+Defined in src/hermes_modules/jobs/JobManager.ts:216
 
 Change the global shared instance of the JobManager by the specified instance
 
@@ -136,7 +139,7 @@ ___
 
 ▸ **setJobManagerInstancesFactory**(`factory`: InstancesFactory): *void*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:18
+Defined in src/hermes_modules/jobs/JobManager.ts:20
 
 Set the InstancesFactory that will be used to create the QueuesFactory of further created JobManager
 
@@ -194,30 +197,30 @@ All available states for a Job
 
 ###  failed
 
-• **failed**: *number* = 666
+• **failed**: *string* = "failed"
 
 Defined in src/hermes_modules/jobs/jobs/JobStates.ts:8
 
 ###  running
 
-• **running**: *number* = 1
+• **running**: *string* = "running"
 
 Defined in src/hermes_modules/jobs/jobs/JobStates.ts:6
 
 ###  success
 
-• **success**: *number* = 2
+• **success**: *string* = "success"
 
 Defined in src/hermes_modules/jobs/jobs/JobStates.ts:7
 
 ###  timedOut
 
-• **timedOut**: *number* = 777
+• **timedOut**: *string* = "timedOut"
 
 Defined in src/hermes_modules/jobs/jobs/JobStates.ts:9
 
 ###  waiting
 
-• **waiting**: *number* = 0
+• **waiting**: *string* = "waiting"
 
 Defined in src/hermes_modules/jobs/jobs/JobStates.ts:5

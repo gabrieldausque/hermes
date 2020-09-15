@@ -2,6 +2,7 @@
 
 # Class: BullValueTypeBox
 
+**`deprecated`** 
 A box to encapsulate value type (string, number, boolean , etc...) in an object
 
 ## Hierarchy
@@ -24,7 +25,7 @@ A box to encapsulate value type (string, number, boolean , etc...) in an object
 
 \+ **new BullValueTypeBox**(`valueToBox`: any): *[BullValueTypeBox](bullvaluetypebox.md)*
 
-Defined in src/hermes_modules/bull-jobs/BullValueTypeBox.ts:4
+Defined in src/hermes_modules/bull-jobs/BullValueTypeBox.ts:5
 
 Create a new BullValueTypeBox
 
@@ -42,6 +43,6 @@ Name | Type | Description |
 
 • **boxedValue**: *any*
 
-Defined in src/hermes_modules/bull-jobs/BullValueTypeBox.ts:16
+Defined in src/hermes_modules/bull-jobs/BullValueTypeBox.ts:17
 
 the encapsulated value

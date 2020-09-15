@@ -114,14 +114,18 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="bullqueue.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="bullqueue.html#convertinnerjobtobulljob" class="tsd-kind-icon">convert<wbr>Inner<wbr>Job<wbr>ToBull<wbr>Job</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="bullqueue.html#emit" class="tsd-kind-icon">emit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="bullqueue.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="bullqueue.html#executejob" class="tsd-kind-icon">execute<wbr>Job</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="bullqueue.html#getconfiguration" class="tsd-kind-icon">get<wbr>Configuration</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bullqueue.html#gethost" class="tsd-kind-icon">get<wbr>Host</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="bullqueue.html#getjob" class="tsd-kind-icon">get<wbr>Job</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="bullqueue.html#getjobs" class="tsd-kind-icon">get<wbr>Jobs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="bullqueue.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="bullqueue.html#getname" class="tsd-kind-icon">get<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bullqueue.html#getport" class="tsd-kind-icon">get<wbr>Port</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="bullqueue.html#hasjob" class="tsd-kind-icon">has<wbr>Job</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="bullqueue.html#ispaused" class="tsd-kind-icon">is<wbr>Paused</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="bullqueue.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="bullqueue.html#listeners" class="tsd-kind-icon">listeners</a></li>
@@ -163,7 +167,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="queue.html">Queue</a>.<a href="queue.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:27</li>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:29</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -204,7 +208,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#action">action</a></p>
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:19</li>
+							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:18</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -220,7 +224,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#configuration">configuration</a></p>
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:34</li>
+							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:33</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -235,7 +239,7 @@
 					<div class="tsd-signature tsd-kind-icon">inner<wbr>Queue<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:17</li>
+							<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:19</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -251,7 +255,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#isqueue">isQueue</a></p>
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:14</li>
+							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:13</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -267,7 +271,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#jobs">jobs</a></p>
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:24</li>
+							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:23</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -283,7 +287,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#name">name</a></p>
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:39</li>
+							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:38</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -298,7 +302,7 @@
 					<div class="tsd-signature tsd-kind-icon">named<wbr>Action<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:22</li>
+							<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:24</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -319,7 +323,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#paused">paused</a></p>
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:29</li>
+							<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:28</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -334,7 +338,7 @@
 					<div class="tsd-signature tsd-kind-icon">running<wbr>Jobs<span class="tsd-signature-symbol">:</span> <a href="bulljob.html" class="tsd-signature-type">BullJob</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:27</li>
+							<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:29</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -388,6 +392,36 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="convertinnerjobtobulljob" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> convert<wbr>Inner<wbr>Job<wbr>ToBull<wbr>Job</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">convert<wbr>Inner<wbr>Job<wbr>ToBull<wbr>Job<span class="tsd-signature-symbol">(</span>bullJob<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InnerJob</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="bulljob.html" class="tsd-signature-type">BullJob</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:239</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Convert a job object from bull package to BullJob object</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>bullJob: <span class="tsd-signature-type">InnerJob</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="bulljob.html" class="tsd-signature-type">BullJob</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -446,7 +480,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:99</li>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:101</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -478,7 +512,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#getconfiguration">getConfiguration</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:66</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:65</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -500,7 +534,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:187</li>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:195</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -509,6 +543,68 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="getjob" class="tsd-anchor"></a>
+					<h3>get<wbr>Job</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Job<span class="tsd-signature-symbol">(</span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="job.html" class="tsd-signature-type">Job</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="queue.html">Queue</a>.<a href="queue.html#getjob">getJob</a></p>
+								<ul>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:224</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the job from the queue</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>jobId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="job.html" class="tsd-signature-type">Job</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="getjobs" class="tsd-anchor"></a>
+					<h3>get<wbr>Jobs</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Jobs<span class="tsd-signature-symbol">(</span>filter<span class="tsd-signature-symbol">: </span><a href="../interfaces/jobfilter.html" class="tsd-signature-type">JobFilter</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="job.html" class="tsd-signature-type">Job</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="queue.html">Queue</a>.<a href="queue.html#getjobs">getJobs</a></p>
+								<ul>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:275</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get a list of jobs that match payload value filter and/or metadata filter</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>filter: <a href="../interfaces/jobfilter.html" class="tsd-signature-type">JobFilter</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="job.html" class="tsd-signature-type">Job</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -541,7 +637,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#getname">getName</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:73</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:72</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -563,7 +659,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:194</li>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:202</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -572,6 +668,37 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="hasjob" class="tsd-anchor"></a>
+					<h3>has<wbr>Job</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">has<wbr>Job<span class="tsd-signature-symbol">(</span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="queue.html">Queue</a>.<a href="queue.html#hasjob">hasJob</a></p>
+								<ul>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:267</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>true if the queue owns a job with the specified id</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>jobId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -586,7 +713,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#ispaused">isPaused</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:111</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:128</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -831,7 +958,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#pause">pause</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:97</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:114</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -937,14 +1064,14 @@
 					<a name="push" class="tsd-anchor"></a>
 					<h3>push</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">push<span class="tsd-signature-symbol">(</span>actionPayloadOrJob<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, jobOptions<span class="tsd-signature-symbol">: </span><a href="../interfaces/bulljoboptions.html" class="tsd-signature-type">BullJobOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="job.html" class="tsd-signature-type">Job</a></li>
+						<li class="tsd-signature tsd-kind-icon">push<span class="tsd-signature-symbol">(</span>actionPayloadOrJob<span class="tsd-signature-symbol">: </span><a href="../interfaces/payload.html" class="tsd-signature-type">PayLoad</a>, jobOptions<span class="tsd-signature-symbol">: </span><a href="../interfaces/bulljoboptions.html" class="tsd-signature-type">BullJobOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="job.html" class="tsd-signature-type">Job</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="queue.html">Queue</a>.<a href="queue.html#push">push</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:156</li>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:162</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -955,7 +1082,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>actionPayloadOrJob: <span class="tsd-signature-type">any</span></h5>
+									<h5>actionPayloadOrJob: <a href="../interfaces/payload.html" class="tsd-signature-type">PayLoad</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The payload or the job to execute</p>
 									</div>
@@ -982,7 +1109,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#raisejobcompleted">raiseJobCompleted</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:139</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:156</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1014,7 +1141,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#raisejobfailed">raiseJobFailed</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:130</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:147</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1052,7 +1179,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#raisejobsuccess">raiseJobSuccess</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:120</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:137</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1090,7 +1217,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#raisequeueerror">raiseQueueError</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:148</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:165</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1122,7 +1249,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#raiseready">raiseReady</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:155</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:172</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1238,7 +1365,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="queue.html">Queue</a>.<a href="queue.html#resume">resume</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:104</li>
+									<li>Defined in src/hermes_modules/jobs/queues/Queue.ts:121</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1285,7 +1412,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="queue.html">Queue</a>.<a href="queue.html#start">start</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:201</li>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:209</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1308,7 +1435,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="queue.html">Queue</a>.<a href="queue.html#stop">stop</a></p>
 								<ul>
-									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:208</li>
+									<li>Defined in src/hermes_modules/bull-jobs/BullQueue.ts:216</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1373,6 +1500,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="bullqueue.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="bullqueue.html#convertinnerjobtobulljob" class="tsd-kind-icon">convert<wbr>Inner<wbr>Job<wbr>ToBull<wbr>Job</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="bullqueue.html#emit" class="tsd-kind-icon">emit</a>
 							</li>
@@ -1388,6 +1518,12 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="bullqueue.html#gethost" class="tsd-kind-icon">get<wbr>Host</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="bullqueue.html#getjob" class="tsd-kind-icon">get<wbr>Job</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="bullqueue.html#getjobs" class="tsd-kind-icon">get<wbr>Jobs</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="bullqueue.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a>
 							</li>
@@ -1396,6 +1532,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="bullqueue.html#getport" class="tsd-kind-icon">get<wbr>Port</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="bullqueue.html#hasjob" class="tsd-kind-icon">has<wbr>Job</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="bullqueue.html#ispaused" class="tsd-kind-icon">is<wbr>Paused</a>
@@ -1477,6 +1616,9 @@
 						<a href="bullvaluetypebox.html" class="tsd-kind-icon">Bull<wbr>Value<wbr>Type<wbr>Box</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
+						<a href="filter.html" class="tsd-kind-icon">Filter</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
 						<a href="inmemoryqueue.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queue</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
@@ -1504,7 +1646,13 @@
 						<a href="../interfaces/bullqueueconfiguration.html" class="tsd-kind-icon">Bull<wbr>Queue<wbr>Configuration</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="../interfaces/jobfilter.html" class="tsd-kind-icon">Job<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="../interfaces/jobmanagerconfiguration.html" class="tsd-kind-icon">Job<wbr>Manager<wbr>Configuration</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="../interfaces/payload.html" class="tsd-kind-icon">Pay<wbr>Load</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="../interfaces/processingoptions.html" class="tsd-kind-icon">Processing<wbr>Options</a>

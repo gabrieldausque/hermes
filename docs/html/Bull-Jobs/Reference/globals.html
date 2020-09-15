@@ -74,6 +74,7 @@
 								<li class="tsd-kind-class"><a href="classes/bullqueue.html" class="tsd-kind-icon">Bull<wbr>Queue</a></li>
 								<li class="tsd-kind-class"><a href="classes/bullqueuesfactory.html" class="tsd-kind-icon">Bull<wbr>Queues<wbr>Factory</a></li>
 								<li class="tsd-kind-class"><a href="classes/bullvaluetypebox.html" class="tsd-kind-icon">Bull<wbr>Value<wbr>Type<wbr>Box</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/filter.html" class="tsd-kind-icon">Filter</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/inmemoryqueue.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queue</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/inmemoryqueuesfactory.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queues<wbr>Factory</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/job.html" class="tsd-kind-icon">Job</a></li>
@@ -88,7 +89,9 @@
 								<li class="tsd-kind-interface"><a href="interfaces/bulljoboptions.html" class="tsd-kind-icon">Bull<wbr>Job<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/bullprocessingoptions.html" class="tsd-kind-icon">Bull<wbr>Processing<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/bullqueueconfiguration.html" class="tsd-kind-icon">Bull<wbr>Queue<wbr>Configuration</a></li>
+								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/jobfilter.html" class="tsd-kind-icon">Job<wbr>Filter</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/jobmanagerconfiguration.html" class="tsd-kind-icon">Job<wbr>Manager<wbr>Configuration</a></li>
+								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/payload.html" class="tsd-kind-icon">Pay<wbr>Load</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/processingoptions.html" class="tsd-kind-icon">Processing<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/queuesfactory.html" class="tsd-kind-icon">Queues<wbr>Factory</a></li>
 							</ul>
@@ -175,7 +178,7 @@
 					<div class="tsd-signature tsd-kind-icon">global<wbr>Job<wbr>Manager<span class="tsd-signature-symbol">:</span> <a href="classes/jobmanager.html" class="tsd-signature-type">JobManager</a><span class="tsd-signature-symbol"> = new JobManager()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/JobManager.ts:169</li>
+							<li>Defined in src/hermes_modules/jobs/JobManager.ts:210</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -190,7 +193,7 @@
 					<div class="tsd-signature tsd-kind-icon">instances<wbr>Factory<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/hermes_modules/jobs/JobManager.ts:12</li>
+							<li>Defined in src/hermes_modules/jobs/JobManager.ts:14</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -212,7 +215,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/JobManager.ts:183</li>
+									<li>Defined in src/hermes_modules/jobs/JobManager.ts:224</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -234,7 +237,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/JobManager.ts:28</li>
+									<li>Defined in src/hermes_modules/jobs/JobManager.ts:30</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -256,7 +259,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/JobManager.ts:175</li>
+									<li>Defined in src/hermes_modules/jobs/JobManager.ts:216</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -286,7 +289,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/hermes_modules/jobs/JobManager.ts:18</li>
+									<li>Defined in src/hermes_modules/jobs/JobManager.ts:20</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -382,7 +385,7 @@
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
 						<a name="jobstates.failed" class="tsd-anchor"></a>
 						<h3>failed</h3>
-						<div class="tsd-signature tsd-kind-icon">failed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 666</span></div>
+						<div class="tsd-signature tsd-kind-icon">failed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;failed&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in src/hermes_modules/jobs/jobs/JobStates.ts:8</li>
@@ -392,7 +395,7 @@
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
 						<a name="jobstates.running" class="tsd-anchor"></a>
 						<h3>running</h3>
-						<div class="tsd-signature tsd-kind-icon">running<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></div>
+						<div class="tsd-signature tsd-kind-icon">running<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;running&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in src/hermes_modules/jobs/jobs/JobStates.ts:6</li>
@@ -402,7 +405,7 @@
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
 						<a name="jobstates.success" class="tsd-anchor"></a>
 						<h3>success</h3>
-						<div class="tsd-signature tsd-kind-icon">success<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 2</span></div>
+						<div class="tsd-signature tsd-kind-icon">success<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;success&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in src/hermes_modules/jobs/jobs/JobStates.ts:7</li>
@@ -412,7 +415,7 @@
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
 						<a name="jobstates.timedout" class="tsd-anchor"></a>
 						<h3>timed<wbr>Out</h3>
-						<div class="tsd-signature tsd-kind-icon">timed<wbr>Out<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 777</span></div>
+						<div class="tsd-signature tsd-kind-icon">timed<wbr>Out<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;timedOut&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in src/hermes_modules/jobs/jobs/JobStates.ts:9</li>
@@ -422,7 +425,7 @@
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
 						<a name="jobstates.waiting" class="tsd-anchor"></a>
 						<h3>waiting</h3>
-						<div class="tsd-signature tsd-kind-icon">waiting<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
+						<div class="tsd-signature tsd-kind-icon">waiting<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;waiting&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in src/hermes_modules/jobs/jobs/JobStates.ts:5</li>
@@ -455,6 +458,9 @@
 						<a href="classes/bullvaluetypebox.html" class="tsd-kind-icon">Bull<wbr>Value<wbr>Type<wbr>Box</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/filter.html" class="tsd-kind-icon">Filter</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/inmemoryqueue.html" class="tsd-kind-icon">In<wbr>Memory<wbr>Queue</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
@@ -482,7 +488,13 @@
 						<a href="interfaces/bullqueueconfiguration.html" class="tsd-kind-icon">Bull<wbr>Queue<wbr>Configuration</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/jobfilter.html" class="tsd-kind-icon">Job<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/jobmanagerconfiguration.html" class="tsd-kind-icon">Job<wbr>Manager<wbr>Configuration</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/payload.html" class="tsd-kind-icon">Pay<wbr>Load</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/processingoptions.html" class="tsd-kind-icon">Processing<wbr>Options</a>

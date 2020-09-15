@@ -34,14 +34,18 @@ The Queue implementation for Bull
 ### Methods
 
 * [addListener](bullmqqueue.md#addlistener)
+* [convertInnerJobToBullJob](bullmqqueue.md#private-convertinnerjobtobulljob)
 * [emit](bullmqqueue.md#emit)
 * [eventNames](bullmqqueue.md#eventnames)
 * [executeJob](bullmqqueue.md#private-executejob)
 * [getConfiguration](bullmqqueue.md#getconfiguration)
 * [getHost](bullmqqueue.md#gethost)
+* [getJob](bullmqqueue.md#getjob)
+* [getJobs](bullmqqueue.md#getjobs)
 * [getMaxListeners](bullmqqueue.md#getmaxlisteners)
 * [getName](bullmqqueue.md#getname)
 * [getPort](bullmqqueue.md#getport)
+* [hasJob](bullmqqueue.md#hasjob)
 * [isPaused](bullmqqueue.md#ispaused)
 * [listenerCount](bullmqqueue.md#listenercount)
 * [listeners](bullmqqueue.md#listeners)
@@ -74,7 +78,7 @@ The Queue implementation for Bull
 
 *Overrides [Queue](queue.md).[constructor](queue.md#protected-constructor)*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:38
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:39
 
 Create a new BullQueue
 
@@ -95,7 +99,7 @@ Name | Type | Description |
 
 *Inherited from [Queue](queue.md).[action](queue.md#protected-action)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:19
+Defined in src/hermes_modules/jobs/queues/Queue.ts:18
 
 The action to be executed on job received
 
@@ -107,7 +111,7 @@ ___
 
 *Inherited from [Queue](queue.md).[configuration](queue.md#protected-configuration)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:34
+Defined in src/hermes_modules/jobs/queues/Queue.ts:33
 
 Configuration of the queue used on creation
 
@@ -117,7 +121,7 @@ ___
 
 • **innerQueue**: *InnerQueue*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:17
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:18
 
 The inner bull queue
 
@@ -127,7 +131,7 @@ ___
 
 • **innerQueueEvents**: *InnerQueueEvents*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:22
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:23
 
 The inner bull queue
 
@@ -137,7 +141,7 @@ ___
 
 • **innerQueueWorker**: *InnerWorker*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:27
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:28
 
 The inner bull worker
 
@@ -147,7 +151,7 @@ ___
 
 • **isClosed**: *boolean*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:38
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:39
 
 ___
 
@@ -157,7 +161,7 @@ ___
 
 *Inherited from [Queue](queue.md).[isQueue](queue.md#isqueue)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:14
+Defined in src/hermes_modules/jobs/queues/Queue.ts:13
 
 Indicate if the object is a Queue
 
@@ -169,7 +173,7 @@ ___
 
 *Inherited from [Queue](queue.md).[jobs](queue.md#protected-jobs)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:24
+Defined in src/hermes_modules/jobs/queues/Queue.ts:23
 
 A list of jobs to be used internally - TO BE REMOVED
 
@@ -181,7 +185,7 @@ ___
 
 *Inherited from [Queue](queue.md).[name](queue.md#protected-name)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:39
+Defined in src/hermes_modules/jobs/queues/Queue.ts:38
 
 Name of the current Queue
 
@@ -191,7 +195,7 @@ ___
 
 • **namedAction**: *object*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:32
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:33
 
 The set of action used for named jobs
 
@@ -205,7 +209,7 @@ ___
 
 *Inherited from [Queue](queue.md).[paused](queue.md#protected-paused)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:29
+Defined in src/hermes_modules/jobs/queues/Queue.ts:28
 
 True if the queue is paused. Usage depends on implementation
 
@@ -215,7 +219,7 @@ ___
 
 • **runningJobs**: *[BullMQJob](bullmqjob.md)[]*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:37
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:38
 
 The list of runnings job for the current queue
 
@@ -244,6 +248,24 @@ Name | Type |
 `...args` | any[] |
 
 **Returns:** *this*
+
+___
+
+### `Private` convertInnerJobToBullJob
+
+▸ **convertInnerJobToBullJob**(`bullJob`: InnerJob): *Promise‹[BullMQJob](bullmqjob.md)›*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:290
+
+Convert a job object from bull package to BullJob object
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`bullJob` | InnerJob |   |
+
+**Returns:** *Promise‹[BullMQJob](bullmqjob.md)›*
 
 ___
 
@@ -282,7 +304,7 @@ ___
 
 ▸ **executeJob**(`bullJob`: InnerJob‹any›): *Promise‹any›*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:113
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:114
 
 Execute a job
 
@@ -302,7 +324,7 @@ ___
 
 *Inherited from [Queue](queue.md).[getConfiguration](queue.md#getconfiguration)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:66
+Defined in src/hermes_modules/jobs/queues/Queue.ts:65
 
 Get the configuration used on creation
 
@@ -314,11 +336,51 @@ ___
 
 ▸ **getHost**(): *Promise‹string›*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:203
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:201
 
 Get the redis host used by this queue
 
 **Returns:** *Promise‹string›*
+
+___
+
+###  getJob
+
+▸ **getJob**(`jobId`: string): *Promise‹[Job](job.md)›*
+
+*Overrides [Queue](queue.md).[getJob](queue.md#abstract-getjob)*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:318
+
+Get the job with the corresponding id
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`jobId` | string |   |
+
+**Returns:** *Promise‹[Job](job.md)›*
+
+___
+
+###  getJobs
+
+▸ **getJobs**(`filter`: [JobFilter](../interfaces/jobfilter.md)): *Promise‹[Job](job.md)[]›*
+
+*Overrides [Queue](queue.md).[getJobs](queue.md#abstract-getjobs)*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:342
+
+Get a list of jobs that match payload value filter and/or metadata filter
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`filter` | [JobFilter](../interfaces/jobfilter.md) |   |
+
+**Returns:** *Promise‹[Job](job.md)[]›*
 
 ___
 
@@ -340,7 +402,7 @@ ___
 
 *Inherited from [Queue](queue.md).[getName](queue.md#getname)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:73
+Defined in src/hermes_modules/jobs/queues/Queue.ts:72
 
 Get the name of the Queue
 
@@ -352,11 +414,31 @@ ___
 
 ▸ **getPort**(): *Promise‹number›*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:210
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:208
 
 Get the port used for the redis connexion
 
 **Returns:** *Promise‹number›*
+
+___
+
+###  hasJob
+
+▸ **hasJob**(`jobId`: string): *Promise‹boolean›*
+
+*Overrides [Queue](queue.md).[hasJob](queue.md#abstract-hasjob)*
+
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:333
+
+Check if the job with corresponding id is in the current queue
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`jobId` | string |   |
+
+**Returns:** *Promise‹boolean›*
 
 ___
 
@@ -366,7 +448,7 @@ ___
 
 *Inherited from [Queue](queue.md).[isPaused](queue.md#ispaused)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:111
+Defined in src/hermes_modules/jobs/queues/Queue.ts:128
 
 Indicate if the current Queue is paused
 
@@ -468,7 +550,7 @@ ___
 
 *Overrides [Queue](queue.md).[onJobToProcess](queue.md#onjobtoprocess)*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:152
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:150
 
 Create the worker to execute on job execution request
 See [bullmq](https://docs.bullmq.io/) for processingOptions details
@@ -522,7 +604,7 @@ ___
 
 *Inherited from [Queue](queue.md).[pause](queue.md#pause)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:97
+Defined in src/hermes_modules/jobs/queues/Queue.ts:114
 
 Pause the current Queue
 
@@ -588,7 +670,7 @@ ___
 
 *Overrides [Queue](queue.md).[push](queue.md#abstract-push)*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:173
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:171
 
 Push a job to be executed
 
@@ -609,7 +691,7 @@ ___
 
 *Inherited from [Queue](queue.md).[raiseJobCompleted](queue.md#raisejobcompleted)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:139
+Defined in src/hermes_modules/jobs/queues/Queue.ts:156
 
 As an EventEmitter will raise the 'completed' event for a job that is successful or failed.
 
@@ -629,7 +711,7 @@ ___
 
 *Inherited from [Queue](queue.md).[raiseJobFailed](queue.md#raisejobfailed)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:130
+Defined in src/hermes_modules/jobs/queues/Queue.ts:147
 
 As an EventEmitter, will raise the 'failed' event to indicate when a job is failed. Return the job concerned and the Error
 
@@ -650,7 +732,7 @@ ___
 
 *Inherited from [Queue](queue.md).[raiseJobSuccess](queue.md#raisejobsuccess)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:120
+Defined in src/hermes_modules/jobs/queues/Queue.ts:137
 
 As an EventEmitter, will raise the 'success' event to indicate when a job is successful. Return the job concerned and the result
 
@@ -671,7 +753,7 @@ ___
 
 *Inherited from [Queue](queue.md).[raiseQueueError](queue.md#raisequeueerror)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:148
+Defined in src/hermes_modules/jobs/queues/Queue.ts:165
 
 As an EventEmitter will raise the 'error' event if the queue encounters an Error
 
@@ -691,7 +773,7 @@ ___
 
 *Inherited from [Queue](queue.md).[raiseReady](queue.md#raiseready)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:155
+Defined in src/hermes_modules/jobs/queues/Queue.ts:172
 
 As an EventEmitter will raise the 'ready' event to indicate if the queue is usable
 
@@ -767,7 +849,7 @@ ___
 
 *Inherited from [Queue](queue.md).[resume](queue.md#resume)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:104
+Defined in src/hermes_modules/jobs/queues/Queue.ts:121
 
 Resume the current Queue treatment
 
@@ -799,7 +881,7 @@ ___
 
 *Overrides [Queue](queue.md).[start](queue.md#abstract-start)*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:217
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:215
 
 Do nothing, bull has no need for a start
 
@@ -813,7 +895,7 @@ ___
 
 *Overrides [Queue](queue.md).[stop](queue.md#abstract-stop)*
 
-Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:280
+Defined in src/hermes_modules/bullmq-jobs/BullMQQueue.ts:278
 
 Close the inner queue
 

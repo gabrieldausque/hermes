@@ -43,7 +43,12 @@ export class Job extends EventEmitter {
   /**
    * The progress percentage
    */
-  private progress: number;
+  public progress: number;
+
+  /**
+   * Last progress message
+   */
+  public progressMessage: string;
 
   /**
    * Create a new Job
@@ -67,12 +72,12 @@ export class Job extends EventEmitter {
   async waitForCompletion(timeoutInMs?) {
     const current = this;
     const semaphore = new Promise((resolve, reject) => {
-      current.once('completed', () => {
+      current.subscribeToCompleted(() => {
         if(current.state === JobStates.success)
           resolve(current.result)
         else
           reject(current.err)
-      })
+      }, true)
       if(timeoutInMs && typeof timeoutInMs === 'number'){
         setTimeout(() => {
           current.state = JobStates.timedOut;
@@ -80,8 +85,7 @@ export class Job extends EventEmitter {
         })
       }
     })
-    const result = await semaphore
-    return result;
+    return await semaphore;
   }
 
   /**
@@ -115,6 +119,7 @@ export class Job extends EventEmitter {
    */
   raiseProgressEvent(completionPercentage:number, completionMessage?:string) {
     this.progress = completionPercentage;
+    this.progressMessage = completionMessage;
     this.emit(JobEvents.progress, { percentage:completionPercentage, message:completionMessage}, this);
   }
 
@@ -127,5 +132,67 @@ export class Job extends EventEmitter {
     this.state = JobStates.success;
     this.emit(JobEvents.success, this);
     this.raiseCompletedEvent();
+  }
+
+  /**
+   * Subscribe to the JobEvents.success event with the corresponding listener
+   * @param listener the listener
+   * @param once true if you want the listener to be executed once
+   */
+  subscribeToSuccess(listener:(...args) => void, once:boolean = false) {
+    this.subscribe(JobEvents.success, listener, once);
+    if(this.state === JobStates.success) {
+      this.raiseSuccessEvent(this.result);
+    }
+  }
+
+  /**
+   * Subscribe to the JobEvents.failed event with the corresponding listener
+   * @param listener the listener
+   * @param once true if you want the listener to be executed once
+   */
+  subscribeToFailed(listener:(...args) => void, once:boolean = false) {
+    this.subscribe(JobEvents.failed, listener, once);
+    if(this.state === JobStates.failed) {
+      this.raiseFailedEvent(this.err);
+    }
+  }
+
+  /**
+   * Subscribe to the JobEvents.completed event with the corresponding listener
+   * @param listener the listener
+   * @param once true if you want the listener to be executed once
+   */
+  subscribeToCompleted(listener:(...args) => void, once:boolean = false) {
+    this.subscribe(JobEvents.completed, listener, once);
+    if(this.state === JobStates.failed || this.state === JobStates.success || this.state === JobStates.timedOut) {
+      this.raiseCompletedEvent()
+    }
+  }
+
+  /**
+   * Subscribe to the JobEvents.progress event with the corresponding listener
+   * @param listener the listener
+   * @param once true if you want the listener to be executed once
+   */
+  subscribeToProgress(listener:(...args) => void, once:boolean = false) {
+    this.subscribe(JobEvents.progress, listener, once)
+    if(this.state === JobStates.running) {
+      this.raiseProgressEvent(this.progress, this.progressMessage)
+    }
+  }
+
+  /**
+   * Subscribe to a JobEvents.X event with the corresponding listener
+   * @param eventName the event to subscribe to
+   * @param listener the listener
+   * @param once true if you want the listener to be executed once
+   */
+  protected subscribe(eventName:string, listener:(...args) => void, once:boolean = false):void {
+    if(!once) {
+      this.on(eventName, listener);
+    } else {
+      this.once(eventName, listener);
+    }
   }
 }

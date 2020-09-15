@@ -23,6 +23,8 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 * [innerJob](bulljob.md#innerjob)
 * [jobOptions](bulljob.md#joboptions)
 * [payload](bulljob.md#payload)
+* [progress](bulljob.md#progress)
+* [progressMessage](bulljob.md#progressmessage)
 * [result](bulljob.md#result)
 * [state](bulljob.md#state)
 * [toExecute](bulljob.md#toexecute)
@@ -50,17 +52,22 @@ The job implementation used for Bull, especially to encapsulate value type as pa
 * [removeListener](bulljob.md#removelistener)
 * [setInnerJob](bulljob.md#setinnerjob)
 * [setMaxListeners](bulljob.md#setmaxlisteners)
+* [subscribe](bulljob.md#protected-subscribe)
+* [subscribeToCompleted](bulljob.md#subscribetocompleted)
+* [subscribeToFailed](bulljob.md#subscribetofailed)
+* [subscribeToProgress](bulljob.md#subscribetoprogress)
+* [subscribeToSuccess](bulljob.md#subscribetosuccess)
 * [waitForCompletion](bulljob.md#waitforcompletion)
 
 ## Constructors
 
 ###  constructor
 
-\+ **new BullJob**(`toExecute`: any, `payload?`: any, `jobOptions?`: object): *[BullJob](bulljob.md)*
+\+ **new BullJob**(`toExecute`: any, `payload?`: [PayLoad](../interfaces/payload.md), `jobOptions?`: object): *[BullJob](bulljob.md)*
 
 *Inherited from [Job](job.md).[constructor](job.md#constructor)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:45
+Defined in src/hermes_modules/jobs/jobs/Job.ts:51
 
 Create a new Job
 
@@ -69,7 +76,7 @@ Create a new Job
 Name | Type | Description |
 ------ | ------ | ------ |
 `toExecute` | any | function to be executed |
-`payload?` | any | payload to use for execution |
+`payload?` | [PayLoad](../interfaces/payload.md) | payload to use for execution |
 `jobOptions?` | object | options to use for execution  |
 
 **Returns:** *[BullJob](bulljob.md)*
@@ -82,7 +89,7 @@ Name | Type | Description |
 
 *Inherited from [Job](job.md).[err](job.md#err)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:30
+Defined in src/hermes_modules/jobs/jobs/Job.ts:31
 
 err that may occured during execution
 
@@ -94,7 +101,7 @@ ___
 
 *Inherited from [Job](job.md).[id](job.md#id)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:10
+Defined in src/hermes_modules/jobs/jobs/Job.ts:11
 
 The id of the current job
 
@@ -116,7 +123,7 @@ ___
 
 *Inherited from [Job](job.md).[jobOptions](job.md#joboptions)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:40
+Defined in src/hermes_modules/jobs/jobs/Job.ts:41
 
 options that may be used for the execution
 
@@ -128,13 +135,37 @@ ___
 
 ###  payload
 
-• **payload**: *any*
+• **payload**: *[PayLoad](../interfaces/payload.md)*
 
 *Inherited from [Job](job.md).[payload](job.md#payload)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:25
+Defined in src/hermes_modules/jobs/jobs/Job.ts:26
 
 payload passed to the function that will be executed
+
+___
+
+###  progress
+
+• **progress**: *number*
+
+*Inherited from [Job](job.md).[progress](job.md#progress)*
+
+Defined in src/hermes_modules/jobs/jobs/Job.ts:46
+
+The progress percentage
+
+___
+
+###  progressMessage
+
+• **progressMessage**: *string*
+
+*Inherited from [Job](job.md).[progressMessage](job.md#progressmessage)*
+
+Defined in src/hermes_modules/jobs/jobs/Job.ts:51
+
+Last progress message
 
 ___
 
@@ -144,7 +175,7 @@ ___
 
 *Inherited from [Job](job.md).[result](job.md#result)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:15
+Defined in src/hermes_modules/jobs/jobs/Job.ts:16
 
 Result of the job execution
 
@@ -152,11 +183,11 @@ ___
 
 ###  state
 
-• **state**: *number*
+• **state**: *string*
 
 *Inherited from [Job](job.md).[state](job.md#state)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:35
+Defined in src/hermes_modules/jobs/jobs/Job.ts:36
 
 state of the current job. see JobStates
 
@@ -168,7 +199,7 @@ ___
 
 *Inherited from [Job](job.md).[toExecute](job.md#toexecute)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:20
+Defined in src/hermes_modules/jobs/jobs/Job.ts:21
 
 function that will be executed
 
@@ -427,7 +458,7 @@ ___
 
 *Inherited from [Job](job.md).[raiseCompletedEvent](job.md#raisecompletedevent)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:105
+Defined in src/hermes_modules/jobs/jobs/Job.ts:110
 
 As an EventEmitter, raise the 'completed' event of the job, even if it fails or success
 
@@ -441,7 +472,7 @@ ___
 
 *Inherited from [Job](job.md).[raiseFailedEvent](job.md#raisefailedevent)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:90
+Defined in src/hermes_modules/jobs/jobs/Job.ts:95
 
 As an EventEmitter, raise the 'failed' event of the job
 
@@ -482,7 +513,7 @@ ___
 
 *Inherited from [Job](job.md).[raiseSuccessEvent](job.md#raisesuccessevent)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:124
+Defined in src/hermes_modules/jobs/jobs/Job.ts:130
 
 As an EventEmitter, raise the 'success' event of the job
 
@@ -594,13 +625,177 @@ Name | Type |
 
 ___
 
+### `Protected` subscribe
+
+▸ **subscribe**(`eventName`: string, `listener`: function, `once`: boolean): *void*
+
+*Inherited from [Job](job.md).[subscribe](job.md#protected-subscribe)*
+
+Defined in src/hermes_modules/jobs/jobs/Job.ts:191
+
+Subscribe to a JobEvents.X event with the corresponding listener
+
+**Parameters:**
+
+▪ **eventName**: *string*
+
+the event to subscribe to
+
+▪ **listener**: *function*
+
+the listener
+
+▸ (...`args`: any[]): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`...args` | any[] |
+
+▪`Default value`  **once**: *boolean*= false
+
+true if you want the listener to be executed once
+
+**Returns:** *void*
+
+___
+
+###  subscribeToCompleted
+
+▸ **subscribeToCompleted**(`listener`: function, `once`: boolean): *void*
+
+*Inherited from [Job](job.md).[subscribeToCompleted](job.md#subscribetocompleted)*
+
+Defined in src/hermes_modules/jobs/jobs/Job.ts:166
+
+Subscribe to the JobEvents.completed event with the corresponding listener
+
+**Parameters:**
+
+▪ **listener**: *function*
+
+the listener
+
+▸ (...`args`: any[]): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`...args` | any[] |
+
+▪`Default value`  **once**: *boolean*= false
+
+true if you want the listener to be executed once
+
+**Returns:** *void*
+
+___
+
+###  subscribeToFailed
+
+▸ **subscribeToFailed**(`listener`: function, `once`: boolean): *void*
+
+*Inherited from [Job](job.md).[subscribeToFailed](job.md#subscribetofailed)*
+
+Defined in src/hermes_modules/jobs/jobs/Job.ts:154
+
+Subscribe to the JobEvents.failed event with the corresponding listener
+
+**Parameters:**
+
+▪ **listener**: *function*
+
+the listener
+
+▸ (...`args`: any[]): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`...args` | any[] |
+
+▪`Default value`  **once**: *boolean*= false
+
+true if you want the listener to be executed once
+
+**Returns:** *void*
+
+___
+
+###  subscribeToProgress
+
+▸ **subscribeToProgress**(`listener`: function, `once`: boolean): *void*
+
+*Inherited from [Job](job.md).[subscribeToProgress](job.md#subscribetoprogress)*
+
+Defined in src/hermes_modules/jobs/jobs/Job.ts:178
+
+Subscribe to the JobEvents.progress event with the corresponding listener
+
+**Parameters:**
+
+▪ **listener**: *function*
+
+the listener
+
+▸ (...`args`: any[]): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`...args` | any[] |
+
+▪`Default value`  **once**: *boolean*= false
+
+true if you want the listener to be executed once
+
+**Returns:** *void*
+
+___
+
+###  subscribeToSuccess
+
+▸ **subscribeToSuccess**(`listener`: function, `once`: boolean): *void*
+
+*Inherited from [Job](job.md).[subscribeToSuccess](job.md#subscribetosuccess)*
+
+Defined in src/hermes_modules/jobs/jobs/Job.ts:142
+
+Subscribe to the JobEvents.success event with the corresponding listener
+
+**Parameters:**
+
+▪ **listener**: *function*
+
+the listener
+
+▸ (...`args`: any[]): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`...args` | any[] |
+
+▪`Default value`  **once**: *boolean*= false
+
+true if you want the listener to be executed once
+
+**Returns:** *void*
+
+___
+
 ###  waitForCompletion
 
-▸ **waitForCompletion**(`timeoutInMs?`: any): *Promise‹void›*
+▸ **waitForCompletion**(`timeoutInMs?`: any): *Promise‹unknown›*
 
 *Inherited from [Job](job.md).[waitForCompletion](job.md#waitforcompletion)*
 
-Defined in src/hermes_modules/jobs/jobs/Job.ts:66
+Defined in src/hermes_modules/jobs/jobs/Job.ts:72
 
 Semaphore that helps you wait for the execution of the job
 
@@ -610,4 +805,4 @@ Name | Type | Description |
 ------ | ------ | ------ |
 `timeoutInMs?` | any |   |
 
-**Returns:** *Promise‹void›*
+**Returns:** *Promise‹unknown›*

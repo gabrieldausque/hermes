@@ -16,7 +16,7 @@ A class that will manage execution of jobs through queues. It will help protect 
 
 ### Properties
 
-* [defaultQueueConfiguration](jobmanager.md#private-defaultqueueconfiguration)
+* [defaultQueueConfiguration](jobmanager.md#defaultqueueconfiguration)
 * [queues](jobmanager.md#private-queues)
 * [queuesFactory](jobmanager.md#private-queuesfactory)
 
@@ -25,6 +25,8 @@ A class that will manage execution of jobs through queues. It will help protect 
 * [createQueue](jobmanager.md#createqueue)
 * [createWorker](jobmanager.md#createworker)
 * [execute](jobmanager.md#execute)
+* [getJob](jobmanager.md#getjob)
+* [getJobs](jobmanager.md#getjobs)
 * [getQueue](jobmanager.md#getqueue)
 * [getQueues](jobmanager.md#getqueues)
 * [queueExists](jobmanager.md#queueexists)
@@ -37,7 +39,7 @@ A class that will manage execution of jobs through queues. It will help protect 
 
 \+ **new JobManager**(`configuration?`: [JobManagerConfiguration](../interfaces/jobmanagerconfiguration.md)): *[JobManager](jobmanager.md)*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:50
+Defined in src/hermes_modules/jobs/JobManager.ts:52
 
 Create an instance of JobManager
 
@@ -51,11 +53,11 @@ Name | Type | Description |
 
 ## Properties
 
-### `Private` defaultQueueConfiguration
+###  defaultQueueConfiguration
 
 • **defaultQueueConfiguration**: *any*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:50
+Defined in src/hermes_modules/jobs/JobManager.ts:52
 
 The default configuration to be used in queues
 
@@ -65,7 +67,7 @@ ___
 
 • **queues**: *object*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:45
+Defined in src/hermes_modules/jobs/JobManager.ts:47
 
 All queues by name
 
@@ -79,7 +81,7 @@ ___
 
 • **queuesFactory**: *[QueuesFactory](../interfaces/queuesfactory.md)*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:40
+Defined in src/hermes_modules/jobs/JobManager.ts:42
 
 The QueuesFactory that will create queues
 
@@ -89,7 +91,7 @@ The QueuesFactory that will create queues
 
 ▸ **createQueue**(`queueName`: string, `queueOptions?`: object): *[Queue](queue.md)*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:110
+Defined in src/hermes_modules/jobs/JobManager.ts:147
 
 Create a queue with the specified name and specified options and return it. If no options specified, use the default.
 
@@ -108,7 +110,7 @@ ___
 
 ▸ **createWorker**(`queueName`: string, `action`: [Action](../globals.md#action)): *void*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:123
+Defined in src/hermes_modules/jobs/JobManager.ts:160
 
 Attach the specified Action to be executed on post of a job in the Queue
 
@@ -125,9 +127,9 @@ ___
 
 ###  execute
 
-▸ **execute**(`queueName`: string, `actionPayload`: any, `context?`: any): *[Job](job.md)*
+▸ **execute**(`queueName`: string, `actionPayload`: any, `metadata`: any, `jobOption?`: any): *[Job](job.md)*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:135
+Defined in src/hermes_modules/jobs/JobManager.ts:173
 
 Execute a job in the specified Queue, with the specified payload
 
@@ -137,9 +139,48 @@ Name | Type | Default | Description |
 ------ | ------ | ------ | ------ |
 `queueName` | string | - | The name of the queue to post the job in |
 `actionPayload` | any | null | The payload to use in the job |
-`context?` | any | - | A context object that can be used in the queue (Experimental)  |
+`metadata` | any | null | Metadata to enrich information on the job |
+`jobOption?` | any | - | A jobOption object that can be used in the queue (Experimental)  |
 
 **Returns:** *[Job](job.md)*
+
+___
+
+###  getJob
+
+▸ **getJob**(`jobId`: string, `queueName?`: string): *Promise‹[Job](job.md)›*
+
+Defined in src/hermes_modules/jobs/JobManager.ts:98
+
+Get a job to see status and error or result for monitoring or post mortem result consumption
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`jobId` | string |   |
+`queueName?` | string | - |
+
+**Returns:** *Promise‹[Job](job.md)›*
+
+___
+
+###  getJobs
+
+▸ **getJobs**(`filter`: [JobFilter](../interfaces/jobfilter.md), `queueName?`: string): *Promise‹[Job](job.md)[]›*
+
+Defined in src/hermes_modules/jobs/JobManager.ts:115
+
+Get jobs corresponding to the specified filter
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`filter` | [JobFilter](../interfaces/jobfilter.md) | The filter on which to get jobs. valueFilter will be applied on payload functional value, metadata filter on metadata |
+`queueName?` | string | The queue name where job has to be searched. If not present, search will be done on all queues  |
+
+**Returns:** *Promise‹[Job](job.md)[]›*
 
 ___
 
@@ -147,7 +188,7 @@ ___
 
 ▸ **getQueue**(`queueName`: any): *[Queue](queue.md)‹›*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:85
+Defined in src/hermes_modules/jobs/JobManager.ts:87
 
 Get the Queue of the specified name. Create the queue with default configuration if it doesn't exist
 
@@ -165,7 +206,7 @@ ___
 
 ▸ **getQueues**(): *any[]*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:95
+Defined in src/hermes_modules/jobs/JobManager.ts:132
 
 Get all Queues of the current JobManager
 
@@ -177,7 +218,7 @@ ___
 
 ▸ **queueExists**(`queueName`: string): *boolean*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:77
+Defined in src/hermes_modules/jobs/JobManager.ts:79
 
 Test if a Queue with specified name exists
 
@@ -195,7 +236,7 @@ ___
 
 ▸ **start**(): *void*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:142
+Defined in src/hermes_modules/jobs/JobManager.ts:183
 
 Start all queues of this JobManager
 
@@ -207,7 +248,7 @@ ___
 
 ▸ **stop**(): *void*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:152
+Defined in src/hermes_modules/jobs/JobManager.ts:193
 
 Stop all queues of this JobManager
 

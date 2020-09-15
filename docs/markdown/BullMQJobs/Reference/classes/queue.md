@@ -36,8 +36,11 @@ A Queue that will execute associated worker with specified payload in FIFO mode.
 * [emit](queue.md#emit)
 * [eventNames](queue.md#eventnames)
 * [getConfiguration](queue.md#getconfiguration)
+* [getJob](queue.md#abstract-getjob)
+* [getJobs](queue.md#abstract-getjobs)
 * [getMaxListeners](queue.md#getmaxlisteners)
 * [getName](queue.md#getname)
+* [hasJob](queue.md#abstract-hasjob)
 * [isPaused](queue.md#ispaused)
 * [listenerCount](queue.md#listenercount)
 * [listeners](queue.md#listeners)
@@ -71,7 +74,7 @@ A Queue that will execute associated worker with specified payload in FIFO mode.
 
 *Overrides void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:39
+Defined in src/hermes_modules/jobs/queues/Queue.ts:38
 
 Create a new queue instance.
 
@@ -90,7 +93,7 @@ Name | Type | Description |
 
 • **action**: *[Action](../globals.md#action)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:19
+Defined in src/hermes_modules/jobs/queues/Queue.ts:18
 
 The action to be executed on job received
 
@@ -100,7 +103,7 @@ ___
 
 • **configuration**: *any*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:34
+Defined in src/hermes_modules/jobs/queues/Queue.ts:33
 
 Configuration of the queue used on creation
 
@@ -110,7 +113,7 @@ ___
 
 • **isQueue**: *boolean* = true
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:14
+Defined in src/hermes_modules/jobs/queues/Queue.ts:13
 
 Indicate if the object is a Queue
 
@@ -120,7 +123,7 @@ ___
 
 • **jobs**: *[Job](job.md)[]*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:24
+Defined in src/hermes_modules/jobs/queues/Queue.ts:23
 
 A list of jobs to be used internally - TO BE REMOVED
 
@@ -130,7 +133,7 @@ ___
 
 • **name**: *string*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:39
+Defined in src/hermes_modules/jobs/queues/Queue.ts:38
 
 Name of the current Queue
 
@@ -140,7 +143,7 @@ ___
 
 • **paused**: *boolean*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:29
+Defined in src/hermes_modules/jobs/queues/Queue.ts:28
 
 True if the queue is paused. Usage depends on implementation
 
@@ -217,11 +220,47 @@ ___
 
 ▸ **getConfiguration**(): *any*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:66
+Defined in src/hermes_modules/jobs/queues/Queue.ts:65
 
 Get the configuration used on creation
 
 **Returns:** *any*
+
+___
+
+### `Abstract` getJob
+
+▸ **getJob**(`jobId`: string): *Promise‹[Job](job.md)›*
+
+Defined in src/hermes_modules/jobs/queues/Queue.ts:87
+
+Get the job with corresponding id
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`jobId` | string |   |
+
+**Returns:** *Promise‹[Job](job.md)›*
+
+___
+
+### `Abstract` getJobs
+
+▸ **getJobs**(`filter`: [JobFilter](../interfaces/jobfilter.md)): *Promise‹[Job](job.md)[]›*
+
+Defined in src/hermes_modules/jobs/queues/Queue.ts:93
+
+Get the job with corresponding id
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`filter` | [JobFilter](../interfaces/jobfilter.md) | the filter to get specific jobs  |
+
+**Returns:** *Promise‹[Job](job.md)[]›*
 
 ___
 
@@ -241,7 +280,7 @@ ___
 
 ▸ **getName**(): *string*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:73
+Defined in src/hermes_modules/jobs/queues/Queue.ts:72
 
 Get the name of the Queue
 
@@ -249,11 +288,29 @@ Get the name of the Queue
 
 ___
 
+### `Abstract` hasJob
+
+▸ **hasJob**(`jobId`: string): *Promise‹boolean›*
+
+Defined in src/hermes_modules/jobs/queues/Queue.ts:99
+
+True if the queue owns the job with the specified id
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`jobId` | string |   |
+
+**Returns:** *Promise‹boolean›*
+
+___
+
 ###  isPaused
 
 ▸ **isPaused**(): *boolean*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:111
+Defined in src/hermes_modules/jobs/queues/Queue.ts:128
 
 Indicate if the current Queue is paused
 
@@ -353,7 +410,7 @@ ___
 
 ▸ **onJobToProcess**(`action`: [Action](../globals.md#action), `processingOptions?`: [ProcessingOptions](../interfaces/processingoptions.md)): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:59
+Defined in src/hermes_modules/jobs/queues/Queue.ts:58
 
 Set the action to be executed on reception of a Job
 
@@ -398,7 +455,7 @@ ___
 
 ▸ **pause**(): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:97
+Defined in src/hermes_modules/jobs/queues/Queue.ts:114
 
 Pause the current Queue
 
@@ -460,9 +517,9 @@ ___
 
 ### `Abstract` push
 
-▸ **push**(`actionPayload`: any, `jobOptions`: object): *[Job](job.md)*
+▸ **push**(`actionPayload`: [PayLoad](../interfaces/payload.md), `jobOptions`: object): *[Job](job.md)*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:82
+Defined in src/hermes_modules/jobs/queues/Queue.ts:81
 
 Push a Job with a payload for execution. Return the job that will be executed.
 
@@ -470,7 +527,7 @@ Push a Job with a payload for execution. Return the job that will be executed.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`actionPayload` | any | The payload for the job execution |
+`actionPayload` | [PayLoad](../interfaces/payload.md) | The payload for the job execution |
 `jobOptions` | object | The options that can be used for this specific execution. May override processing options.  |
 
 **Returns:** *[Job](job.md)*
@@ -481,7 +538,7 @@ ___
 
 ▸ **raiseJobCompleted**(`job`: [Job](job.md)): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:139
+Defined in src/hermes_modules/jobs/queues/Queue.ts:156
 
 As an EventEmitter will raise the 'completed' event for a job that is successful or failed.
 
@@ -499,7 +556,7 @@ ___
 
 ▸ **raiseJobFailed**(`job`: [Job](job.md), `err`: any): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:130
+Defined in src/hermes_modules/jobs/queues/Queue.ts:147
 
 As an EventEmitter, will raise the 'failed' event to indicate when a job is failed. Return the job concerned and the Error
 
@@ -518,7 +575,7 @@ ___
 
 ▸ **raiseJobSuccess**(`job`: [Job](job.md), `result`: any): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:120
+Defined in src/hermes_modules/jobs/queues/Queue.ts:137
 
 As an EventEmitter, will raise the 'success' event to indicate when a job is successful. Return the job concerned and the result
 
@@ -537,7 +594,7 @@ ___
 
 ▸ **raiseQueueError**(`err`: any): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:148
+Defined in src/hermes_modules/jobs/queues/Queue.ts:165
 
 As an EventEmitter will raise the 'error' event if the queue encounters an Error
 
@@ -555,7 +612,7 @@ ___
 
 ▸ **raiseReady**(): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:155
+Defined in src/hermes_modules/jobs/queues/Queue.ts:172
 
 As an EventEmitter will raise the 'ready' event to indicate if the queue is usable
 
@@ -629,7 +686,7 @@ ___
 
 ▸ **resume**(): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:104
+Defined in src/hermes_modules/jobs/queues/Queue.ts:121
 
 Resume the current Queue treatment
 
@@ -659,7 +716,7 @@ ___
 
 ▸ **start**(): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:87
+Defined in src/hermes_modules/jobs/queues/Queue.ts:104
 
 Start the current Queue
 
@@ -671,7 +728,7 @@ ___
 
 ▸ **stop**(): *void*
 
-Defined in src/hermes_modules/jobs/queues/Queue.ts:92
+Defined in src/hermes_modules/jobs/queues/Queue.ts:109
 
 Stop the current Queue
 
