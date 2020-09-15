@@ -38,7 +38,7 @@ steps:
   displayName: npm install before test
 
 - script: |
-    rm -rFv src/hermes_modules/jobs/node_modules
+    rm -rfv src/hermes_modules/jobs/node_modules
   displayName: rm node_module from src/hermes_module/jobs
 
 - task: Npm@1
