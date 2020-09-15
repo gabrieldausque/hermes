@@ -1,11 +1,10 @@
-import { Queue, Job, ProcessingOptions, JobStates, Filter } from '@hermes/jobs';
+import { Queue, Job, ProcessingOptions, JobStates, Filter, JobFilter } from '@hermes/jobs';
 import { BullMQQueueConfiguration } from './configuration/BullMQQueueConfiguration';
 import { Queue as InnerQueue, Worker as InnerWorker, QueueEvents as InnerQueueEvents, Job as InnerJob }  from 'bullmq';
 import { BullMQJob } from './BullMQJob';
 import { BullValueTypeBox } from './BullValueTypeBox';
 import { BullProcessingOptions } from './configuration/BullProcessingOptions';
 import { BullMQJobOptions } from './configuration/BullMQJobOptions';
-import { JobFilter } from '@hermes/jobs/jobs';
 
 /**
  * The Queue implementation for Bull

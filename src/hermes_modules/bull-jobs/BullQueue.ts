@@ -1,4 +1,4 @@
-import { Queue, Job, ProcessingOptions, JobStates, Filter } from '@hermes/jobs';
+import { Queue, Job, ProcessingOptions, JobStates, Filter, JobFilter, PayLoad } from '@hermes/jobs';
 import { BullQueueConfiguration } from './configuration/BullQueueConfiguration';
 import InnerQueue from 'bull';
 import {Job as InnerJob} from 'bull';
@@ -6,7 +6,6 @@ import { BullJob } from './BullJob';
 import { BullValueTypeBox } from './BullValueTypeBox';
 import { BullProcessingOptions } from './configuration/BullProcessingOptions';
 import { BullJobOptions } from './configuration/BullJobOptions';
-import { JobFilter, PayLoad } from '@hermes/jobs/jobs';
 
 /**
  * The Queue implementation for Bull
