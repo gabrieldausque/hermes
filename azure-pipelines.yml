@@ -30,7 +30,7 @@ steps:
     sudo apt install -y redis-tools
     redis-cli -h localhost ping
   displayName: Test redis connection
-  enabled: false
+  enabled: true
 
 - task: Npm@1
   inputs:
