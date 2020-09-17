@@ -158,25 +158,32 @@ export class BullQueue extends Queue {
    * @param actionPayloadOrJob The payload or the job to execute
    * @param jobOptions The options to use for this execution
    */
-  push(actionPayloadOrJob: PayLoad, jobOptions: BullJobOptions): Job {
+  async push(actionPayloadOrJob: PayLoad, jobOptions: BullJobOptions): Promise<Job> {
     let jobToReturn:BullJob;
     const current = this;
     if(actionPayloadOrJob instanceof BullJob){
       jobToReturn = actionPayloadOrJob;
     }
-
+    let jobOpts: {
+      [prop:string] : any
+    }
     if(jobOptions && jobOptions.name) {
       if(!jobToReturn)
         jobToReturn = new BullJob(this.namedAction[jobOptions.name], actionPayloadOrJob, jobOptions);
-      this.innerQueue.add(jobOptions.name, jobToReturn.payload).then((bullJob: InnerQueue.Job<any>) => {
-        jobToReturn.jobOptions = bullJob.opts;
-        jobToReturn.setInnerJob(bullJob);
-      });
+      jobOpts = {
+        jobId: jobToReturn.id
+      }
+      if(jobOptions.bullOptions) {
+        jobOpts = {...jobOpts, ...jobOptions.bullOptions}
+      }
+      jobToReturn.setInnerJob(await this.innerQueue.add(jobOptions.name, jobToReturn.payload, jobOpts));
     } else {
       if(!jobToReturn)
-        jobToReturn = new BullJob(this.action, actionPayloadOrJob);
-
-      this.innerQueue.add(jobToReturn.payload).then((bullJob) => {
+        jobToReturn = new BullJob(this.action, actionPayloadOrJob, jobOpts);
+      jobOpts = {
+        jobId: jobToReturn.id
+      }
+      this.innerQueue.add(jobToReturn.payload, jobOpts).then((bullJob) => {
         jobToReturn.jobOptions = bullJob.opts;
         jobToReturn.setInnerJob(bullJob);
       }).catch((err) => {

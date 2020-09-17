@@ -167,27 +167,29 @@ export class BullMQQueue extends Queue {
    * @param actionPayloadOrJob The payload or the job to execute
    * @param jobOptions The options to use for this execution
    */
-  push(actionPayloadOrJob: any, jobOptions: BullMQJobOptions): Job {
+  async push(actionPayloadOrJob: any, jobOptions: BullMQJobOptions): Promise<Job> {
     let jobToReturn:BullMQJob;
     const current = this;
     if(actionPayloadOrJob instanceof BullMQJob){
       jobToReturn = actionPayloadOrJob;
     }
-
+    let jobOpts: {
+      [prop:string] : any
+    }
     if(jobOptions && jobOptions.name) {
       if(!jobToReturn)
         jobToReturn = new BullMQJob(this.namedAction[jobOptions.name], actionPayloadOrJob, jobOptions);
-      this.innerQueue.add(jobOptions.name, jobToReturn.getPayload()).then((bullJob: InnerJob) => {
-        jobToReturn.setInnerJob(bullJob);
-      });
+      jobOpts = {
+        jobId: jobToReturn.id
+      }
+      jobToReturn.setInnerJob(await this.innerQueue.add(jobOptions.name, jobToReturn.payload, jobOpts));
     } else {
       if(!jobToReturn)
         jobToReturn = new BullMQJob(this.action, actionPayloadOrJob);
-        this.innerQueue.add('default', jobToReturn.getPayload()).then((bullJob) => {
-        jobToReturn.setInnerJob(bullJob);
-      }).catch((err) => {
-        current.raiseQueueError(err);
-      });
+      jobOpts = {
+        jobId: jobToReturn.id
+      }
+      jobToReturn.setInnerJob(await this.innerQueue.add('default', jobToReturn.payload));
     }
     if(jobToReturn && (this.runningJobs.indexOf(jobToReturn) < 0))
       this.runningJobs.unshift(jobToReturn);

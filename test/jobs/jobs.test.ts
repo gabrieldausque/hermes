@@ -30,11 +30,12 @@ describe('Job scheduling tests', () => {
     }
 
     jm.createWorker('Test', functionToExecute);
-    const job = jm.execute('Test')
-    job.on(JobEvents.success, (event) => {
-      expect(job.result).to.be.equal('done');
-      done();
-    });
+    jm.execute('Test').then((job) => {
+      job.subscribeToSuccess((event) => {
+        expect(job.result).to.be.equal('done');
+        done();
+      }, true);
+    })
   })
 
   it('Should execute a job and get result when job is success for complex result', (done) => {
@@ -47,15 +48,15 @@ describe('Job scheduling tests', () => {
         }
       };
     }
-    jm.createWorker('Test', functionToExecute);      console.log("inside the promise");
-
-    const job = jm.execute('Test')
-    job.on(JobEvents.success, (event) => {
-      expect(job.result.prop1).to.be.equal('value');
-      expect(job.result.prop2.prop21).to.be.equal(45);
-      expect(job.result.prop2.prop22).to.be.equal('astring');
-      done();
-    });
+    jm.createWorker('Test', functionToExecute);
+    jm.execute('Test').then((job) => {
+      job.subscribeToSuccess( (event) => {
+        expect(job.result.prop1).to.be.equal('value');
+        expect(job.result.prop2.prop21).to.be.equal(45);
+        expect(job.result.prop2.prop22).to.be.equal('astring');
+        done();
+      }, true);
+    })
   })
 
   it('Should execute a method from class instance and send result', (done) => {
@@ -63,17 +64,18 @@ describe('Job scheduling tests', () => {
     jm.createWorker('Test', () => {
       return instance.aTestMethod();
     });
-    const job = jm.execute('Test');
-    job.on(JobEvents.success, (event) => {
-      try{
-        expect(job).to.be.eql(event);
-        expect(job.result).to.be.equal('testMethodCall');
-        done();
-      }catch(err) {
-        done(err)
-      }
+    jm.execute('Test').then((job) => {
+      job.subscribeToSuccess( (event) => {
+        try{
+          expect(job).to.be.eql(event);
+          expect(job.result).to.be.equal('testMethodCall');
+          done();
+        }catch(err) {
+          done(err)
+        }
 
-    });
+      }, true);
+    })
   })
 
   it('Should execute multiple job respecting pushing order', (done) => {
@@ -88,8 +90,9 @@ describe('Job scheduling tests', () => {
     });
     const numberOfJobs = 500;
     for(let jobCounter =0; jobCounter < numberOfJobs; jobCounter++) {
-      jm.execute('Test', jobCounter);
-      expectedValues.unshift(jobCounter);
+      jm.execute('Test', jobCounter).then(() => {
+        expectedValues.unshift(jobCounter);
+      })
     }
     jm.start();
     let testDone = false;
@@ -112,17 +115,17 @@ describe('Job scheduling tests', () => {
     jm.createWorker('Test', () => {
       throw new Error('Custom Error');
     });
-    const job = jm.execute('Test');
-    job.on(JobEvents.failed, (event) => {
-      try{
-        expect(job).to.be.eql(event);
-        expect(job.err.message).to.be.eql('Custom Error');
-        done();
-      }catch(err) {
-        done(err)
-      }
-
-    });
+    jm.execute('Test').then((job) => {
+      job.subscribeToFailed( (event) => {
+        try{
+          expect(job).to.be.eql(event);
+          expect(job.err.message).to.be.eql('Custom Error');
+          done();
+        }catch(err) {
+          done(err)
+        }
+      }, true);
+    })
   })
 
   it('Should reject promise when worker failed',  async () => {
@@ -130,7 +133,7 @@ describe('Job scheduling tests', () => {
     jm.createWorker('Test', () => {
       throw new Error('Custom Error');
     });
-    const job = jm.execute('Test');
+    const job = await jm.execute('Test');
     return expect(job.waitForCompletion()).to.be.rejectedWith('Custom Error');
   })
 
@@ -138,7 +141,7 @@ describe('Job scheduling tests', () => {
     jm.createWorker('Test', () => {
       return 'done';
     })
-    const job = jm.execute('Test');
+    const job = await jm.execute('Test');
     await expect(job.waitForCompletion()).to.be.fulfilled;
     const searchJob = await jm.getJob(job.id);
     expect(job).to.be.eql(searchJob);
@@ -149,9 +152,9 @@ describe('Job scheduling tests', () => {
       return 'done';
     })
     const semaphores = [];
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}   ).waitForCompletion());
+    semaphores.push(await ( await jm.execute('Test',{ category:'aCategory', prop:'aProp'}   )).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aCategory', prop:'aProp2'}   )).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}   )).waitForCompletion());
     await Promise.all(semaphores);
     const found = await jm.getJobs({ valueFilter:{ category: 'aCategory'} });
     expect(found[0].payload.value).to.be.eql({ category:'aCategory', prop:'aProp'});
@@ -163,11 +166,11 @@ describe('Job scheduling tests', () => {
       return 'done';
     })
     const semaphores = [];
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   )).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   )).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}  ) ).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   )).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aSecondCategory', prop:'aProp5'}, {userName: 'aUser'}   )).waitForCompletion());
     await Promise.all(semaphores);
     const found = await jm.getJobs({ metadataFilter:{ userName: 'aUser'} });
     expect(found.length).to.be.eql(3);
@@ -178,11 +181,11 @@ describe('Job scheduling tests', () => {
       return 'done';
     })
     const semaphores = [];
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   ).waitForCompletion());
-    semaphores.push(jm.execute('Test',{ category:'aCategory', prop:'aProp5'}, {userName: 'aUser'}   ).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aCategory', prop:'aProp'}, {userName: 'aUser'}   )).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aCategory', prop:'aProp2'}, {userName: 'aSecondUser'}  ) ).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aSecondCategory', prop:'aProp3'}, {userName: 'aSecondUser'})   ).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aSecondCategory', prop:'aProp4'}, {userName: 'aUser'}   )).waitForCompletion());
+    semaphores.push(await (await jm.execute('Test',{ category:'aCategory', prop:'aProp5'}, {userName: 'aUser'}   )).waitForCompletion());
     await Promise.all(semaphores);
     const found = await jm.getJobs({ valueFilter:{category:'aCategory'}, metadataFilter:{ userName: 'aUser'} });
     expect(found.length).to.be.eql(2);

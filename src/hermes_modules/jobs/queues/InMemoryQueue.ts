@@ -97,7 +97,7 @@ export class InMemoryQueue extends Queue {
    * @param actionPayload The payload to use for the Job execution
    * @param jobOptions Options to be used for the current execution
    */
-  push(actionPayload: any, jobOptions?:any): Job {
+  async push(actionPayload: any, jobOptions?:any): Promise<Job> {
     const job = new Job(this.action, actionPayload, jobOptions);
     this.waitingJobs.unshift(job);
     this.jobs.push(job);

@@ -1,6 +1,6 @@
 {
   "name": "@hermes/bull-jobs",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "plugin for @hermes/jobs integrating Bull framework",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

@@ -150,7 +150,7 @@ export class Project implements ServiceMethods<Data> {
     let project = null;
 
     if(data.isLongTermJob === 1) {
-      const job = this.app.jobManager.execute('project#create', ProjectEntity.loadFromDto(data), { userName:"MyUserName" });
+      const job = await this.app.jobManager.execute('project#create', ProjectEntity.loadFromDto(data), { userName:"MyUserName" });
       await job.waitForCompletion();
       project = job.result
     } else {

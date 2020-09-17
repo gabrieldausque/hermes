@@ -78,7 +78,7 @@ export abstract class Queue extends EventEmitter {
    * @param actionPayload The payload for the job execution
    * @param jobOptions The options that can be used for this specific execution. May override processing options.
    */
-  abstract push(actionPayload: PayLoad, jobOptions: { [propName: string]: any }): Job;
+  abstract push(actionPayload: PayLoad, jobOptions: { [propName: string]: any }): Promise<Job>;
 
   /**
    * Get the job with corresponding id

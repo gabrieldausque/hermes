@@ -93,7 +93,8 @@ export class JobManager {
 
   /**
    * Get a job to see status and error or result for monitoring or post mortem result consumption
-   * @param jobId
+   * @param jobId The job id to find
+   * @param queueName The queue name where to look for the job id
    */
   async getJob(jobId:string, queueName?:string):Promise<Job> {
     if(queueName) {
@@ -170,8 +171,8 @@ export class JobManager {
    * @param metadata Metadata to enrich information on the job
    * @param jobOption A jobOption object that can be used in the queue (Experimental)
    */
-  execute(queueName: string, actionPayload:any = null, metadata:any = null, jobOption?:any):Job {
-    return this.getQueue(queueName).push({
+  async execute(queueName: string, actionPayload:any = null, metadata:any = null, jobOption?:any):Promise<Job> {
+    return await this.getQueue(queueName).push({
       value:actionPayload,
       metadata
     }, jobOption);

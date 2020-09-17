@@ -1,5 +1,5 @@
 import { Job } from '@hermes/jobs';
-import { Job as InnerJob } from 'bull';
+import InnerQueue, { Job as InnerJob } from 'bull';
 import { BullValueTypeBox } from './BullValueTypeBox';
 
 /**
@@ -29,6 +29,7 @@ export class BullJob extends Job {
    */
   setInnerJob(job:InnerJob) {
     this.innerJob = job;
+    this.jobOptions = {...this.jobOptions, ...{ bullOptions: job.opts}} ;
     this.id = job.id.toString();
   }
 
