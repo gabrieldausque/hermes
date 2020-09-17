@@ -39,7 +39,7 @@
           "host":"localhost",
           "port":"6379",
           "maxRetriesPerRequest": 2,
-          "connectTimeout":1000
+          "connectTimeout":10000
         }
       }
     }
