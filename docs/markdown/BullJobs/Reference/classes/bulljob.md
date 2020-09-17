@@ -492,7 +492,7 @@ ___
 
 *Overrides [Job](job.md).[raiseProgressEvent](job.md#raiseprogressevent)*
 
-Defined in src/hermes_modules/bull-jobs/BullJob.ts:40
+Defined in src/hermes_modules/bull-jobs/BullJob.ts:41
 
 As an EventEmitter, raise the 'progress' event for the job
 

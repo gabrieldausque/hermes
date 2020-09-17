@@ -156,7 +156,7 @@ export class Project implements ServiceMethods<Data> {
     let project:ProjectEntity;
     if(params.query.longProcess) {
 
-      const job = this.jobManager.execute('project#get', id);
+      const job = await this.jobManager.execute('project#get', id);
       await job.waitForCompletion();
       if(job.state === JobStates.success) {
         project = job.result;
@@ -175,7 +175,7 @@ export class Project implements ServiceMethods<Data> {
     }
     let project:ProjectEntity;
     if(data.needLongProcess) {
-      const job = this.jobManager.execute('project#create', data)
+      const job = await this.jobManager.execute('project#create', data)
       await job.waitForCompletion();
       if(job.state === JobStates.success) {
         project = job.result;
@@ -200,7 +200,7 @@ export class Project implements ServiceMethods<Data> {
     else
     {
       if(data.needLongProcess) {
-        const job = this.jobManager.execute('project#update', data);
+        const job = await this.jobManager.execute('project#update', data);
         await job.waitForCompletion();
         if(job.result !== JobStates.success) {
           throw new GeneralError(job.err)

@@ -766,7 +766,7 @@ ___
 
 ###  push
 
-▸ **push**(`actionPayload`: any, `jobOptions?`: any): *[Job](job.md)*
+▸ **push**(`actionPayload`: any, `jobOptions?`: any): *Promise‹[Job](job.md)›*
 
 *Overrides [Queue](queue.md).[push](queue.md#abstract-push)*
 
@@ -781,7 +781,7 @@ Name | Type | Description |
 `actionPayload` | any | The payload to use for the Job execution |
 `jobOptions?` | any | Options to be used for the current execution  |
 
-**Returns:** *[Job](job.md)*
+**Returns:** *Promise‹[Job](job.md)›*
 
 ___
 

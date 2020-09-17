@@ -91,7 +91,7 @@ The QueuesFactory that will create queues
 
 ▸ **createQueue**(`queueName`: string, `queueOptions?`: object): *[Queue](queue.md)*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:147
+Defined in src/hermes_modules/jobs/JobManager.ts:148
 
 Create a queue with the specified name and specified options and return it. If no options specified, use the default.
 
@@ -110,7 +110,7 @@ ___
 
 ▸ **createWorker**(`queueName`: string, `action`: [Action](../globals.md#action)): *void*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:160
+Defined in src/hermes_modules/jobs/JobManager.ts:161
 
 Attach the specified Action to be executed on post of a job in the Queue
 
@@ -127,9 +127,9 @@ ___
 
 ###  execute
 
-▸ **execute**(`queueName`: string, `actionPayload`: any, `metadata`: any, `jobOption?`: any): *[Job](job.md)*
+▸ **execute**(`queueName`: string, `actionPayload`: any, `metadata`: any, `jobOption?`: any): *Promise‹[Job](job.md)›*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:173
+Defined in src/hermes_modules/jobs/JobManager.ts:174
 
 Execute a job in the specified Queue, with the specified payload
 
@@ -142,7 +142,7 @@ Name | Type | Default | Description |
 `metadata` | any | null | Metadata to enrich information on the job |
 `jobOption?` | any | - | A jobOption object that can be used in the queue (Experimental)  |
 
-**Returns:** *[Job](job.md)*
+**Returns:** *Promise‹[Job](job.md)›*
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 ▸ **getJob**(`jobId`: string, `queueName?`: string): *Promise‹[Job](job.md)›*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:98
+Defined in src/hermes_modules/jobs/JobManager.ts:99
 
 Get a job to see status and error or result for monitoring or post mortem result consumption
 
@@ -158,8 +158,8 @@ Get a job to see status and error or result for monitoring or post mortem result
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`jobId` | string |   |
-`queueName?` | string | - |
+`jobId` | string | The job id to find |
+`queueName?` | string | The queue name where to look for the job id  |
 
 **Returns:** *Promise‹[Job](job.md)›*
 
@@ -169,7 +169,7 @@ ___
 
 ▸ **getJobs**(`filter`: [JobFilter](../interfaces/jobfilter.md), `queueName?`: string): *Promise‹[Job](job.md)[]›*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:115
+Defined in src/hermes_modules/jobs/JobManager.ts:116
 
 Get jobs corresponding to the specified filter
 
@@ -206,7 +206,7 @@ ___
 
 ▸ **getQueues**(): *any[]*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:132
+Defined in src/hermes_modules/jobs/JobManager.ts:133
 
 Get all Queues of the current JobManager
 
@@ -236,7 +236,7 @@ ___
 
 ▸ **start**(): *void*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:183
+Defined in src/hermes_modules/jobs/JobManager.ts:184
 
 Start all queues of this JobManager
 
@@ -248,7 +248,7 @@ ___
 
 ▸ **stop**(): *void*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:193
+Defined in src/hermes_modules/jobs/JobManager.ts:194
 
 Stop all queues of this JobManager
 

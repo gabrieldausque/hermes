@@ -10,9 +10,12 @@
 * [BullQueue](classes/bullqueue.md)
 * [BullQueuesFactory](classes/bullqueuesfactory.md)
 * [BullValueTypeBox](classes/bullvaluetypebox.md)
+* [ExportCatalog](classes/exportcatalog.md)
+* [ExportMetadata](classes/exportmetadata.md)
 * [Filter](classes/filter.md)
 * [InMemoryQueue](classes/inmemoryqueue.md)
 * [InMemoryQueuesFactory](classes/inmemoryqueuesfactory.md)
+* [InstancesFactory](classes/instancesfactory.md)
 * [Job](classes/job.md)
 * [JobManager](classes/jobmanager.md)
 * [Queue](classes/queue.md)
@@ -20,6 +23,7 @@
 
 ### Interfaces
 
+* [AutoDescribed](interfaces/autodescribed.md)
 * [BullJobOptions](interfaces/bulljoboptions.md)
 * [BullProcessingOptions](interfaces/bullprocessingoptions.md)
 * [BullQueueConfiguration](interfaces/bullqueueconfiguration.md)
@@ -35,6 +39,7 @@
 
 ### Variables
 
+* [globalInstancesFactory](globals.md#const-globalinstancesfactory)
 * [globalJobManager](globals.md#let-globaljobmanager)
 * [instancesFactory](globals.md#let-instancesfactory)
 
@@ -73,11 +78,21 @@ Name | Type |
 
 ## Variables
 
+### `Const` globalInstancesFactory
+
+• **globalInstancesFactory**: *[InstancesFactory](classes/instancesfactory.md)‹›* = new InstancesFactory()
+
+Defined in src/hermes_modules/composition/InstancesFactory.ts:89
+
+the global factory that can be used accross all objects of your running application
+
+___
+
 ### `Let` globalJobManager
 
 • **globalJobManager**: *[JobManager](classes/jobmanager.md)* = new JobManager()
 
-Defined in src/hermes_modules/jobs/JobManager.ts:210
+Defined in src/hermes_modules/jobs/JobManager.ts:211
 
 The global shared instance of the JobManager, by default using the InMemoryQueues
 
@@ -97,7 +112,7 @@ The shared instances factory that can be change through setJobManagerInstancesFa
 
 ▸ **getGlobalJobManager**(): *[JobManager](classes/jobmanager.md)*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:224
+Defined in src/hermes_modules/jobs/JobManager.ts:225
 
 Get the global shared instance of the JobManager
 
@@ -107,13 +122,13 @@ ___
 
 ###  getJobManagerInstancesFactory
 
-▸ **getJobManagerInstancesFactory**(): *InstancesFactory*
+▸ **getJobManagerInstancesFactory**(): *[InstancesFactory](classes/instancesfactory.md)*
 
 Defined in src/hermes_modules/jobs/JobManager.ts:30
 
 Get the InstancesFactory that will be used by JobManager
 
-**Returns:** *InstancesFactory*
+**Returns:** *[InstancesFactory](classes/instancesfactory.md)*
 
 ___
 
@@ -121,7 +136,7 @@ ___
 
 ▸ **setGlobalJobManager**(`jobManager`: [JobManager](classes/jobmanager.md)): *void*
 
-Defined in src/hermes_modules/jobs/JobManager.ts:216
+Defined in src/hermes_modules/jobs/JobManager.ts:217
 
 Change the global shared instance of the JobManager by the specified instance
 
@@ -137,7 +152,7 @@ ___
 
 ###  setJobManagerInstancesFactory
 
-▸ **setJobManagerInstancesFactory**(`factory`: InstancesFactory): *void*
+▸ **setJobManagerInstancesFactory**(`factory`: [InstancesFactory](classes/instancesfactory.md)): *void*
 
 Defined in src/hermes_modules/jobs/JobManager.ts:20
 
@@ -147,7 +162,7 @@ Set the InstancesFactory that will be used to create the QueuesFactory of furthe
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`factory` | InstancesFactory | The factory to use in all futur JobManager  |
+`factory` | [InstancesFactory](classes/instancesfactory.md) | The factory to use in all futur JobManager  |
 
 **Returns:** *void*
 

@@ -515,7 +515,7 @@ ___
 
 ### `Abstract` push
 
-▸ **push**(`actionPayload`: [PayLoad](../interfaces/payload.md), `jobOptions`: object): *[Job](job.md)*
+▸ **push**(`actionPayload`: [PayLoad](../interfaces/payload.md), `jobOptions`: object): *Promise‹[Job](job.md)›*
 
 Defined in src/hermes_modules/jobs/queues/Queue.ts:81
 
@@ -528,7 +528,7 @@ Name | Type | Description |
 `actionPayload` | [PayLoad](../interfaces/payload.md) | The payload for the job execution |
 `jobOptions` | object | The options that can be used for this specific execution. May override processing options.  |
 
-**Returns:** *[Job](job.md)*
+**Returns:** *Promise‹[Job](job.md)›*
 
 ___
 

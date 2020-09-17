@@ -167,7 +167,7 @@ The second phase is the execution one, where you will push the payload for the e
 ``` ts
 
 const data:any = createPayload();
-const job = jobManager.execute('SomeActionName', data)
+const job = await jobManager.execute('SomeActionName', data)
 
 ```
 
@@ -181,7 +181,7 @@ async DoSomeStuff() => {
 ...
     const data:any = createPayload();
     let result:any = null;
-    const job = jobManager.execute('SomeActionName', data)
+    const job = await jobManager.execute('SomeActionName', data)
 ...
     await job.waitForCompletion()
 ...
@@ -200,20 +200,20 @@ async DoSomeStuff() => {
     ...
     const data:any = createPayload();
     let result:any = null;
-    const job = jobManager.execute('SomeActionName', data)
-    job.on('completed', (resultOrErr) => {
+    const job = await jobManager.execute('SomeActionName', data)
+    job.subscribeToCompleted((j) => {
         if(job.state === JobStates.success) {
-            DoSomeStuff(resultOrErr)
+            DoSomeStuff(j.result)
         }
     })
     ...
     // OR
     ...
-    job.on('success', (result) => {
-        DoSomeStuff(result)
+    job.subscribeToSuccess((j) => {
+        DoSomeStuff(j.result)
     })
-    job.on('failed', (err) => {
-        DoSomeStuffOnError(err)
+    job.subscribeToFailed((j) => {
+        DoSomeStuffOnError(j.err)
     })
     ...
 ``` 
