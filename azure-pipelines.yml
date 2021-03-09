@@ -117,7 +117,7 @@ steps:
     inputs:
       command: publish
       publishRegistry: useFeed
-      publishFeed: Hermes
+      publishFeed: hermes
       workingDir: $(Build.Repository.LocalPath)/packages/topic/
 
   - task: Npm@1
@@ -126,7 +126,7 @@ steps:
     inputs:
       command: publish
       publishRegistry: useFeed
-      publishFeed: Hermes
+      publishFeed: hermes
       workingDir: $(Build.Repository.LocalPath)/packages/jobs/
 
   - task: Npm@1
@@ -135,7 +135,7 @@ steps:
     inputs:
       command: publish
       publishRegistry: useFeed
-      publishFeed: Hermes
+      publishFeed: hermes
       workingDir: $(Build.Repository.LocalPath)/packages/bull-jobs/
 
   - task: Npm@1
@@ -144,5 +144,5 @@ steps:
     inputs:
       command: publish
       publishRegistry: useFeed
-      publishFeed: Hermes
+      publishFeed: hermes
       workingDir: $(Build.Repository.LocalPath)/packages/bullmq-jobs/
