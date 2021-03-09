@@ -110,7 +110,7 @@ $RECYCLE.BIN/
 # Others
 
 /lib/
-packages/
+dist/
 /src/hermes_modules/topic/lib/
 *.tgz
 package-lock.json
@@ -118,9 +118,10 @@ package-lock.json
 /examples/AConsoleChatApplication/lib/
 report*
 
-/junit.xml
+junit.xml
 /cobertura.xml
 /src/hermes_modules/composition/lib/
 /src/hermes_modules/jobs/lib/
 /src/hermes_modules/bull-jobs/lib/
 /src/hermes_modules/bullmq-jobs/lib/
+

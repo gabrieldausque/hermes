@@ -1,0 +1,16 @@
+###############################################################
+#
+# Task template : Versioning of build
+#
+###############################################################
+
+steps:
+  - task: PowerShell@2
+    displayName: Set Build Number
+    inputs:
+      targetType: inline
+      script: >
+        echo 'Starting Setting build Number'
+        Write-host " - Current Build Number : $($env:BUILD_BUILDNUMBER)"
+        Write-host " - Semantic Build Number : $($env:MAJORMINORVERSION).$($env:SEMANTICVERSION).0"
+        Write-host "##vso[build.updatebuildnumber]$($env:MAJORMINORVERSION).$($env:SEMANTICVERSION).0"
