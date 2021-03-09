@@ -108,7 +108,7 @@ steps:
     inputs:
       command: publish
       publishRegistry: useFeed
-      publishFeed: Hermes
+      publishFeed: hermes
       workingDir: $(Build.Repository.LocalPath)/packages/composition/
 
   - task: Npm@1
