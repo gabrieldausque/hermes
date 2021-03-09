@@ -1,0 +1,9 @@
+{
+  "out": "../../docs/markdown/BullJobs/Reference",
+  "includes": "docs",
+  "exclude": [
+    "node_modules/**/*",
+    "dist/**/*"
+  ],
+  "plugin": "typedoc-plugin-markdown"
+}

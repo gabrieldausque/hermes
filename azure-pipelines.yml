@@ -1,18 +1,34 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# this is a group variables to manage versioning number for all pipelines in the same repo
+variables:
+  - group: fwk_versioning_variables
+  - name: semanticVersion
+    value: $[counter(variables['majorMinorVersion'], 0)]
 
 trigger:
-- master
+  batch: true
+  branches:
+    include:
+      - features/*
+      - bugs/*
+
+pr:
+  branches:
+    include:
+      - master
+      - integration
 
 resources:
- containers:
-   - container: redis
-     image: redis
-     ports:
-     - 6379:6379
-     - 6380:6379
+  containers:
+    - container: redis
+      image: redis
+      ports:
+        - 6379:6379
+        - 6380:6379
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -21,113 +37,112 @@ services:
   redis: redis
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '12.x'
-  displayName: 'Install Node.js'
 
-- script: |
-    sudo apt install -y redis-tools
-    redis-cli -h localhost ping
-  displayName: Test redis connection
-  enabled: true
+  - task: PowerShell@2
+    displayName: List env
+    inputs:
+      targetType: inline
+      script: "get-childitem env:"
 
-- task: Npm@1
-  inputs:
-    command: install
-  displayName: npm install before test
+  - checkout: self
+    clean: true
+    persistCredentials: true
 
-- script: |
-    rm -rfv src/hermes_modules/jobs/node_modules
-  displayName: rm node_module from src/hermes_module/jobs
+  - template: build/templates/versioning.yaml
 
-- task: Npm@1
-  inputs:
-    command: custom
-    customCommand: run test
-    verbose: false
-  displayName: Running tests
-  continueOnError: true
+  - task: Npm@1
+    displayName: General Install
+    inputs:
+      command: install
 
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/junit.xml'
-    mergeTestResults: true
-    testRunTitle: 'All tests results'
-  displayName: Publish tests results
+  - task: Npm@1
+    displayName: Change version of all packages
+    inputs:
+      command: custom
+      customCommand: run ver -- $(majorMinorVersion).$(semanticVersion)
 
-- task: PublishCodeCoverageResults@1
-  condition: succeededOrFailed()
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '**/cobertura-coverage.xml'
-  displayName: Publish code coverage
+  - task: Npm@1
+    displayName: Bootstrap all projects
+    inputs:
+      command: custom
+      customCommand: run bootstrap
 
-- script: |
-    npm run compileCompositionPackage
-  displayName: 'npm install and compile Composition package'
+  - task: Npm@1
+    displayName: Build all projects
+    inputs:
+      command: custom
+      customCommand: run build
 
-- script: |
-    npm run compileTopicPackage
-  displayName: 'npm install and compile Topic Package'
+  - task: Npm@1
+    displayName: Run all tests
+    inputs:
+      command: custom
+      customCommand: run test
 
-- script: |
-    npm run compileJobsPackage
-  displayName: 'npm install and compile Jobs Package'
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/junit.xml'
+      mergeTestResults: true
+      testRunTitle: 'UI Jest tests'
+    displayName: Publish tests results
 
-- script: |
-    npm run compileBullJobsPackage
-  displayName: 'npm install and compile Bull-Jobs Package'
+  - task: reportgenerator@4
+    displayName: Merging cobertura files
+    inputs:
+      reports: $(Build.SourcesDirectory)/**/coverage/cobertura-coverage.xml
+      targetdir: $(Build.SourcesDirectory)/CoverageResults
+      verbosity: Verbose
 
-- script: |
-    npm run compileBullMQJobsPackage
-  displayName: 'npm install and compile BullMQ-Jobs Package'
+  - task: PublishCodeCoverageResults@1
+    condition: succeededOrFailed()
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(Build.SourcesDirectory)/CoverageResults/Cobertura.xml'
+    displayName: Publish code coverage
 
-- task: Npm@1
-  displayName: 'Publish Composition to Azure Dev ops Hermes/hermes feed'
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishComposition'],'true'))
-  inputs:
-    command: publish
-    publishRegistry: useFeed
-    publishFeed: Hermes/hermes
-    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/composition/
+  - task: Npm@1
+    displayName: 'Publish Composition'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
+    inputs:
+      command: publish
+      publishRegistry: useFeed
+      publishFeed: Hermes/hermes
+      workingDir: $(Build.Repository.LocalPath)/packages/composition/
 
-- task: Npm@1
-  displayName: 'Publish topic to Azure Dev ops Hermes/hermes feed'
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishTopic'],'true'))
-  inputs:
-    command: publish
-    publishRegistry: useFeed
-    publishFeed: Hermes/hermes
-    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/topic/
+  - task: Npm@1
+    displayName: 'Publish Topic'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
+    inputs:
+      command: publish
+      publishRegistry: useFeed
+      publishFeed: Hermes/hermes
+      workingDir: $(Build.Repository.LocalPath)/packages/topic/
 
-- task: Npm@1
-  displayName: 'Publish Jobs to Azure Dev ops Hermes/hermes feed'
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishJobs'],'true'))
-  inputs:
-    command: publish
-    publishRegistry: useFeed
-    publishFeed: Hermes/hermes
-    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/jobs/
+  - task: Npm@1
+    displayName: 'Publish Jobs'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
+    inputs:
+      command: publish
+      publishRegistry: useFeed
+      publishFeed: Hermes/hermes
+      workingDir: $(Build.Repository.LocalPath)/packages/jobs/
 
-- task: Npm@1
-  displayName: 'Publish Bull Jobs to Azure Dev ops Hermes/hermes feed'
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishBullJobs'],'true'))
-  inputs:
-    command: publish
-    publishRegistry: useFeed
-    publishFeed: Hermes/hermes
-    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/bull-jobs/
+  - task: Npm@1
+    displayName: 'Publish BullJobs'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
+    inputs:
+      command: publish
+      publishRegistry: useFeed
+      publishFeed: Hermes/hermes
+      workingDir: $(Build.Repository.LocalPath)/packages/bull-jobs/
 
-- task: Npm@1
-  displayName: 'Publish BullMQ Jobs to Azure Dev ops Hermes/hermes feed'
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['publishBullMQJobs'],'true'))
-  inputs:
-    command: publish
-    publishRegistry: useFeed
-    publishFeed: Hermes/hermes
-    workingDir: $(Build.Repository.LocalPath)/src/hermes_modules/bullmq-jobs/
-
-
+  - task: Npm@1
+    displayName: 'Publish BullMQ Jobs'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
+    inputs:
+      command: publish
+      publishRegistry: useFeed
+      publishFeed: Hermes/hermes
+      workingDir: $(Build.Repository.LocalPath)/packages/bullmq-jobs/

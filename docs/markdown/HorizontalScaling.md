@@ -1,4 +1,4 @@
-[Home](./README.md) > [Horizontal Scaling](/Horizontal Scaling)
+[Home](/Home.md) > [Horizontal Scaling](/HorizontalScaling.md)
 
 # Horizontal Scaling And Cluster mode
 
