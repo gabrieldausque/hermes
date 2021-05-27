@@ -9,8 +9,27 @@ steps:
     displayName: Set Build Number
     inputs:
       targetType: inline
-      script: >
-        echo 'Starting Setting build Number'
+      script: |
+        Write-Host 'Starting Setting build Number'
+        Write-Host "Current semantic version : #" + $env:semanticVersion + "#"
+        $patchVersion = ($env:semanticVersion -as [int]) + 1
+        Write-Host "New Patch Version $($patchVersion)"
         Write-host " - Current Build Number : $($env:BUILD_BUILDNUMBER)"
-        Write-host " - Semantic Build Number : $($env:MAJORMINORVERSION).$($env:SEMANTICVERSION).0"
-        Write-host "##vso[build.updatebuildnumber]$($env:MAJORMINORVERSION).$($env:SEMANTICVERSION).0"
+        Write-host " - Semantic Build Number : $($env:majorMinorVersion).$($patchVersion).0"
+        Write-host "##vso[build.updatebuildnumber]$($env:majorMinorVersion).$($patchVersion).0"
+        Write-host "##vso[task.setvariable variable=semanticVersion]$($patchVersion)"
+  - task: PowerShell@2
+    displayName: updating Shared semanticVersion
+    inputs:
+      targetType: inline
+      script: |
+        $url = 'https://gdausquepro.visualstudio.com/hermes/_apis/distributedtask/variablegroups/2?api-version=6.1-preview.2'
+        write-host "Url used : " + $url
+        $authHeader = @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
+        $definition = Invoke-RestMethod -Uri $url -Headers $authHeader
+        Write-Host "Variable groups = $($definition | ConvertTo-Json -Depth 100)"
+        $definition.variables.semanticVersion.value = "$($env:semanticVersion)"
+        Write-Host "New semantic version : $($definition.variables.semanticVersion.Value)"
+        Invoke-RestMethod -Method Put -Uri $url -Headers $authHeader -ContentType "application/json" -Body ($definition | ConvertTo-Json -Depth 100)
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
