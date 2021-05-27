@@ -11,13 +11,13 @@ steps:
       targetType: inline
       script: |
         Write-Host 'Starting Setting build Number'
-        Write-Host "Current semantic version : #" + $env:semanticVersion + "#"
-        $patchVersion = ($env:semanticVersion -as [int]) + 1
+        Write-Host "Current semantic version : #" + $env:SEMANTICVERSION + "#"
+        $patchVersion = ($env:SEMANTICVERSION -as [int]) + 1
         Write-Host "New Patch Version $($patchVersion)"
         Write-host " - Current Build Number : $($env:BUILD_BUILDNUMBER)"
-        Write-host " - Semantic Build Number : $($env:majorMinorVersion).$($patchVersion).0"
-        Write-host "##vso[build.updatebuildnumber]$($env:majorMinorVersion).$($patchVersion).0"
-        Write-host "##vso[task.setvariable variable=semanticVersion]$($patchVersion)"
+        Write-host " - Semantic Build Number : $($env:MAJORMINORVERSION).$($patchVersion).0"
+        Write-host "##vso[build.updatebuildnumber]$($env:MAJORMINORVERSION).$($patchVersion).0"
+        Write-host "##vso[task.setvariable variable=SEMANTICVERSION]$($patchVersion)"
   - task: PowerShell@2
     displayName: updating Shared semanticVersion
     inputs:
@@ -28,7 +28,7 @@ steps:
         $authHeader = @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
         $definition = Invoke-RestMethod -Uri $url -Headers $authHeader
         Write-Host "Variable groups = $($definition | ConvertTo-Json -Depth 100)"
-        $definition.variables.semanticVersion.value = "$($env:semanticVersion)"
+        $definition.variables.semanticVersion.value = "$($env:SEMANTICVERSION)"
         Write-Host "New semantic version : $($definition.variables.semanticVersion.Value)"
         Invoke-RestMethod -Method Put -Uri $url -Headers $authHeader -ContentType "application/json" -Body ($definition | ConvertTo-Json -Depth 100)
     env:
