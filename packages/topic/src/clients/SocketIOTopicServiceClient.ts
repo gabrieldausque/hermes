@@ -1,7 +1,7 @@
 import {TopicService} from "../TopicService";
 import {BaseTopicClient} from "./BaseTopicClient";
 import {TopicMessage} from "../datas/TopicMessage";
-import Socket = SocketIOClient.Socket;
+import {EventEmitter} from 'events'
 
 /**
  * A client that represents in the server side (node instance of the topic service) a distant client connected using Socket.Io
@@ -10,9 +10,9 @@ export class SocketIOTopicServiceClient extends BaseTopicClient {
   /**
    * the socket that allow communication with distant client
    */
-  private socket: Socket;
+  private socket: EventEmitter;
 
-  constructor(service: TopicService, socket: Socket) {
+  constructor(service: TopicService, socket: EventEmitter) {
     super(service);
     this.socket = socket;
     //communication with proxy client ...
@@ -25,12 +25,12 @@ export class SocketIOTopicServiceClient extends BaseTopicClient {
    */
   initializeProxyChannelProtocol() {
     const currentClient = this;
-    this.socket.on('reconnect', (socket:Socket) => {
+    this.socket.on('reconnect', (socket:EventEmitter) => {
       console.log('reconnection of client with id ' + currentClient.topicClientId);
       currentClient.socket = socket;
       currentClient.initializeProxyChannelProtocol();
     });
-    this.socket.on('disconnect', (socket:Socket) => {
+    this.socket.on('disconnect', (socket:EventEmitter) => {
       console.log('disconnection of client with id ' + currentClient.topicClientId);
       currentClient.disconnect();
     });

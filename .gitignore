@@ -126,3 +126,4 @@ junit.xml
 /src/hermes_modules/bullmq-jobs/lib/
 .nyc_output/
 
+/package.json.lerna_backup
