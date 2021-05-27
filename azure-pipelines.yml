@@ -6,8 +6,6 @@
 # this is a group variables to manage versioning number for all pipelines in the same repo
 variables:
   - group: fwk_versioning_variables
-  - name: semanticVersion
-    value: $[counter(variables['majorMinorVersion'], 0)]
 
 trigger:
   batch: true
